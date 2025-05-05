@@ -2,4 +2,4 @@ spring:
   application:
     name: resenha-sociocultural-api
   profiles:
-    active: devgi
+    active: dev
