@@ -42,9 +42,9 @@ public class Youth {
 
     @Column(nullable = false)
     @NotBlank
-    private String mother;
+    private String motherName;
 
-    private String father;
+    private String fatherName;
 
     @Column(name="emergency_contact_name", nullable = false)
     @NotBlank
