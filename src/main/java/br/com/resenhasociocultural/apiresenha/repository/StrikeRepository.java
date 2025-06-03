@@ -7,8 +7,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface StrikeRepository extends JpaRepository<Strike, Long> {
-    public List<Strike> findByYouthNameContainingIgnoreCaseOrYouthSurnameContainingIgnoreCase(String firstName, String surname);
+    public List<Strike> findByYouthFirstNameContainingIgnoreCaseOrYouthSurnameContainingIgnoreCase(String firstName, String surname);
     public List<Strike> findByMeetingDate(LocalDate date);
-    public List<Strike> findByMeetingDateBetween(LocalDate date);
+    public List<Strike> findByMeetingDateBetween(LocalDate date1, LocalDate date2);
     public List<Strike> findByMeetingDateGreaterThanEqual(LocalDate date);
 }
