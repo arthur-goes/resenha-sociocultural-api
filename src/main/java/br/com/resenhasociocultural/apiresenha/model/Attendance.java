@@ -1,5 +1,6 @@
 package br.com.resenhasociocultural.apiresenha.model;
 
+import br.com.resenhasociocultural.apiresenha.enums.AttendanceStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;

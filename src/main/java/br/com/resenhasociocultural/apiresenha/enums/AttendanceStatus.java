@@ -1,4 +1,4 @@
-package br.com.resenhasociocultural.apiresenha.model;
+package br.com.resenhasociocultural.apiresenha.enums;
 
 public enum AttendanceStatus {
     PRESENT,

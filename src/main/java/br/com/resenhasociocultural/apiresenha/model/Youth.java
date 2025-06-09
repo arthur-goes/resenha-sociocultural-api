@@ -5,11 +5,15 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import lombok.*;
+import org.hibernate.validator.constraints.ParameterScriptAssert;
 import org.hibernate.validator.constraints.br.CPF;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "youths")
 @Getter
 @Setter
@@ -23,37 +27,33 @@ public class Youth {
     private Long id;
 
     @Column(name = "first_name", nullable = false)
-    @NotBlank
     private String firstName;
 
-    @Column(nullable = false)
-    @NotBlank
+    @Column(nullable = true)
     private String surname;
 
-    @Column(nullable = false)
-    @Past
-    @NotNull
+    @Column(nullable = true)
     private LocalDate birthDate;
 
-    @Column(nullable = false, length = 11, unique = true)
-    @NotBlank
-    @CPF
+    @Column(nullable = true, length = 11, unique = true)
     private String cpf;
 
-    @Column(nullable = false)
-    @NotBlank
+    @Column(nullable = true)
     private String motherName;
 
+    @Column(nullable = true)
     private String fatherName;
 
-    @Column(name="emergency_contact_name", nullable = false)
-    @NotBlank
+    @Column(name="emergency_contact_name", nullable = true)
     private String emergencyContactName;
 
-    @Column(name = "emergency_contact_description", nullable = false)
-    @NotBlank
+    @Column(name = "emergency_contact_description", nullable = true)
     private String emergencyContactRelationship;
 
-    @Column(name="emergency_contact_phone", nullable = false, length = 11)
+    @Column(name="emergency_contact_phone", nullable = true, length = 11)
     private String emergencyContactPhone;
+
+    @Column(name="creation_date", nullable = false, updatable = false)
+    @CreatedDate
+    private LocalDate creationDate;
 }
