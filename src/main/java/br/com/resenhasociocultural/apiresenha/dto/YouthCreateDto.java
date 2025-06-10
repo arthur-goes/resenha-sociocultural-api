@@ -3,7 +3,6 @@ package br.com.resenhasociocultural.apiresenha.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 import org.hibernate.validator.constraints.br.CPF;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 
@@ -19,7 +18,6 @@ public record YouthCreateDto(
         String fatherName,
         String emergencyContactName,
         String emergencyContactRelationship,
-        String emergencyContactPhone,
-        LocalDate creationDate
+        String emergencyContactPhone
 ) implements YouthView {
 }

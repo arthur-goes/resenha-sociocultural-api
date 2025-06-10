@@ -24,12 +24,10 @@ public class Attendance {
 
     @ManyToOne
     @JoinColumn(name = "youngster_id", nullable = false)
-    @NotNull
     private Youth youth;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "attendance_status", nullable = false)
-    @NotNull
     private AttendanceStatus attendanceStatus;
 
     @Column(name = "absence_excuse")

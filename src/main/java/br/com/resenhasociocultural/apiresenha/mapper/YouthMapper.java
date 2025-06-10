@@ -19,5 +19,5 @@ public interface YouthMapper {
     Youth youthCreateDtoToEntity(YouthCreateDto youthCreateDto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Youth updateYouthFromDto(YouthUpdateAdminDto youthUpdateAdminDto, @MappingTarget Youth youth);
+    void updateYouthFromDto(YouthUpdateAdminDto youthUpdateAdminDto, @MappingTarget Youth youth);
 }

@@ -47,11 +47,16 @@ public class YouthController {
     }
 
     @PatchMapping("{id}/useradmin")
-    public ResponseEntity<YouthResponseDto> updateYouthByAdmin(@RequestBody YouthUpdateAdminDto youthToUpdateDto){
-        Youth youthToUpdate = youthMapper.youthUpdateAdminDtoToEntity(youthToUpdateDto);
-        Youth youthUpdated = youthService.save(youthToUpdate);
+    public ResponseEntity<YouthResponseDto> updateYouthByAdmin(@RequestBody YouthUpdateAdminDto youthUpdatedDataDto){
+        Youth youthResponse = youthService.update(youthUpdatedDataDto);
+        YouthResponseDto youthResponseDto = youthMapper.youthToResponseDTO(youthResponse);
+        return ResponseEntity.ok(youthResponseDto);
+    }
 
-        YouthResponseDto youthResponse = youthMapper.youthToResponseDTO(youthUpdated);
-        return ResponseEntity.ok(youthResponse);
+    @GetMapping("{id}")
+    public ResponseEntity<YouthResponseDto> findYouthById(@PathVariable("id") Long id){
+        Youth youth = youthService.findYouthById(id);
+        YouthResponseDto youthResponseDto = youthMapper.youthToResponseDTO(youth);
+        return ResponseEntity.ok(youthResponseDto);
     }
 }
