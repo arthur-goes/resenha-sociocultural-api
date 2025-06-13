@@ -18,7 +18,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor()
 @EqualsAndHashCode(of = "id")
 public class Youth {
 

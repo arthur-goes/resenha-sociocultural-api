@@ -25,8 +25,11 @@ public class YouthController {
     }
 
     @GetMapping
-    public ResponseEntity<List<? extends YouthView>> findAllYouth(@RequestParam(name = "view", defaultValue = "complete", required = false) YouthViewType view){
-        List<Youth> youthList = youthService.findAll();
+    public ResponseEntity<List<? extends YouthView>> findYouth(
+            @RequestParam(name = "view", defaultValue = "COMPLETE", required = false) YouthViewType view,
+            @RequestParam(name = "nome", defaultValue = "", required = false) String name
+    ){
+        List<Youth> youthList = name.isBlank() ? youthService.findAll() : youthService.findByName(name);
         if (view == YouthViewType.SIMPLE){
             List<YouthSimpleDto> simpleList = youthList.stream().map(youthMapper::youthToSimpleResponseDTO).toList();
             return ResponseEntity.ok(simpleList);
@@ -35,6 +38,13 @@ public class YouthController {
             return ResponseEntity.ok(completeList);
         }
         //Implementar validação customizada, para retornar uma mensagem mais amigável para o cliente no caso de um view inválido.
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<YouthResponseDto> findYouthById(@PathVariable("id") Long id){
+        Youth youth = youthService.findYouthById(id);
+        YouthResponseDto youthResponseDto = youthMapper.youthToResponseDTO(youth);
+        return ResponseEntity.ok(youthResponseDto);
     }
 
     @PostMapping
@@ -53,10 +63,11 @@ public class YouthController {
         return ResponseEntity.ok(youthResponseDto);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<YouthResponseDto> findYouthById(@PathVariable("id") Long id){
-        Youth youth = youthService.findYouthById(id);
-        YouthResponseDto youthResponseDto = youthMapper.youthToResponseDTO(youth);
-        return ResponseEntity.ok(youthResponseDto);
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteYouthById(@PathVariable Long id){
+        youthService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
+
+
 }
