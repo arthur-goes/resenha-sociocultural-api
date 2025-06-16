@@ -56,4 +56,7 @@ public class Youth {
     @Column(name="creation_date", nullable = false, updatable = false)
     @CreatedDate
     private LocalDate creationDate;
+
+    @Column(nullable = false)
+    private boolean active;
 }

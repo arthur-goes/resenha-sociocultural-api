@@ -1,18 +1,10 @@
 package br.com.resenhasociocultural.apiresenha.model;
 
 import jakarta.persistence.*;
-import lombok.*;
 
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "strikes")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(of = "id")
-public class Strike {
+public class Participation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,9 +15,6 @@ public class Strike {
 
     @Column(nullable = true)
     private int amount;
-
-    @Column(nullable = false, length = 256)
-    private String reason;
 
     private LocalDate date;
 

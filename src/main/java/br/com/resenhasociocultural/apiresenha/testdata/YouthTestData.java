@@ -28,70 +28,80 @@ public class YouthTestData {
                 null,
                 "Ana", "Silva",LocalDate.of(1995, 5, 15), "11111111111",
                 "Maria Silva", "João Silva", "Carlos Silva", "Tio", "11987654321",
-                null // creationDate
+                null,
+            true
         ));
 
         youths.add(new Youth(
-                null, // id
+                null,
                 "Bruno", "Souza", LocalDate.of(1998, 8, 22), "22222222222",
                 "Carla Souza", null, "Laura Mendes", "Amiga", "21912345678",
-                null // creationDate
+                null,
+            true
         ));
 
         youths.add(new Youth(
-                null, // id
+                null,
                 "Carlos", "Oliveira", LocalDate.of(2000, 1, 10), "33333333333",
                 "Fernanda Oliveira", "Ricardo Oliveira", "Fernanda Oliveira", "Mãe", "31988887777",
-                null // creationDate
+                null,
+            true
         ));
 
         youths.add(new Youth(
-                null, // id
+                null,
                 "Daniela", "Pereira", LocalDate.of(1997, 11, 30), "44444444444",
                 "Juliana Pereira", null, "Roberto Alves", "Avô", "41977776666",
-                null // creationDate
+                null,
+            true
         ));
 
         youths.add(new Youth(
-                null, // id
+                null,
                 "Eduardo", "Costa", LocalDate.of(2001, 3, 3), "55555555555",
                 "Patricia Costa", "Marcos Costa", "Marcos Costa", "Pai", "51966665555",
-                null // creationDate
+                null,
+            true
         ));
 
         youths.add(new Youth(
-                null, // id
+                null,
                 "Fernanda", "Lima", null, "66666666666", // birthDate nulo
                 "Adriana Lima", "Paulo Lima", "Sofia Lima", "Irmã", "61955554444",
-                null // creationDate
+                null,
+            true
         ));
 
         youths.add(new Youth(
-                null, // id
+                null,
                 "Gustavo", "Almeida", LocalDate.of(1999, 7, 7), "77777777777",
                 "Sandra Almeida", null, "Sandra Almeida", "Mãe", "71944443333",
-                null // creationDate
+                null,
+            true
         ));
 
         youths.add(new Youth(
-                null, // id
+                null,
                 "Helena", "Rocha", LocalDate.of(2002, 2, 20), "88888888888",
                 "Beatriz Rocha", "Felipe Rocha", null, null, null, // Sem contato de emergência
-                null // creationDate
+                null,
+            true
         ));
 
         youths.add(new Youth(
-                null, // id
+                null,
                 "Igor", "Nunes", LocalDate.of(1996, 12, 12), "99999999999",
                 "Vanessa Nunes", "Leonardo Nunes", "Leonardo Nunes", "Pai", "81933332222",
-                null // creationDate
+                null,
+            true
         ));
 
         youths.add(new Youth(
-                null, // id
+                null,
                 "Julia", "Martins", LocalDate.of(2003, 10, 25), "10101010101",
                 "Debora Martins", null, "Teresa Santos", "Avó", "91922221111",
-                null // creationDate
+                null,
+            true
         ));
 
         List<Youth> savedYouths = youthRepository.saveAll(youths);

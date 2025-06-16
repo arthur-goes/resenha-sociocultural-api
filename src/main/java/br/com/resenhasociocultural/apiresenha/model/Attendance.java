@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "attendances")
 @Getter
@@ -25,6 +27,8 @@ public class Attendance {
     @ManyToOne
     @JoinColumn(name = "youngster_id", nullable = false)
     private Youth youth;
+
+    private LocalDate date;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "attendance_status", nullable = false)

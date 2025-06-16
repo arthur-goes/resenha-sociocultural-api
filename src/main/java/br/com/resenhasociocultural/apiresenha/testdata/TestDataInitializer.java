@@ -8,12 +8,16 @@ import org.springframework.stereotype.Component;
 public class TestDataInitializer {
 
     private final YouthTestData youthTestData;
+    private final AttendanceTestData attendanceTestData;
 
-    TestDataInitializer(YouthTestData youthTestData){
+    TestDataInitializer(YouthTestData youthTestData, AttendanceTestData attendanceTestData){
         this.youthTestData = youthTestData;
+        this.attendanceTestData = attendanceTestData;
     }
 
     public void initialize(){
+
         youthTestData.createYouthTestData();
+        attendanceTestData.createAttendanceTestData();
     }
 }
