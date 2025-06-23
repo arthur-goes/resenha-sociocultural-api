@@ -1,5 +1,6 @@
-package br.com.resenhasociocultural.apiresenha.dto;
+package br.com.resenhasociocultural.apiresenha.dto.attendance;
 
+import br.com.resenhasociocultural.apiresenha.dto.youth.YouthSimpleDto;
 import br.com.resenhasociocultural.apiresenha.enums.AttendanceStatus;
 
 import java.time.LocalDate;

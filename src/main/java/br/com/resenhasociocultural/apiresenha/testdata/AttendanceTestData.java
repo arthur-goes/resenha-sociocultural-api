@@ -35,7 +35,9 @@ public class AttendanceTestData {
             null,
             LocalDate.of(2025, 06, 11),
             "Tigrinho",
+            "Lição 100",
             new HashSet<Attendance>(),
+            null,
             null
         );
 
@@ -46,7 +48,6 @@ public class AttendanceTestData {
                 null,
                 meeting1,
                 youthRepository.findById(1L).get(),
-                LocalDate.of(2025,06,11),
                 AttendanceStatus.PRESENT,
                 null
             )

@@ -29,7 +29,7 @@ public class Meeting {
     private String minutosDeSabedoriaLesson;
 
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Attendance> presenceList;
+    private Set<Attendance> attendanceList;
 
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Strike> strikes;

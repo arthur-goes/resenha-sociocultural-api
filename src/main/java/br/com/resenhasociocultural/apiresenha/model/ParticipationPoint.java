@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
-public class Participation {
+@Entity
+public class ParticipationPoint {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,7 +17,8 @@ public class Participation {
     @Column(nullable = true)
     private int amount;
 
-    private LocalDate date;
+    @Column(nullable = true)
+    private String reason;
 
     @ManyToOne
     @JoinColumn(name = "meeting_id", nullable = true)

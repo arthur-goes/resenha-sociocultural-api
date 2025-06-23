@@ -1,18 +1,29 @@
 package br.com.resenhasociocultural.apiresenha.mapper;
 
-import br.com.resenhasociocultural.apiresenha.dto.AttendanceResponseDto;
+import br.com.resenhasociocultural.apiresenha.dto.attendance.AttendanceCreateDto;
+import br.com.resenhasociocultural.apiresenha.dto.attendance.AttendanceForMeetingResponseDto;
+import br.com.resenhasociocultural.apiresenha.dto.attendance.AttendanceResponseDto;
 import br.com.resenhasociocultural.apiresenha.model.Attendance;
+import br.com.resenhasociocultural.apiresenha.service.YouthService;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Mappings;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {YouthMapper.class})
-public interface AttendanceMapper {
-    @Mapping(source = "meeting.id", target = "meetingId")
-    AttendanceResponseDto toAttendanceResponse(Attendance attendance);
+public abstract class AttendanceMapper {
 
-    List<AttendanceResponseDto> toAttendanceResponseList(List<Attendance> attendance);
+    protected YouthService youthService;
+
+    public AttendanceMapper(YouthService youthService) {
+        this.youthService = youthService;
+    }
+
+    @Mapping(source = "meeting.id", target = "meetingId")
+    @Mapping(source = "meeting.date", target = "date")
+    public abstract AttendanceResponseDto toAttendanceResponse(Attendance attendance);
+
+    public abstract List<AttendanceResponseDto> toAttendanceResponseListDto(List<Attendance> attendance);
+    public abstract List<AttendanceForMeetingResponseDto> toAttendanceForMeetingDto(List<Attendance> attendances);
+    public abstract Attendance toEntity(AttendanceCreateDto dto);
 }

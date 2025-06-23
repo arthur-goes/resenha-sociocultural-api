@@ -1,6 +1,6 @@
 package br.com.resenhasociocultural.apiresenha.controller;
 
-import br.com.resenhasociocultural.apiresenha.dto.*;
+import br.com.resenhasociocultural.apiresenha.dto.youth.*;
 import br.com.resenhasociocultural.apiresenha.enums.YouthViewType;
 import br.com.resenhasociocultural.apiresenha.mapper.YouthMapper;
 import br.com.resenhasociocultural.apiresenha.model.Youth;
@@ -42,7 +42,7 @@ public class YouthController {
 
     @GetMapping("{id}")
     public ResponseEntity<YouthResponseDto> findYouthById(@PathVariable("id") Long id){
-        Youth youth = youthService.findYouthById(id);
+        Youth youth = youthService.findById(id);
         YouthResponseDto youthResponseDto = youthMapper.youthToResponseDTO(youth);
         return ResponseEntity.ok(youthResponseDto);
     }

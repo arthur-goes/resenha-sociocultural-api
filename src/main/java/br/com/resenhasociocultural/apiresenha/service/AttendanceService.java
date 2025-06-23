@@ -1,6 +1,11 @@
 package br.com.resenhasociocultural.apiresenha.service;
 
+import br.com.resenhasociocultural.apiresenha.dto.attendance.AttendanceCreateDto;
+import br.com.resenhasociocultural.apiresenha.exception.ResourceNotFoundException;
+import br.com.resenhasociocultural.apiresenha.mapper.AttendanceMapper;
 import br.com.resenhasociocultural.apiresenha.model.Attendance;
+import br.com.resenhasociocultural.apiresenha.model.Meeting;
+import br.com.resenhasociocultural.apiresenha.model.Youth;
 import br.com.resenhasociocultural.apiresenha.repository.AttendanceRepository;
 import br.com.resenhasociocultural.apiresenha.repository.specs.AttendanceSpecs;
 import org.springframework.data.jpa.domain.Specification;
@@ -15,9 +20,15 @@ import java.util.List;
 public class AttendanceService {
 
     private final AttendanceRepository attendanceRepository;
+    private final AttendanceMapper attendanceMapper;
+    private final YouthService youthService;
+    //private final MeetingService meetingService;
 
-    public AttendanceService(AttendanceRepository attendanceRepository, AttendanceSpecs attendanceSpecs) {
+    public AttendanceService(AttendanceRepository attendanceRepository, YouthService youthService, AttendanceMapper attendanceMapper/*, MeetingService meetingService*/) {
         this.attendanceRepository = attendanceRepository;
+        this.attendanceMapper = attendanceMapper;
+        this.youthService = youthService;
+        //this.meetingService = meetingService;
     }
 
     public List<Attendance> find(String youthName, LocalDate date, LocalDate initialDate, LocalDate finalDate){
@@ -53,5 +64,26 @@ public class AttendanceService {
         return attendanceRepository.findAll(specs);
     }
 
+    public Attendance findById(Long id){
+        return attendanceRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Não foi possível localizar uma presença de id " + id));
+    }
+
+    public Attendance create(AttendanceCreateDto dto){
+        Youth youth = null;
+        if (dto.youthId() != null) {
+            youth = youthService.findById(dto.youthId());
+        }
+
+        Attendance attendance = attendanceMapper.toEntity(dto);
+        attendance.setYouth(youth);
+
+        //if (dto.meetingId() != null){
+        //    Meeting meeting = meetingService.findById(dto.meetingId());
+        //    attendance.setMeeting(meeting);
+        //    attendanceRepository.save(attendance);
+        //}
+
+        return attendanceRepository.save(attendance);
+    }
 
 }

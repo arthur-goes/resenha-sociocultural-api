@@ -27,8 +27,6 @@ public class Strike {
     @Column(nullable = false, length = 256)
     private String reason;
 
-    private LocalDate date;
-
     @ManyToOne
     @JoinColumn(name = "meeting_id", nullable = true)
     private Meeting meeting;

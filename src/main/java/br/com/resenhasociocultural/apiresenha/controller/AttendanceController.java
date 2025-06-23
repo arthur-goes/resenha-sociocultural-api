@@ -1,6 +1,6 @@
 package br.com.resenhasociocultural.apiresenha.controller;
 
-import br.com.resenhasociocultural.apiresenha.dto.AttendanceResponseDto;
+import br.com.resenhasociocultural.apiresenha.dto.attendance.AttendanceResponseDto;
 import br.com.resenhasociocultural.apiresenha.mapper.AttendanceMapper;
 import br.com.resenhasociocultural.apiresenha.model.Attendance;
 import br.com.resenhasociocultural.apiresenha.service.AttendanceService;
@@ -34,7 +34,7 @@ public class AttendanceController {
     )
     {
         List<Attendance> attendances = attendanceService.find(youthName, date, firstDate, finalDate);
-        List<AttendanceResponseDto> response = attendanceMapper.toAttendanceResponseList(attendances);
+        List<AttendanceResponseDto> response = attendanceMapper.toAttendanceResponseListDto(attendances);
         return ResponseEntity.ok(response);
     }
 }

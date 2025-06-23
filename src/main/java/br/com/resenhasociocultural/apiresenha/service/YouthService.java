@@ -1,17 +1,13 @@
 package br.com.resenhasociocultural.apiresenha.service;
 
-import br.com.resenhasociocultural.apiresenha.dto.YouthUpdateAdminDto;
+import br.com.resenhasociocultural.apiresenha.dto.youth.YouthUpdateAdminDto;
 import br.com.resenhasociocultural.apiresenha.exception.ResourceNotFoundException;
 import br.com.resenhasociocultural.apiresenha.mapper.YouthMapper;
 import br.com.resenhasociocultural.apiresenha.model.Youth;
 import br.com.resenhasociocultural.apiresenha.repository.YouthRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Supplier;
 
 @Service
@@ -25,7 +21,7 @@ public class YouthService {
         this.youthMapper = youthMapper;
     }
 
-    public Youth findYouthById(Long id){
+    public Youth findById(Long id){
         return youthRepository.findById(id)
             .orElseThrow(resourceNotFoundExceptionById(id));
     }

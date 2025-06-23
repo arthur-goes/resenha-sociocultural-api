@@ -1,4 +1,4 @@
-package br.com.resenhasociocultural.apiresenha.dto;
+package br.com.resenhasociocultural.apiresenha.dto.youth;
 
 public record YouthSimpleDto(
         Long id,

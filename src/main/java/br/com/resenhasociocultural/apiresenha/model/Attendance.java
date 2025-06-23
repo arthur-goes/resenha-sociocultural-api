@@ -28,8 +28,6 @@ public class Attendance {
     @JoinColumn(name = "youngster_id", nullable = false)
     private Youth youth;
 
-    private LocalDate date;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "attendance_status", nullable = false)
     private AttendanceStatus attendanceStatus;
