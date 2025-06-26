@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/presenca")
@@ -26,15 +27,15 @@ public class AttendanceController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AttendanceResponseDto>> find(
+    public ResponseEntity<Set<AttendanceResponseDto>> find(
             @RequestParam(name = "nome", required = false) String youthName,
             @RequestParam(name = "data", required = false) LocalDate date,
             @RequestParam(name = "dataInicial", required = false) LocalDate firstDate,
             @RequestParam(name = "dataFinal", required = false) LocalDate finalDate
     )
     {
-        List<Attendance> attendances = attendanceService.find(youthName, date, firstDate, finalDate);
-        List<AttendanceResponseDto> response = attendanceMapper.toAttendanceResponseListDto(attendances);
+        Set<Attendance> attendances = attendanceService.find(youthName, date, firstDate, finalDate);
+        Set<AttendanceResponseDto> response = attendanceMapper.toAttendanceResponseListDto(attendances);
         return ResponseEntity.ok(response);
     }
 }

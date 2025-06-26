@@ -8,6 +8,7 @@ import br.com.resenhasociocultural.apiresenha.model.Meeting;
 import br.com.resenhasociocultural.apiresenha.model.Youth;
 import br.com.resenhasociocultural.apiresenha.repository.AttendanceRepository;
 import br.com.resenhasociocultural.apiresenha.repository.specs.AttendanceSpecs;
+import jakarta.persistence.SecondaryTable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import static br.com.resenhasociocultural.apiresenha.repository.specs.Attendance
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class AttendanceService {
@@ -31,7 +33,7 @@ public class AttendanceService {
         //this.meetingService = meetingService;
     }
 
-    public List<Attendance> find(String youthName, LocalDate date, LocalDate initialDate, LocalDate finalDate){
+    public Set<Attendance> find(String youthName, LocalDate date, LocalDate initialDate, LocalDate finalDate){
         Specification<Attendance> specs = (root, query, cb) -> cb.conjunction();
 
         boolean areDateParamsConflicting = date != null && (initialDate !=null || finalDate != null);
@@ -61,7 +63,7 @@ public class AttendanceService {
             specs = specs.and(youthNameOrSurnameLike(youthName));
         }
 
-        return attendanceRepository.findAll(specs);
+        return attendanceRepository.findAllAsSet(specs);
     }
 
     public Attendance findById(Long id){

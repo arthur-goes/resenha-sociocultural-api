@@ -21,7 +21,7 @@ public record MeetingCreateDto(
 
     String minutosDeSabedoriaLesson,
 
-    Set<AttendanceCreateDto> attendances
+    Set<AttendanceCreateDto> attendanceList
     //Set<StrikeCreateDto> strikes,
     //Set<ParticipationPointCreateDto> participationPoints
 ) {
