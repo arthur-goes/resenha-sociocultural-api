@@ -1,9 +1,14 @@
 package br.com.resenhasociocultural.apiresenha.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 
-import java.time.LocalDate;
-
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
+@Getter
+@Setter
+@Table(name = "participation_points")
 @Entity
 public class ParticipationPoint {
     @Id

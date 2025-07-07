@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -35,7 +34,7 @@ public class AttendanceController {
     )
     {
         Set<Attendance> attendances = attendanceService.find(youthName, date, firstDate, finalDate);
-        Set<AttendanceResponseDto> response = attendanceMapper.toAttendanceResponseListDto(attendances);
+        Set<AttendanceResponseDto> response = attendanceMapper.toResponseListDto(attendances);
         return ResponseEntity.ok(response);
     }
 }

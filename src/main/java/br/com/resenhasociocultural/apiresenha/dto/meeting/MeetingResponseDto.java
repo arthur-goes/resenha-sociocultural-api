@@ -1,6 +1,8 @@
 package br.com.resenhasociocultural.apiresenha.dto.meeting;
 
 import br.com.resenhasociocultural.apiresenha.dto.attendance.AttendanceForMeetingResponseDto;
+import br.com.resenhasociocultural.apiresenha.dto.participationpoint.ParticipationPointForMeetingResponseDto;
+import br.com.resenhasociocultural.apiresenha.dto.strike.StrikeForMeetingResponseDto;
 import br.com.resenhasociocultural.apiresenha.model.ParticipationPoint;
 import br.com.resenhasociocultural.apiresenha.model.Strike;
 
@@ -13,8 +15,8 @@ public record MeetingResponseDto(
     String theme,
     String minutosDeSabedoriaLesson,
     Set<AttendanceForMeetingResponseDto> attendanceList,
-    Set<ParticipationPoint> participationPoints,
-    Set<Strike> strikes
+    Set<StrikeForMeetingResponseDto> strikes,
+    Set<ParticipationPointForMeetingResponseDto> participationPoints
 ) {
 
 }

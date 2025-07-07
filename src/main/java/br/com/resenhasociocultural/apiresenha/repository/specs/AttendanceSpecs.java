@@ -4,7 +4,6 @@ import br.com.resenhasociocultural.apiresenha.model.Attendance;
 import br.com.resenhasociocultural.apiresenha.model.Youth;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
-import org.springframework.cglib.core.Local;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 

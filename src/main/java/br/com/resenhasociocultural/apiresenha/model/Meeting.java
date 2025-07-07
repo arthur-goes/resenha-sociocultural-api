@@ -28,12 +28,12 @@ public class Meeting {
     @Column(nullable = false)
     private String minutosDeSabedoriaLesson;
 
-    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "meeting", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Attendance> attendanceList;
 
-    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "meeting", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Strike> strikes;
 
-    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ParticipationPoint> participationPoints;
+    @OneToMany(mappedBy = "meeting", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<ParticipationPoint> participationPoints;
 }

@@ -1,12 +1,17 @@
 package br.com.resenhasociocultural.apiresenha.dto.strike;
 
 import br.com.resenhasociocultural.apiresenha.dto.youth.YouthSimpleDto;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record StrikeCreateDto(
-    YouthSimpleDto youthSimpleDto,
+    Long meetingId,
+    @NotNull
+    Long youthId,
+    @NotBlank
     int amount,
     String reason,
-    Long meetingId,
+    @NotNull
     boolean active
 ) {
 }

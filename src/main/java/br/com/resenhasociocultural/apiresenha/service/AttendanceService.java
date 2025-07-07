@@ -4,18 +4,14 @@ import br.com.resenhasociocultural.apiresenha.dto.attendance.AttendanceCreateDto
 import br.com.resenhasociocultural.apiresenha.exception.ResourceNotFoundException;
 import br.com.resenhasociocultural.apiresenha.mapper.AttendanceMapper;
 import br.com.resenhasociocultural.apiresenha.model.Attendance;
-import br.com.resenhasociocultural.apiresenha.model.Meeting;
 import br.com.resenhasociocultural.apiresenha.model.Youth;
 import br.com.resenhasociocultural.apiresenha.repository.AttendanceRepository;
-import br.com.resenhasociocultural.apiresenha.repository.specs.AttendanceSpecs;
-import jakarta.persistence.SecondaryTable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import static br.com.resenhasociocultural.apiresenha.repository.specs.AttendanceSpecs.*;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -24,13 +20,11 @@ public class AttendanceService {
     private final AttendanceRepository attendanceRepository;
     private final AttendanceMapper attendanceMapper;
     private final YouthService youthService;
-    //private final MeetingService meetingService;
 
     public AttendanceService(AttendanceRepository attendanceRepository, YouthService youthService, AttendanceMapper attendanceMapper/*, MeetingService meetingService*/) {
         this.attendanceRepository = attendanceRepository;
         this.attendanceMapper = attendanceMapper;
         this.youthService = youthService;
-        //this.meetingService = meetingService;
     }
 
     public Set<Attendance> find(String youthName, LocalDate date, LocalDate initialDate, LocalDate finalDate){
@@ -78,12 +72,6 @@ public class AttendanceService {
 
         Attendance attendance = attendanceMapper.toEntity(dto);
         attendance.setYouth(youth);
-
-        //if (dto.meetingId() != null){
-        //    Meeting meeting = meetingService.findById(dto.meetingId());
-        //    attendance.setMeeting(meeting);
-        //    attendanceRepository.save(attendance);
-        //}
 
         return attendanceRepository.save(attendance);
     }
