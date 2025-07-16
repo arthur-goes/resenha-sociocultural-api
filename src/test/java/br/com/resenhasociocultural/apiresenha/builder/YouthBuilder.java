@@ -19,7 +19,7 @@ public class YouthBuilder {
         );
     }
 
-    YouthBuilder aYouth(){
+    public static YouthBuilder aYouth(){
         return new YouthBuilder();
     }
 
@@ -33,14 +33,10 @@ public class YouthBuilder {
         return this;
     }
 
-
-
     public YouthBuilder inactive(){
         youth.setActive(false);
         return this;
     }
-
-
 
     public Youth build(){
         return this.youth;

@@ -11,9 +11,10 @@ import java.sql.Connection;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-
+@SpringBootTest
 class ApiresenhaApplicationTests {
 
+	@Test
 	void contextLoads() {
 	}
 }
