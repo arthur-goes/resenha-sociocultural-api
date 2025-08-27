@@ -12,12 +12,12 @@ Backend API (Spring Boot, JPA) for the "Resenha Sociocultural" social project. M
 
 ## Technologies Used
 
-* **Language:** Java 21
+* **Language:** Java 17
 * **Framework:** Spring Boot 3.x.x
 * **Data Persistence:** Spring Data JPA, Hibernate
 * **Database:** PostgreSQL
 * **Build Tool:** Maven
-* **Utils:** Lombok
+* **Utils:** Lombok, MapStruct
 * **API Documentation:** Springdoc OpenAPI (Swagger UI)
 * **(Planned):** Docker, JWT
 
