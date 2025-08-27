@@ -1,6 +1,5 @@
 package br.com.resenhasociocultural.apiresenha.exception;
 
-import br.com.resenhasociocultural.apiresenha.dto.ErrorResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

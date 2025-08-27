@@ -1,19 +1,17 @@
 package br.com.resenhasociocultural.apiresenha.testdata;
 
-import br.com.resenhasociocultural.apiresenha.enums.AttendanceStatus;
-import br.com.resenhasociocultural.apiresenha.model.Attendance;
-import br.com.resenhasociocultural.apiresenha.model.Meeting;
-import br.com.resenhasociocultural.apiresenha.repository.AttendanceRepository;
-import br.com.resenhasociocultural.apiresenha.repository.MeetingRepository;
-import br.com.resenhasociocultural.apiresenha.repository.YouthRepository;
+import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceStatus;
+import br.com.resenhasociocultural.apiresenha.features.attendance.Attendance;
+import br.com.resenhasociocultural.apiresenha.features.meeting.Meeting;
+import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceRepository;
+import br.com.resenhasociocultural.apiresenha.features.meeting.MeetingRepository;
+import br.com.resenhasociocultural.apiresenha.features.youth.YouthRepository;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.function.Function;
 
 @Component
 public class AttendanceTestData {

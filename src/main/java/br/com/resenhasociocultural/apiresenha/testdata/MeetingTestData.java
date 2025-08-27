@@ -1,6 +1,6 @@
 package br.com.resenhasociocultural.apiresenha.testdata;
 
-import br.com.resenhasociocultural.apiresenha.model.Meeting;
+import br.com.resenhasociocultural.apiresenha.features.meeting.Meeting;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

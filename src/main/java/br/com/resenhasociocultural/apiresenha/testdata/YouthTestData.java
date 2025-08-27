@@ -1,9 +1,8 @@
 package br.com.resenhasociocultural.apiresenha.testdata;
 
-import br.com.resenhasociocultural.apiresenha.model.Youth;
-import br.com.resenhasociocultural.apiresenha.repository.YouthRepository;
+import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
+import br.com.resenhasociocultural.apiresenha.features.youth.YouthRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
