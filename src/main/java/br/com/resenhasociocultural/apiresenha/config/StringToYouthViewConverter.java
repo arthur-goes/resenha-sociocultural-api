@@ -1,6 +1,6 @@
 package br.com.resenhasociocultural.apiresenha.config;
 
-import br.com.resenhasociocultural.apiresenha.enums.YouthViewType;
+import br.com.resenhasociocultural.apiresenha.features.youth.YouthViewType;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
