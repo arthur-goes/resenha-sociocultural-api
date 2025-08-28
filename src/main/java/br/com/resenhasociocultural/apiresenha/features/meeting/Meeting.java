@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -31,11 +32,26 @@ public class Meeting {
     private String minutosDeSabedoriaLesson;
 
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<Attendance> attendanceList;
+    private Set<Attendance> attendanceList = new HashSet<>();
 
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<Strike> strikes;
+    private Set<Strike> strikes = new HashSet<>();
 
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<ParticipationPoint> participationPoints;
+    private Set<ParticipationPoint> participationPoints = new HashSet<>();
+
+    public void addAttendance(Attendance attendance){
+        attendance.setMeeting(this);
+        attendanceList.add(attendance);
+    }
+
+    public void addStrike(Strike strike){
+        strike.setMeeting(this);
+        strikes.add(strike);
+    }
+
+    public void addParticipationPoint(ParticipationPoint participation){
+        participation.setMeeting(this);
+        participationPoints.add(participation);
+    }
 }
