@@ -1,8 +1,7 @@
 package br.com.resenhasociocultural.apiresenha.features.meeting;
 
-import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingCreateDto;
+import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingDto;
 import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingFilterDto;
-import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingUpdateDto;
 import br.com.resenhasociocultural.apiresenha.exception.ResourceNotFoundException;
 import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceMapper;
 import br.com.resenhasociocultural.apiresenha.features.attendance.Attendance;
@@ -67,27 +66,8 @@ public class MeetingService {
     }
 
     @Transactional
-    public void create(MeetingCreateDto dto) {
+    public void create(MeetingDto dto) {
         Meeting meeting = meetingMapper.toEntity(dto, youthService);
-
-        if (meeting.getAttendanceList() != null) {
-            for (Attendance attendance : meeting.getAttendanceList()) {
-                attendance.setMeeting(meeting);
-            }
-        }
-
-        if (meeting.getStrikes() != null){
-            for (Strike strike: meeting.getStrikes()){
-                strike.setMeeting(meeting);
-            }
-        }
-
-        if (meeting.getParticipationPoints() != null){
-            for (ParticipationPoint participationPoint: meeting.getParticipationPoints()){
-                participationPoint.setMeeting(meeting);
-            }
-        }
-
         meetingRepository.save(meeting);
     }
 
@@ -95,9 +75,8 @@ public class MeetingService {
         return meetingRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Não foi possível localizar um encontro com id " + id));
     }
 
-    public Meeting update(MeetingUpdateDto dto){
-        Meeting meeting = findById(dto.id());
-        meetingMapper.toUpdatedEntity(dto, meeting);
+    public Meeting update(MeetingDto dto){
+        Meeting meeting = meetingMapper.toEntity(dto, youthService);
         return meetingRepository.save(meeting);
     }
 
