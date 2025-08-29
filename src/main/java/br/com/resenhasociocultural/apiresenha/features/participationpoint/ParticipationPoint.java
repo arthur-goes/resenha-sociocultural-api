@@ -1,6 +1,7 @@
 package br.com.resenhasociocultural.apiresenha.features.participationpoint;
 
 import br.com.resenhasociocultural.apiresenha.features.meeting.Meeting;
+import br.com.resenhasociocultural.apiresenha.features.meeting.MeetingChildCollection;
 import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,7 +13,7 @@ import lombok.*;
 @Setter
 @Table(name = "participation_points")
 @Entity
-public class ParticipationPoint {
+public class ParticipationPoint implements MeetingChildCollection {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,7 +22,7 @@ public class ParticipationPoint {
     @JoinColumn(name = "youth_id", nullable = false)
     private Youth youth;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private int amount;
 
     @Column(nullable = true)

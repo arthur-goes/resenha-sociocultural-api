@@ -1,6 +1,7 @@
 package br.com.resenhasociocultural.apiresenha.features.attendance.dto;
 
 import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceStatus;
+import br.com.resenhasociocultural.apiresenha.features.meeting.MeetingChildCollectionDto;
 import jakarta.validation.constraints.NotNull;
 
 public record AttendanceCreateDto(
@@ -10,5 +11,5 @@ public record AttendanceCreateDto(
     @NotNull
     AttendanceStatus attendanceStatus,
     String absenceExcuse
-) {
-}
+)
+implements MeetingChildCollectionDto {};

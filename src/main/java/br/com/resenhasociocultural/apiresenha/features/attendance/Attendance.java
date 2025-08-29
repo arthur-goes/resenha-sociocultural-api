@@ -1,6 +1,7 @@
 package br.com.resenhasociocultural.apiresenha.features.attendance;
 
 import br.com.resenhasociocultural.apiresenha.features.meeting.Meeting;
+import br.com.resenhasociocultural.apiresenha.features.meeting.MeetingChildCollection;
 import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,9 +12,9 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = {"youngster", "meeting"})
-@ToString(exclude = {"youngster", "meeting"})
-public class Attendance {
+@EqualsAndHashCode(of = {"youth", "meeting"})
+@ToString(exclude = {"youth", "meeting"})
+public class Attendance implements MeetingChildCollection {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
