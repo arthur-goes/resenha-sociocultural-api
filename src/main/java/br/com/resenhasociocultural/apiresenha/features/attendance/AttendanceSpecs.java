@@ -1,5 +1,6 @@
 package br.com.resenhasociocultural.apiresenha.features.attendance;
 
+import br.com.resenhasociocultural.apiresenha.features.meeting.Meeting;
 import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
@@ -21,10 +22,16 @@ public class AttendanceSpecs {
     }
 
     public static Specification<Attendance> dateEqual(LocalDate date) {
-        return (root, query, cb) -> cb.equal(root.get("date"), date);
+        return (root, query, cb) -> {
+            Join<Attendance, Meeting> join = root.join("meeting");
+            return cb.equal(join.get("date"), date);
+        };
     }
 
     public static Specification<Attendance> dateBetween(LocalDate initialDate, LocalDate finalDate) {
-        return (root, query, cb) -> cb.between(root.get("date"), initialDate, finalDate);
+        return (root, query, cb) -> {
+            Join<Attendance, Meeting> join = root.join("meeting");
+            return cb.between(join.get("date"), initialDate, finalDate);
+        };
     }
 }

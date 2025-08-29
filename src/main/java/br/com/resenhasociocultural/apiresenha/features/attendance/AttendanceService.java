@@ -2,14 +2,13 @@ package br.com.resenhasociocultural.apiresenha.features.attendance;
 
 import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceCreateDto;
 import br.com.resenhasociocultural.apiresenha.exception.ResourceNotFoundException;
-import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
+import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceFilterDto;
 import br.com.resenhasociocultural.apiresenha.features.youth.YouthService;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import static br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceSpecs.*;
 
-import java.time.LocalDate;
 import java.util.Set;
 
 @Service
@@ -25,13 +24,16 @@ public class AttendanceService {
         this.youthService = youthService;
     }
 
-    public Set<Attendance> find(String youthName, LocalDate date, LocalDate initialDate, LocalDate finalDate){
-        Specification<Attendance> specs = (root, query, cb) -> cb.conjunction();
+    public Set<Attendance> findByFilter(AttendanceFilterDto filters){
+        validateDateFilters(filters);
+        Specification<Attendance> specs = buildSpecificationsFromFilters(filters);
 
-        boolean areDateParamsConflicting = date != null && (initialDate !=null || finalDate != null);
-        boolean isDateBetweenInconsitent = (initialDate == null && finalDate != null) || (initialDate != null && finalDate == null);
-        boolean isDateBetweenApplied = initialDate != null && finalDate != null;
-        boolean isDateBetweenIntervalNotInverted = isDateBetweenApplied && (initialDate.isBefore(finalDate));
+        return attendanceRepository.findAllAsSet(specs);
+    }
+
+    private void validateDateFilters(AttendanceFilterDto filters){
+        boolean areDateParamsConflicting = filters.date() != null && (filters.initialDate() !=null || filters.finalDate() != null);
+        boolean isDateBetweenInconsitent = (filters.initialDate() == null && filters.finalDate() != null) || (filters.initialDate() != null && filters.finalDate() == null);
 
         if (areDateParamsConflicting) {
             throw new IllegalArgumentException("Inconsistência nos parâmetros de data enviado. A filtragem por data deve ser para uma data específica ou um intervalo, não para os dois simultâneamente.");
@@ -40,22 +42,31 @@ public class AttendanceService {
         if (isDateBetweenInconsitent){
             throw new IllegalArgumentException("Inconsistência nos parâmetros de data enviado. A filtragem por intervalo de data deve obrigatoriamente ter uma data inicial e uma data final.");
         }
+    }
 
-        if (date != null){
-            specs  = specs.and(dateEqual(date));
-        } else if (isDateBetweenApplied) {
-            if (isDateBetweenIntervalNotInverted) {
-                specs = specs.and(dateBetween(initialDate, finalDate));
-            } else {
-                specs = specs.and(dateBetween(finalDate, initialDate));
-            }
+    private Specification<Attendance> buildSpecificationsFromFilters(AttendanceFilterDto filters){
+        boolean isDateBetweenApplied = filters.initialDate() != null && filters.finalDate() != null;
+        boolean isDateBetweenIntervalNotInverted = isDateBetweenApplied && (filters.initialDate().isBefore(filters.finalDate()));
+
+        Specification<Attendance> specs = (root, query, cb) -> cb.conjunction();
+
+        if (filters.youthName() != null){
+            specs = specs.and(youthNameOrSurnameLike(filters.youthName()));
         }
 
-        if (youthName != null){
-            specs = specs.and(youthNameOrSurnameLike(youthName));
+        if (filters.date() != null){
+            specs = specs.and(dateEqual(filters.date()));
         }
 
-        return attendanceRepository.findAllAsSet(specs);
+        if (!isDateBetweenApplied){
+            return specs;
+        }
+
+        if (isDateBetweenIntervalNotInverted) {
+            return specs = specs.and(dateBetween(filters.initialDate(), filters.finalDate()));
+        }
+        return specs.and(dateBetween(filters.initialDate(), filters.initialDate()));
+
     }
 
     public Attendance findById(Long id){
@@ -63,14 +74,7 @@ public class AttendanceService {
     }
 
     public Attendance create(AttendanceCreateDto dto){
-        Youth youth = null;
-        if (dto.youthId() != null) {
-            youth = youthService.findById(dto.youthId());
-        }
-
-        Attendance attendance = attendanceMapper.toEntity(dto);
-        attendance.setYouth(youth);
-
+        Attendance attendance = attendanceMapper.toEntity(dto, youthService);
         return attendanceRepository.save(attendance);
     }
 
