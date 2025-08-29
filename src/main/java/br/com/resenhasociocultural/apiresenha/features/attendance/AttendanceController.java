@@ -1,5 +1,6 @@
 package br.com.resenhasociocultural.apiresenha.features.attendance;
 
+import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceFilterDto;
 import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceResponseDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,14 +24,9 @@ public class AttendanceController {
     }
 
     @GetMapping
-    public ResponseEntity<Set<AttendanceResponseDto>> find(
-            @RequestParam(name = "nome", required = false) String youthName,
-            @RequestParam(name = "data", required = false) LocalDate date,
-            @RequestParam(name = "dataInicial", required = false) LocalDate firstDate,
-            @RequestParam(name = "dataFinal", required = false) LocalDate finalDate
-    )
+    public ResponseEntity<Set<AttendanceResponseDto>> find(@RequestParam AttendanceFilterDto dto)
     {
-        Set<Attendance> attendances = attendanceService.find(youthName, date, firstDate, finalDate);
+        Set<Attendance> attendances = attendanceService.findByFilter(dto);
         Set<AttendanceResponseDto> response = attendanceMapper.toResponseListDto(attendances);
         return ResponseEntity.ok(response);
     }
