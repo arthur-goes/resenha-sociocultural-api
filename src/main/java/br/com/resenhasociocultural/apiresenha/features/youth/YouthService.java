@@ -27,9 +27,13 @@ public class YouthService {
         return youthRepository.findByFirstNameContainingIgnoreCaseOrSurnameContainingIgnoreCase(name, name);
     }
 
-    public List<Youth> findAll(){ return youthRepository.findAll();}
+    public List<Youth> findAll(){
+        return youthRepository.findAll();
+    }
 
-    public Youth save(Youth youth){ return youthRepository.save(youth);}
+    public Youth save(Youth youth){
+        return youthRepository.save(youth);
+    }
 
     public Youth update(YouthUpdateAdminDto youthUpdatedDataDto){
         Youth youth = youthRepository.findById(youthUpdatedDataDto.id())
@@ -39,8 +43,8 @@ public class YouthService {
     }
 
     public void deleteById(Long id){
-        Youth youth = youthRepository.findById(id).orElseThrow(resourceNotFoundExceptionById(id));
-        youthRepository.deleteById(id);
+        Youth youth = findById(id);
+        youthRepository.delete(youth);
     }
 
     public Supplier<ResourceNotFoundException> resourceNotFoundExceptionById(Long id){
