@@ -7,8 +7,6 @@ import br.com.resenhasociocultural.apiresenha.features.youth.YouthService;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import static br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceSpecs.*;
-
 import java.util.Set;
 
 @Service
@@ -17,14 +15,17 @@ public class AttendanceService {
     private final AttendanceRepository attendanceRepository;
     private final AttendanceMapper attendanceMapper;
     private final YouthService youthService;
+    private final AttendanceSpecs attendanceSpecs;
 
-    public AttendanceService(AttendanceRepository attendanceRepository, YouthService youthService, AttendanceMapper attendanceMapper/*, MeetingService meetingService*/) {
+    public AttendanceService(AttendanceRepository attendanceRepository, YouthService youthService, AttendanceMapper attendanceMapper, AttendanceSpecs attendanceSpecs) {
         this.attendanceRepository = attendanceRepository;
         this.attendanceMapper = attendanceMapper;
         this.youthService = youthService;
+        this.attendanceSpecs = attendanceSpecs;
     }
 
     public Set<Attendance> findByFilter(AttendanceFilterDto filters){
+        System.out.println("Filtro recebido: " + filters);
         validateDateFilters(filters);
         Specification<Attendance> specs = buildSpecificationsFromFilters(filters);
 
@@ -48,24 +49,24 @@ public class AttendanceService {
         boolean isDateBetweenApplied = filters.initialDate() != null && filters.finalDate() != null;
         boolean isDateBetweenIntervalNotInverted = isDateBetweenApplied && (filters.initialDate().isBefore(filters.finalDate()));
 
-        Specification<Attendance> specs = (root, query, cb) -> cb.conjunction();
+        Specification<Attendance> specifications = (root, query, cb) -> cb.conjunction();
 
         if (filters.youthName() != null){
-            specs = specs.and(youthNameOrSurnameLike(filters.youthName()));
+            specifications = specifications.and(attendanceSpecs.youthNameOrSurnameLike(filters.youthName()));
         }
 
         if (filters.date() != null){
-            specs = specs.and(dateEqual(filters.date()));
+            specifications = specifications.and(attendanceSpecs.dateEqual(filters.date()));
         }
 
         if (!isDateBetweenApplied){
-            return specs;
+            return specifications;
         }
 
         if (isDateBetweenIntervalNotInverted) {
-            return specs = specs.and(dateBetween(filters.initialDate(), filters.finalDate()));
+            return specifications = specifications.and(attendanceSpecs.dateBetween(filters.initialDate(), filters.finalDate()));
         }
-        return specs.and(dateBetween(filters.initialDate(), filters.initialDate()));
+        return specifications.and(attendanceSpecs.dateBetween(filters.initialDate(), filters.initialDate()));
 
     }
 
