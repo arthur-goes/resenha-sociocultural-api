@@ -66,7 +66,7 @@ public class AttendanceService {
         if (isDateBetweenIntervalNotInverted) {
             return specifications = specifications.and(attendanceSpecs.dateBetween(filters.initialDate(), filters.finalDate()));
         }
-        return specifications.and(attendanceSpecs.dateBetween(filters.initialDate(), filters.initialDate()));
+        return specifications.and(attendanceSpecs.dateBetween(filters.finalDate(), filters.initialDate()));
 
     }
 
