@@ -1,9 +1,9 @@
 package br.com.resenhasociocultural.apiresenha.features.meeting;
 
-import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingDto;
+import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingCreateDto;
 import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingResponseDto;
-import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingUpdateDto;
 import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceMapper;
+import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingUpdateDto;
 import br.com.resenhasociocultural.apiresenha.features.participationpoint.ParticipationPointMapper;
 import br.com.resenhasociocultural.apiresenha.features.strike.StrikeMapper;
 import br.com.resenhasociocultural.apiresenha.features.youth.YouthService;
@@ -20,5 +20,7 @@ public interface MeetingMapper {
     MeetingResponseDto toResponseDto(Meeting meeting);
     List<MeetingResponseDto> meetingListToResponseDot(List<Meeting> meetings);
 
-    Meeting toEntity(MeetingDto meetingDto, @Context YouthService youthService);
+    Meeting toEntity(MeetingCreateDto meetingDto, @Context YouthService youthService);
+
+    Meeting toEntity(MeetingUpdateDto dto, @Context YouthService youthService);
 }
