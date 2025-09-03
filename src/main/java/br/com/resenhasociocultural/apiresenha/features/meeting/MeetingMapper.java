@@ -20,7 +20,7 @@ public interface MeetingMapper {
     MeetingResponseDto toResponseDto(Meeting meeting);
     List<MeetingResponseDto> meetingListToResponseDot(List<Meeting> meetings);
 
-    Meeting toEntity(MeetingCreateDto meetingDto, @Context YouthService youthService);
+    Meeting toEntity(MeetingCreateDto dto, @Context YouthService youthService);
 
     Meeting toEntity(MeetingUpdateDto dto, @Context YouthService youthService);
 }

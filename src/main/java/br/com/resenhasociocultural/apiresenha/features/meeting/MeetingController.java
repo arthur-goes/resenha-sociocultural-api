@@ -24,26 +24,27 @@ public class MeetingController {
 
     @GetMapping
     public ResponseEntity<List<MeetingResponseDto>> getMeetings(@ModelAttribute MeetingFilterDto filterDto){
-        List<Meeting> meetings = meetingService.find(filterDto);
+        List<Meeting> meetings = meetingService.findWithFilters(filterDto);
         List<MeetingResponseDto> meetingsDto = meetingMapper.meetingListToResponseDot(meetings);
         return ResponseEntity.ok(meetingsDto);
     }
 
     @PostMapping("/cadastro")
-    public ResponseEntity<Void> createMeeting(@Valid @RequestBody MeetingCreateDto meetingCreateDto){
-        meetingService.create(meetingCreateDto);
+    public ResponseEntity<Void> createMeeting(@Valid @RequestBody MeetingCreateDto meetingDto){
+        meetingService.create(meetingDto);
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping
-    public ResponseEntity<MeetingResponseDto> updateMeeting(@Valid @RequestBody MeetingUpdateDto dto){
+    @PutMapping("/{id}")
+    public ResponseEntity<MeetingResponseDto> updateMeeting(@PathVariable(name = "id") Long id, @Valid @RequestBody MeetingUpdateDto dto){
+        dto.setId(id);
         Meeting meeting = meetingService.update(dto);
         MeetingResponseDto meetingResponse = meetingMapper.toResponseDto(meeting);
         return ResponseEntity.ok(meetingResponse);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> deleteMeeting(Long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteMeeting(@PathVariable(name = "id") Long id){
         meetingService.delete(id);
         return ResponseEntity.noContent().build();
     }
