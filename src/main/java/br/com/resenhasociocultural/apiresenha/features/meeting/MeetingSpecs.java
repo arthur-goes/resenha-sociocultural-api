@@ -1,9 +1,11 @@
 package br.com.resenhasociocultural.apiresenha.features.meeting;
 
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
+@Component
 public class MeetingSpecs {
     public  Specification<Meeting> dateEqual(LocalDate date){
         return (root, query, cb) -> cb.equal(root.get("date"), date);
