@@ -1,7 +1,7 @@
 package br.com.resenhasociocultural.apiresenha.features.participationpoint;
 
 import br.com.resenhasociocultural.apiresenha.features.meeting.Meeting;
-import br.com.resenhasociocultural.apiresenha.features.meeting.MeetingChildCollection;
+import br.com.resenhasociocultural.apiresenha.features.youth.YouthEntry;
 import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,7 +13,7 @@ import lombok.*;
 @Setter
 @Table(name = "participation_points")
 @Entity
-public class ParticipationPoint implements MeetingChildCollection {
+public class ParticipationPoint implements YouthEntry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

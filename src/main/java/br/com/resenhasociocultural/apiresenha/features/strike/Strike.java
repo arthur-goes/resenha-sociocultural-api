@@ -1,7 +1,7 @@
 package br.com.resenhasociocultural.apiresenha.features.strike;
 
 import br.com.resenhasociocultural.apiresenha.features.meeting.Meeting;
-import br.com.resenhasociocultural.apiresenha.features.meeting.MeetingChildCollection;
+import br.com.resenhasociocultural.apiresenha.features.youth.YouthEntry;
 import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,7 +13,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Strike implements MeetingChildCollection {
+public class Strike implements YouthEntry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

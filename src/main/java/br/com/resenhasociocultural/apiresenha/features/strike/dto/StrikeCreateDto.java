@@ -1,10 +1,11 @@
 package br.com.resenhasociocultural.apiresenha.features.strike.dto;
 
-import br.com.resenhasociocultural.apiresenha.features.meeting.MeetingChildCollectionDto;
+import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthEntryDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record StrikeCreateDto(
+    Long id,
     Long meetingId,
     @NotNull
     Long youthId,
@@ -14,4 +15,4 @@ public record StrikeCreateDto(
     @NotNull
     boolean active
 )
-implements MeetingChildCollectionDto {};
+implements YouthEntryDto {};

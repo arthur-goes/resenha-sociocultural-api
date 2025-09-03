@@ -1,10 +1,11 @@
 package br.com.resenhasociocultural.apiresenha.features.attendance.dto;
 
 import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceStatus;
-import br.com.resenhasociocultural.apiresenha.features.meeting.MeetingChildCollectionDto;
+import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthEntryDto;
 import jakarta.validation.constraints.NotNull;
 
 public record AttendanceCreateDto(
+    Long id,
     Long meetingId,
     @NotNull
     Long youthId,
@@ -12,4 +13,4 @@ public record AttendanceCreateDto(
     AttendanceStatus attendanceStatus,
     String absenceExcuse
 )
-implements MeetingChildCollectionDto {};
+implements YouthEntryDto {};
