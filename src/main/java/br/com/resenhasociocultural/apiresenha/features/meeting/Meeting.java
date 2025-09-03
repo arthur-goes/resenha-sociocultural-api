@@ -31,13 +31,13 @@ public class Meeting {
     @Column(nullable = false)
     private String minutosDeSabedoriaLesson;
 
-    @OneToMany(mappedBy = "meeting", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Attendance> attendanceList = new HashSet<>();
 
-    @OneToMany(mappedBy = "meeting", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Strike> strikes = new HashSet<>();
 
-    @OneToMany(mappedBy = "meeting", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<ParticipationPoint> participationPoints = new HashSet<>();
 
     public void addAttendance(Attendance attendance){
