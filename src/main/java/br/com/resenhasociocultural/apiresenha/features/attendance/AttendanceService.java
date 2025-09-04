@@ -24,9 +24,9 @@ public class AttendanceService {
         this.attendanceSpecs = attendanceSpecs;
     }
 
-    public Set<Attendance> findByFilter(AttendanceFilterDto filters){
+    public Set<AttendanceEntry> findByFilter(AttendanceFilterDto filters){
         validateDateFilters(filters);
-        Specification<Attendance> specs = buildSpecificationsFromFilters(filters);
+        Specification<AttendanceEntry> specs = buildSpecificationsFromFilters(filters);
 
         return attendanceRepository.findAllAsSet(specs);
     }
@@ -44,11 +44,11 @@ public class AttendanceService {
         }
     }
 
-    private Specification<Attendance> buildSpecificationsFromFilters(AttendanceFilterDto filters){
+    private Specification<AttendanceEntry> buildSpecificationsFromFilters(AttendanceFilterDto filters){
         boolean isDateBetweenApplied = filters.initialDate() != null && filters.finalDate() != null;
         boolean isDateBetweenIntervalNotInverted = isDateBetweenApplied && (filters.initialDate().isBefore(filters.finalDate()));
 
-        Specification<Attendance> specifications = (root, query, cb) -> cb.conjunction();
+        Specification<AttendanceEntry> specifications = (root, query, cb) -> cb.conjunction();
 
         if (filters.youthName() != null){
             specifications = specifications.and(attendanceSpecs.youthNameOrSurnameLike(filters.youthName()));
@@ -69,12 +69,12 @@ public class AttendanceService {
 
     }
 
-    public Attendance findById(Long id){
+    public AttendanceEntry findById(Long id){
         return attendanceRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Não foi possível localizar uma presença de id " + id));
     }
 
-    public Attendance create(AttendanceCreateDto dto){
-        Attendance attendance = attendanceMapper.toEntity(dto, youthService);
+    public AttendanceEntry create(AttendanceCreateDto dto){
+        AttendanceEntry attendance = attendanceMapper.toEntity(dto, youthService);
         return attendanceRepository.save(attendance);
     }
 

@@ -1,7 +1,7 @@
 package br.com.resenhasociocultural.apiresenha.testdata;
 
+import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceEntry;
 import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceStatus;
-import br.com.resenhasociocultural.apiresenha.features.attendance.Attendance;
 import br.com.resenhasociocultural.apiresenha.features.meeting.Meeting;
 import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceRepository;
 import br.com.resenhasociocultural.apiresenha.features.meeting.MeetingRepository;
@@ -27,14 +27,14 @@ public class AttendanceTestData {
     }
 
     public void createAttendanceTestData(){
-        List<Attendance> attendances = new ArrayList<>();
+        List<AttendanceEntry> attendances = new ArrayList<>();
 
         Meeting meeting1 = new Meeting(
             null,
             LocalDate.of(2025, 06, 11),
             "Tigrinho",
             "Lição 100",
-            new HashSet<Attendance>(),
+            new HashSet<AttendanceEntry>(),
             null,
             null
         );
@@ -42,7 +42,7 @@ public class AttendanceTestData {
         meetingRepository.save(meeting1);
 
         attendances.add(
-            new Attendance(
+            new AttendanceEntry(
                 null,
                 meeting1,
                 youthRepository.findById(1L).get(),

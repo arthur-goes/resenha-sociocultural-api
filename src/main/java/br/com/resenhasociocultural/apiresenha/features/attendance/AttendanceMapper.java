@@ -11,13 +11,13 @@ import java.util.List;
 import java.util.Set;
 
 @Mapper(componentModel = "spring", uses = {YouthMapper.class})
-public interface AttendanceMapper extends YouthEntryMapper<Attendance, AttendanceCreateDto> {
+public interface AttendanceMapper extends YouthEntryMapper<AttendanceEntry, AttendanceCreateDto> {
 
-    Set<AttendanceResponseDto> toResponseListDto(Set<Attendance> attendance);
-    Set<AttendanceForMeetingResponseDto> toAttendanceForMeetingDto(List<Attendance> attendances);
+    Set<AttendanceResponseDto> toResponseListDto(Set<AttendanceEntry> attendance);
+    Set<AttendanceForMeetingResponseDto> toAttendanceForMeetingDto(List<AttendanceEntry> attendances);
 
     @Mapping(source = "meeting.id", target = "meetingId")
     @Mapping(source = "meeting.date", target = "date")
-    AttendanceResponseDto toAttendanceResponse(Attendance attendance);
+    AttendanceResponseDto toAttendanceResponse(AttendanceEntry attendance);
 
 }

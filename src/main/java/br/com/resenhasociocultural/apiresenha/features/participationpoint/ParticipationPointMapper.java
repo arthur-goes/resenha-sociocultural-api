@@ -7,6 +7,6 @@ import br.com.resenhasociocultural.apiresenha.features.youth.YouthMapper;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring", uses = {YouthMapper.class})
-public interface ParticipationPointMapper extends YouthEntryMapper<ParticipationPoint, ParticipationPointCreateDto> {
-    ParticipationPointResponseDto toResponseDto(ParticipationPoint entity);
+public interface ParticipationPointMapper extends YouthEntryMapper<ParticipationPointEntry, ParticipationPointCreateDto> {
+    ParticipationPointResponseDto toResponseDto(ParticipationPointEntry entity);
 }

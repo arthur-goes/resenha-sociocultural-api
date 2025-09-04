@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 import java.util.Set;
 
 @Mapper(componentModel = "spring", uses = {YouthMapper.class})
-public interface StrikeMapper extends YouthEntryMapper<Strike, StrikeCreateDto> {
-    Set<StrikeResponseDto> toResponseDto(Set<Strike> strikes);
+public interface StrikeMapper extends YouthEntryMapper<StrikeEntry, StrikeCreateDto> {
+    Set<StrikeResponseDto> toResponseDto(Set<StrikeEntry> strikes);
 
 }

@@ -1,4 +1,4 @@
-package br.com.resenhasociocultural.apiresenha.features.participationpoint;
+package br.com.resenhasociocultural.apiresenha.features.strike;
 
 import br.com.resenhasociocultural.apiresenha.features.meeting.Meeting;
 import br.com.resenhasociocultural.apiresenha.features.youth.YouthEntry;
@@ -6,14 +6,14 @@ import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
 import jakarta.persistence.*;
 import lombok.*;
 
+@Entity
+@Table(name = "strikes")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-@Getter
-@Setter
-@Table(name = "participation_points")
-@Entity
-public class ParticipationPoint implements YouthEntry {
+public class StrikeEntry implements YouthEntry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,10 +22,10 @@ public class ParticipationPoint implements YouthEntry {
     @JoinColumn(name = "youth_id", nullable = false)
     private Youth youth;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private int amount;
 
-    @Column(nullable = true)
+    @Column(nullable = false, length = 256)
     private String reason;
 
     @ManyToOne

@@ -14,7 +14,7 @@ public class StrikeService {
         this.youthService = youthService;
     }
 
-    public Strike findById(Long id){
+    public StrikeEntry findById(Long id){
         return strikeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Não foi possível encotrar um strike com id " + id));
     }
 }

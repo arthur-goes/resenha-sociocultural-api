@@ -12,25 +12,25 @@ import java.time.LocalDate;
 @Component
 public class AttendanceSpecs {
 
-    public Specification<Attendance> youthNameOrSurnameLike(String youthName){
+    public Specification<AttendanceEntry> youthNameOrSurnameLike(String youthName){
         return (root, query, cb) -> {
-            Join<Attendance, Youth> youthJoin = root.join("youth");
+            Join<AttendanceEntry, Youth> youthJoin = root.join("youth");
             Predicate nameLike = cb.like(cb.upper(youthJoin.get("firstName")), "%" + youthName.toUpperCase() + "%");
             Predicate surnameLike = cb.like(cb.upper(youthJoin.get("surname")), "%" + youthName.toUpperCase() + "%");
             return cb.or(nameLike, surnameLike);
         };
     }
 
-    public Specification<Attendance> dateEqual(LocalDate date) {
+    public Specification<AttendanceEntry> dateEqual(LocalDate date) {
         return (root, query, cb) -> {
-            Join<Attendance, Meeting> join = root.join("meeting");
+            Join<AttendanceEntry, Meeting> join = root.join("meeting");
             return cb.equal(join.get("date"), date);
         };
     }
 
-    public Specification<Attendance> dateBetween(LocalDate initialDate, LocalDate finalDate) {
+    public Specification<AttendanceEntry> dateBetween(LocalDate initialDate, LocalDate finalDate) {
         return (root, query, cb) -> {
-            Join<Attendance, Meeting> join = root.join("meeting");
+            Join<AttendanceEntry, Meeting> join = root.join("meeting");
             return cb.between(join.get("date"), initialDate, finalDate);
         };
     }

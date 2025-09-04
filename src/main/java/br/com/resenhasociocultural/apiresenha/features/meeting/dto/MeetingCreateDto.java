@@ -20,8 +20,8 @@ public record MeetingCreateDto(
 
     String minutosDeSabedoriaLesson,
 
-    Set<AttendanceCreateDto> attendanceList,
-    Set<StrikeCreateDto> strikes,
-    Set<ParticipationPointCreateDto> participationPoints
+    Set<AttendanceCreateDto> attendanceEntries,
+    Set<StrikeCreateDto> strikeEntries,
+    Set<ParticipationPointCreateDto> participationPointEntries
 ) {
 }

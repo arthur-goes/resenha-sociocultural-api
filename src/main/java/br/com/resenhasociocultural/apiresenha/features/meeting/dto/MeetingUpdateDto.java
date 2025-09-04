@@ -28,35 +28,30 @@ public class MeetingUpdateDto{
 
     private final String minutosDeSabedoriaLesson;
 
-    private final Set<AttendanceCreateDto> attendanceList;
-    private final Set<StrikeCreateDto> strikes;
-    private final Set<ParticipationPointCreateDto> participationPoints;
+    private final Set<AttendanceCreateDto> attendanceEntries;
+    private final Set<StrikeCreateDto> strikeEntries;
+    private final Set<ParticipationPointCreateDto> participationPointEntries;
 
     @JsonCreator
     public MeetingUpdateDto(
         @JsonProperty("date") LocalDate date,
         @JsonProperty("theme") String theme,
         @JsonProperty("minutosDeSabedoriaLesson") String minutosDeSabedoriaLesson,
-        @JsonProperty("attendanceList") Set<AttendanceCreateDto> attendanceList,
-        @JsonProperty("strikes") Set<StrikeCreateDto> strikes,
-        @JsonProperty("participationPoints") Set<ParticipationPointCreateDto> participationPoints
+        @JsonProperty("attendanceEntries") Set<AttendanceCreateDto> attendanceEntries,
+        @JsonProperty("strikeEntries") Set<StrikeCreateDto> strikeEntries,
+        @JsonProperty("participationPointEntries") Set<ParticipationPointCreateDto> participationPointEntries
     ) {
         this.date = date;
         this.theme = theme;
         this.minutosDeSabedoriaLesson = minutosDeSabedoriaLesson;
-        this.attendanceList = attendanceList;
-        this.strikes = strikes;
-        this.participationPoints = participationPoints;
+        this.attendanceEntries = attendanceEntries;
+        this.strikeEntries = strikeEntries;
+        this.participationPointEntries = participationPointEntries;
     }
 
     public void setId(Long id) {
         if (this.id == null){
             this.id = id;
         }
-    }
-
-    @Override
-    public String toString() {
-        return "[date: " + this.date + ", theme: " + this.theme + ", mds: " + this.minutosDeSabedoriaLesson + ", attendanceList: " + this.attendanceList + "]";
     }
 }

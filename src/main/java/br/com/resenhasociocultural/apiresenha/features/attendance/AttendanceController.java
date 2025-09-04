@@ -6,7 +6,6 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.Set;
 
 @RestController
@@ -23,7 +22,7 @@ public class AttendanceController {
 
     @GetMapping
     public ResponseEntity<Set<AttendanceResponseDto>> find(@Valid @ModelAttribute AttendanceFilterDto dto) {
-        Set<Attendance> attendances = attendanceService.findByFilter(dto);
+        Set<AttendanceEntry> attendances = attendanceService.findByFilter(dto);
         Set<AttendanceResponseDto> response = attendanceMapper.toResponseListDto(attendances);
         return ResponseEntity.ok(response);
     }

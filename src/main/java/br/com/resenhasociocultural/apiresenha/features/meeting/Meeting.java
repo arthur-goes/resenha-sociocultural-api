@@ -1,8 +1,8 @@
 package br.com.resenhasociocultural.apiresenha.features.meeting;
 
-import br.com.resenhasociocultural.apiresenha.features.attendance.Attendance;
-import br.com.resenhasociocultural.apiresenha.features.participationpoint.ParticipationPoint;
-import br.com.resenhasociocultural.apiresenha.features.strike.Strike;
+import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceEntry;
+import br.com.resenhasociocultural.apiresenha.features.participationpoint.ParticipationPointEntry;
+import br.com.resenhasociocultural.apiresenha.features.strike.StrikeEntry;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,26 +32,26 @@ public class Meeting {
     private String minutosDeSabedoriaLesson;
 
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<Attendance> attendanceList = new HashSet<>();
+    private Set<AttendanceEntry> attendanceEntries = new HashSet<>();
 
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<Strike> strikes = new HashSet<>();
+    private Set<StrikeEntry> strikeEntries = new HashSet<>();
 
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<ParticipationPoint> participationPoints = new HashSet<>();
+    private Set<ParticipationPointEntry> participationPointEntries = new HashSet<>();
 
-    public void addAttendance(Attendance attendance){
+    public void addAttendanceEntries(AttendanceEntry attendance){
         attendance.setMeeting(this);
-        attendanceList.add(attendance);
+        attendanceEntries.add(attendance);
     }
 
-    public void addStrike(Strike strike){
+    public void addStrikeEntries(StrikeEntry strike){
         strike.setMeeting(this);
-        strikes.add(strike);
+        strikeEntries.add(strike);
     }
 
-    public void addParticipationPoint(ParticipationPoint participation){
+    public void addParticipationPointEntries(ParticipationPointEntry participation){
         participation.setMeeting(this);
-        participationPoints.add(participation);
+        participationPointEntries.add(participation);
     }
 }
