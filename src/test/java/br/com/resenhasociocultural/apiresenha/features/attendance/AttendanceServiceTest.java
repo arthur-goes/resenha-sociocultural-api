@@ -66,7 +66,7 @@ public class AttendanceServiceTest {
             LocalDate.of(2025,8,20)
         );
 
-        String message = "Inconsistência nos parâmetros de data enviado. A filtragem por intervalo de data deve obrigatoriamente ter uma data inicial e uma data final."
+        String message = "Inconsistência nos parâmetros de data enviado. A filtragem por intervalo de data deve obrigatoriamente ter uma data inicial e uma data final.";
 
         assertThatExceptionOfType(IllegalArgumentException.class)
             .isThrownBy(() -> attendanceService.findByFilter(filter1))

@@ -25,7 +25,6 @@ public class AttendanceService {
     }
 
     public Set<Attendance> findByFilter(AttendanceFilterDto filters){
-        System.out.println("Filtro recebido: " + filters);
         validateDateFilters(filters);
         Specification<Attendance> specs = buildSpecificationsFromFilters(filters);
 
