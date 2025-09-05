@@ -1,0 +1,142 @@
+package br.com.resenhasociocultural.apiresenha.features.meeting;
+
+import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceEntry;
+import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceStatus;
+import br.com.resenhasociocultural.apiresenha.features.participationpoint.ParticipationPointEntry;
+import br.com.resenhasociocultural.apiresenha.features.strike.StrikeEntry;
+import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+public class MeetingTest {
+
+    private Meeting meeting;
+    private Youth youth;
+
+    @BeforeEach
+    public void setUp(){
+        Meeting meeting = new Meeting();
+        meeting.setId(1L);
+        meeting.setDate(LocalDate.now());
+        meeting.setTheme("Test");
+        meeting.setMinutosDeSabedoriaLesson("Test Lesson");
+        this.meeting = meeting;
+
+        Youth youth = new Youth();
+        youth.setActive(true);
+        youth.setId(1L);
+        youth.setCpf("11111111111");
+        youth.setFirstName("Youth");
+        youth.setSurname("Test");
+
+        this.youth = youth;
+    }
+
+    @Test
+    @DisplayName("Should not allow multiple Attendances for same Youth, even if Attendance IDs are distinct")
+    public void shouldNotAllowMultipleAttendancesForSameYouthInMeeting(){
+        AttendanceEntry attendance1 = new AttendanceEntry();
+        attendance1.setId(1L);
+        attendance1.setAttendanceStatus(AttendanceStatus.PRESENT);
+        attendance1.setYouth(this.youth);
+
+        AttendanceEntry attendance2 = new AttendanceEntry();
+        attendance2.setId(2L);
+        attendance2.setAttendanceStatus(AttendanceStatus.ABSENT);
+        attendance2.setYouth(this.youth);
+
+        this.meeting.addAttendanceEntries(attendance1);
+        this.meeting.addAttendanceEntries(attendance2);
+
+        Set<AttendanceEntry> attendanceEntries = this.meeting.getAttendanceEntries();
+
+        assertThat(attendanceEntries.size()).isEqualTo(1);
+
+        attendanceEntries.stream().forEach((attendanceEntry) -> {
+            assertThat(attendanceEntry.getId()).isEqualTo(1L);
+        });
+    }
+
+    @Test
+    public void shouldNotAllowDuplicatedStrikeInMeeting(){
+        StrikeEntry strike = new StrikeEntry();
+        strike.setId(1L);
+        strike.setAmount(1);
+        strike.setYouth(this.youth);
+        strike.setReason("Any Reason");
+
+        this.meeting.addStrikeEntries(strike);
+        this.meeting.addStrikeEntries(strike);
+
+        Set<StrikeEntry> strikeEntries = this.meeting.getStrikeEntries();
+
+        assertThat(strikeEntries.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void shouldAllowTwoDifferentStrikesForSameYouth(){
+        StrikeEntry strike1 = new StrikeEntry();
+        strike1.setId(1L);
+        strike1.setAmount(1);
+        strike1.setYouth(this.youth);
+        strike1.setReason("Any Reason 1");
+
+        StrikeEntry strike2 = new StrikeEntry();
+        strike2.setId(2L);
+        strike2.setAmount(1);
+        strike2.setYouth(this.youth);
+        strike2.setReason("Any Reason 2");
+
+        this.meeting.addStrikeEntries(strike1);
+        this.meeting.addStrikeEntries(strike2);
+
+        Set<StrikeEntry> strikeEntries = this.meeting.getStrikeEntries();
+
+        assertThat(strikeEntries.size()).isEqualTo(2);
+    }
+
+    @Test
+    public void shouldNotAllowDuplicatedParticipationPointInMeeting(){
+        ParticipationPointEntry participation = new ParticipationPointEntry();
+        participation.setId(1L);
+        participation.setAmount(1);
+        participation.setYouth(this.youth);
+        participation.setReason("Any Reason");
+
+        this.meeting.addParticipationPointEntries(participation);
+        this.meeting.addParticipationPointEntries(participation);
+
+        Set<ParticipationPointEntry> participationPointEntries = this.meeting.getParticipationPointEntries();
+
+        assertThat(participationPointEntries.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void shouldAllowTwoDifferentParticipationPointForSameYouth(){
+        ParticipationPointEntry participation1 = new ParticipationPointEntry();
+        participation1.setId(1L);
+        participation1.setAmount(1);
+        participation1.setYouth(this.youth);
+        participation1.setReason("Any Reason 1");
+
+        ParticipationPointEntry participation2 = new ParticipationPointEntry();
+        participation2.setId(2L);
+        participation2.setAmount(1);
+        participation2.setYouth(this.youth);
+        participation2.setReason("Any Reason 2");
+
+        this.meeting.addParticipationPointEntries(participation1);
+        this.meeting.addParticipationPointEntries(participation2);
+        Set<ParticipationPointEntry> participationPointEntries = this.meeting.getParticipationPointEntries();
+
+        assertThat(participationPointEntries.size()).isEqualTo(2);
+    }
+}
