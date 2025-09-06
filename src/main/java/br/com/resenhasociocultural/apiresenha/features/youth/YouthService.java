@@ -4,6 +4,7 @@ import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthUpdateAdmi
 import br.com.resenhasociocultural.apiresenha.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -51,4 +52,7 @@ public class YouthService {
         return () -> new ResourceNotFoundException("Não foi possível encontrar um cadastro para o jovem de id " + id);
     }
 
+    public List<Youth> findAllActiveYouths() {
+        return youthRepository.findByActive(true);
+    }
 }

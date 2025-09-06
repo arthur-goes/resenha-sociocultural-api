@@ -9,4 +9,5 @@ public interface YouthRepository extends JpaRepository<Youth, Long> {
     List<Youth> findByFirstName(String firstName);
     List<Youth> findByFirstNameContainingIgnoreCaseOrSurnameContainingIgnoreCase(String firstName, String surname);
     List<Youth> findByBirthDateGreaterThanEqual(LocalDate birthDate);
+    List<Youth> findByActive(boolean active);
 }

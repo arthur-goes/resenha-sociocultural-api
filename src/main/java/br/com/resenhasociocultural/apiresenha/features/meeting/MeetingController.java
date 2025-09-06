@@ -29,6 +29,13 @@ public class MeetingController {
         return ResponseEntity.ok(meetingsDto);
     }
 
+    @GetMapping("/cadastro")
+    public ResponseEntity<MeetingResponseDto> prepareNewMeeting(){
+        Meeting meeting = meetingService.prepareNewMeetingData();
+        MeetingResponseDto responseDto = meetingMapper.toResponseDto(meeting);
+        return ResponseEntity.ok(responseDto);
+    }
+
     @PostMapping("/cadastro")
     public ResponseEntity<Void> createMeeting(@Valid @RequestBody MeetingCreateDto meetingDto){
         meetingService.create(meetingDto);
