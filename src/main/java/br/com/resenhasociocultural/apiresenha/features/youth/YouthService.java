@@ -2,22 +2,20 @@ package br.com.resenhasociocultural.apiresenha.features.youth;
 
 import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthUpdateAdminDto;
 import br.com.resenhasociocultural.apiresenha.exception.ResourceNotFoundException;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
+@AllArgsConstructor
 @Service
 public class YouthService {
 
     private final YouthRepository youthRepository;
     private final YouthMapper youthMapper;
-
-    public YouthService(YouthRepository youthRepository, YouthMapper youthMapper) {
-        this.youthRepository = youthRepository;
-        this.youthMapper = youthMapper;
-    }
+    private final YouthSpecs youthSpecs;
 
     public Youth findById(Long id){
         return youthRepository.findById(id)
@@ -25,7 +23,7 @@ public class YouthService {
     }
 
     public List<Youth> findByName(String name){
-        return youthRepository.findByFirstNameContainingIgnoreCaseOrSurnameContainingIgnoreCase(name, name);
+        return youthRepository.findAll(youthSpecs.nameOrSurnameLike(name));
     }
 
     public List<Youth> findAll(){

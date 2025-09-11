@@ -1,5 +1,6 @@
 package br.com.resenhasociocultural.apiresenha.features.youth;
 
+import br.com.resenhasociocultural.apiresenha.shared.domain.Person;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,7 +16,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor()
 @EqualsAndHashCode(of = "id")
-public class Youth {
+public class Youth implements Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
