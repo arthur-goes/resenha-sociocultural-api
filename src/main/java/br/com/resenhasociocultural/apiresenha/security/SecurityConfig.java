@@ -3,6 +3,7 @@ package br.com.resenhasociocultural.apiresenha.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
@@ -28,20 +29,18 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
 
     @Bean
-    @Profile("dev")
+    @Order(2)
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> {
-                csrf.disable();
-
-            })
-            .headers(headers ->
-                headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
-            )
+            .cors(Customizer.withDefaults())
+            .csrf(csrf -> csrf.disable())
             .httpBasic(Customizer.withDefaults())
+            .oauth2ResourceServer(oauth2rs -> oauth2rs.jwt(Customizer.withDefaults()))
             .authorizeHttpRequests(authorization -> {
-                authorization.requestMatchers(HttpMethod.POST, "/user").anonymous();
-                authorization.anyRequest().authenticated();
+                authorization
+                    .requestMatchers(HttpMethod.POST, "/user").anonymous()
+                    .requestMatchers("/login").permitAll()
+                    .anyRequest().authenticated();
             });
 
         return http.build();
