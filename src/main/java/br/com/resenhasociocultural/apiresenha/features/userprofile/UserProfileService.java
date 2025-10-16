@@ -28,6 +28,10 @@ public class UserProfileService {
             );
     }
 
+    public Optional<UserProfile> findByUsername(String username) {
+        return userProfileRepository.findByUsername(username);
+    }
+
     public void create(UserProfileCreateDto dto){
         UserProfile user = userProfileMapper.toEntity(dto);
         String encodedPassword = encoder.encode(dto.password());
