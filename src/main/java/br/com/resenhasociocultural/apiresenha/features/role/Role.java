@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Set;
 
@@ -25,7 +26,7 @@ public class Role {
     @ManyToMany(mappedBy = "roles")
     private Set<UserProfile> users;
 
-    public String getName(){
+    public String getAuthority(){
         return "ROLE_" + this.name;
     }
 }
