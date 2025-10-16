@@ -16,10 +16,4 @@ public class Application {
 		SpringApplication.run(Application.class, args);
 	}
 
-	@Bean
-	@Profile("dev")
-	CommandLineRunner init(TestDataInitializer testDataInitializer){
-		return args -> testDataInitializer.initialize();
-	}
-
 }
