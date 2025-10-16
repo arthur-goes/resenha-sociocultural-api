@@ -1,6 +1,5 @@
-package br.com.resenhasociocultural.apiresenha.config;
+package br.com.resenhasociocultural.apiresenha.security;
 
-import br.com.resenhasociocultural.apiresenha.security.RsaKeyFetcher;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.jwk.KeyUse;
@@ -14,7 +13,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.util.StringUtils;
 
 import java.text.ParseException;
 
