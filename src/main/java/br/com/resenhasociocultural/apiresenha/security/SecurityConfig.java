@@ -33,6 +33,7 @@ public class SecurityConfig {
             .cors(Customizer.withDefaults())
             .csrf(csrf -> csrf.disable())
             .httpBasic(Customizer.withDefaults())
+            .formLogin(Customizer.withDefaults())
             .oauth2ResourceServer(oauth2rs -> oauth2rs.jwt(Customizer.withDefaults()))
             .authorizeHttpRequests(authorization -> {
                 authorization
@@ -44,8 +45,8 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    @Profile("dev")
+    //@Bean
+    //@Profile("dev")
     public UserDetailsService userDetailsService(PasswordEncoder encoder){
         UserDetails admin = User.builder()
             .password(encoder.encode("admin"))
