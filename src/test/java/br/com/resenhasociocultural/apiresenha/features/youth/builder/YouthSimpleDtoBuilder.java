@@ -1,4 +1,35 @@
-package br.com.resenhasociocultural.apiresenha.features.youth.dto;
+package br.com.resenhasociocultural.apiresenha.features.youth.builder;
 
-public class YouthSimpleDtoBuilder {
+import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthSimpleDto;
+
+public final class YouthSimpleDtoBuilder {
+    private Long id;
+    private String firstName;
+    private String surname;
+
+    private YouthSimpleDtoBuilder() {
+    }
+
+    public static YouthSimpleDtoBuilder anYouthSimpleDto() {
+        return new YouthSimpleDtoBuilder();
+    }
+
+    public YouthSimpleDtoBuilder withId(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    public YouthSimpleDtoBuilder withFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    public YouthSimpleDtoBuilder withSurname(String surname) {
+        this.surname = surname;
+        return this;
+    }
+
+    public YouthSimpleDto build() {
+        return new YouthSimpleDto(id, firstName, surname);
+    }
 }
