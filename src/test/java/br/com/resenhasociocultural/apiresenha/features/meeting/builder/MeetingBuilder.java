@@ -1,6 +1,7 @@
-package br.com.resenhasociocultural.apiresenha.features.meeting;
+package br.com.resenhasociocultural.apiresenha.features.meeting.builder;
 
 import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceEntry;
+import br.com.resenhasociocultural.apiresenha.features.meeting.Meeting;
 import br.com.resenhasociocultural.apiresenha.features.participationpoint.ParticipationPointEntry;
 import br.com.resenhasociocultural.apiresenha.features.strike.StrikeEntry;
 
@@ -36,7 +37,7 @@ public class MeetingBuilder {
         return this;
     }
 
-    public MeetingBuilder withTHeme(String theme){
+    public MeetingBuilder withTheme(String theme){
         this.theme = theme;
         return this;
     }

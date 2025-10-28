@@ -1,6 +1,7 @@
-package br.com.resenhasociocultural.apiresenha.features.participationpoint;
+package br.com.resenhasociocultural.apiresenha.features.participationpoint.builder;
 
 import br.com.resenhasociocultural.apiresenha.features.meeting.Meeting;
+import br.com.resenhasociocultural.apiresenha.features.participationpoint.ParticipationPointEntry;
 import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
 import lombok.NoArgsConstructor;
 

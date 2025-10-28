@@ -1,6 +1,7 @@
-package br.com.resenhasociocultural.apiresenha.features.strike;
+package br.com.resenhasociocultural.apiresenha.features.strike.builder;
 
 import br.com.resenhasociocultural.apiresenha.features.meeting.Meeting;
+import br.com.resenhasociocultural.apiresenha.features.strike.StrikeEntry;
 import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
 import lombok.NoArgsConstructor;
 

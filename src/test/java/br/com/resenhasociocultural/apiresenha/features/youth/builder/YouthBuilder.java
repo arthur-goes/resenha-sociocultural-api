@@ -1,18 +1,20 @@
-package br.com.resenhasociocultural.apiresenha.features.youth;
+package br.com.resenhasociocultural.apiresenha.features.youth.builder;
+
+import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
 
 import java.time.LocalDate;
 
 public class YouthBuilder {
 
     private Long id = 1L;
-    private String firstName = "Fulano";
-    private String surname = "de Tal";
+    private String firstName = "John";
+    private String surname = "Doe";
     private LocalDate birthDate = LocalDate.of(2005, 5, 10);
     private String cpf = "12345678901";
-    private String motherName = "Maria de Tal";
-    private String fatherName = "João de Tal";
-    private String emergencyContactName = "Maria de Tal";
-    private String emergencyContactRelationship = "Mãe";
+    private String motherName = "Mother";
+    private String fatherName = "Father";
+    private String emergencyContactName = "Alice";
+    private String emergencyContactRelationship = "Grandmother";
     private String emergencyContactPhone = "11987654321";
     private LocalDate creationDate = LocalDate.now();
     private boolean active = true;
