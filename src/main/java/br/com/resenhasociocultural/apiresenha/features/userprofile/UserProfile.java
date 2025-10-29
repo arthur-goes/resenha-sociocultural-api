@@ -46,4 +46,9 @@ public class UserProfile implements Person {
         inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles;
+
+    public void addRole(Role role){
+        role.addUserProfile(this);
+        roles.add(role);
+    }
 }
