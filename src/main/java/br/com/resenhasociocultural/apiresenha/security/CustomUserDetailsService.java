@@ -29,19 +29,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
 
         UserProfile userProfile = foundUserProfile.get();
-        String[] roles = toAuthoritiesArray(userProfile.getRoles());
-        Arrays.stream(roles).forEach(System.out::println);
 
         return User
             .withUsername(userProfile.getUsername())
             .password(userProfile.getPassword())
-            .authorities(roles)
+            .authorities(userProfile.getRoles())
             .build();
-    }
-
-    private String[] toAuthoritiesArray(Set<Role> roles){
-        return roles.stream()
-            .map(Role::getAuthority)
-            .toArray(String[]::new);
     }
 }
