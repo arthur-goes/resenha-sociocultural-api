@@ -16,7 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-public class Role {
+public class Role implements GrantedAuthority {
     @Id
     private Long id;
 
@@ -28,5 +28,9 @@ public class Role {
 
     public String getAuthority(){
         return "ROLE_" + this.name;
+    }
+
+    public void addUserProfile(UserProfile user){
+        users.add(user);
     }
 }
