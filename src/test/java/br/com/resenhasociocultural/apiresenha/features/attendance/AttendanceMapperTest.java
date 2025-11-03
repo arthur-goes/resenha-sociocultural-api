@@ -71,7 +71,7 @@ public class AttendanceMapperTest {
 
     @Test
     public void givenAttendanceEntryEntity_thenMapToAttendanceResponseDto(){
-        when(youthMapper.youthToSimpleResponseDTO(any()))
+        when(youthMapper.toSimpleResponseDTO(any()))
             .thenReturn(youthSimpleDto);
 
         AttendanceResponseDto responseDto = attendanceMapper.toAttendanceResponse(attendance);
@@ -120,9 +120,9 @@ public class AttendanceMapperTest {
         meeting.addAttendanceEntries(attendance2);
         attendances.add(attendance2);
 
-        when(youthMapper.youthToSimpleResponseDTO(youth))
+        when(youthMapper.toSimpleResponseDTO(youth))
             .thenReturn(youthSimpleDto);
-        when(youthMapper.youthToSimpleResponseDTO(youth2))
+        when(youthMapper.toSimpleResponseDTO(youth2))
             .thenReturn(youthSimpleDto2);
 
         Set<AttendanceResponseDto> mappedAttendances = attendanceMapper.toResponseListDto(attendances);
