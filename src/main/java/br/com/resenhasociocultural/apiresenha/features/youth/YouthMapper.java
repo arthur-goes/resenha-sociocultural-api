@@ -11,11 +11,11 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring")
 public interface YouthMapper {
-    YouthResponseDto youthToResponseDTO(Youth youth);
+    YouthResponseDto toResponseDTO(Youth youth);
 
-    YouthSimpleDto youthToSimpleResponseDTO(Youth youth);
+    YouthSimpleDto toSimpleResponseDTO(Youth youth);
 
-    Youth youthCreateDtoToEntity(YouthCreateDto youthCreateDto);
+    Youth toEntity(YouthCreateDto youthCreateDto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateYouthFromDto(YouthUpdateAdminDto youthUpdateAdminDto, @MappingTarget Youth youth);
