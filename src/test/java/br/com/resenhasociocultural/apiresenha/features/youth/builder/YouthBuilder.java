@@ -11,11 +11,11 @@ public class YouthBuilder {
     private String surname = "Doe";
     private LocalDate birthDate = LocalDate.of(2005, 5, 10);
     private String cpf = "12345678901";
-    private String motherName = "Mother";
-    private String fatherName = "Father";
-    private String emergencyContactName = "Alice";
-    private String emergencyContactRelationship = "Grandmother";
-    private String emergencyContactPhone = "11987654321";
+    private String motherName = "Default Mother";
+    private String fatherName = "Default Father";
+    private String emergencyContactName = "Default Emergency Contact";
+    private String emergencyContactRelationship = "Default Emergency Contact Relationship";
+    private String emergencyContactPhone = "0123456789";
     private LocalDate creationDate = LocalDate.now();
     private boolean active = true;
 
@@ -50,6 +50,11 @@ public class YouthBuilder {
 
     public YouthBuilder withMotherName(String motherName) {
         this.motherName = motherName;
+        return this;
+    }
+
+    public YouthBuilder withFatherName(String fatherName) {
+        this.motherName = fatherName;
         return this;
     }
 
