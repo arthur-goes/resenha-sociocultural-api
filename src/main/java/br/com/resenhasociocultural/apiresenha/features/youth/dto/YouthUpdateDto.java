@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
 
-public record YouthUpdateAdminDto(
+public record YouthUpdateDto(
         @NotNull
         Long id,
         String firstName,
