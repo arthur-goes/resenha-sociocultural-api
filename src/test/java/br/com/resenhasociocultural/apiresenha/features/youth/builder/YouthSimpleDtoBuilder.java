@@ -3,14 +3,14 @@ package br.com.resenhasociocultural.apiresenha.features.youth.builder;
 import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthSimpleDto;
 
 public final class YouthSimpleDtoBuilder {
-    private Long id;
-    private String firstName;
-    private String surname;
+    private Long id = 1L;
+    private String firstName = "John";
+    private String surname = "Doe";
 
     private YouthSimpleDtoBuilder() {
     }
 
-    public static YouthSimpleDtoBuilder anYouthSimpleDto() {
+    public static YouthSimpleDtoBuilder aYouthSimpleDto() {
         return new YouthSimpleDtoBuilder();
     }
 

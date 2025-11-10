@@ -9,8 +9,8 @@ public class YouthBuilder {
     private Long id = 1L;
     private String firstName = "John";
     private String surname = "Doe";
-    private LocalDate birthDate = LocalDate.of(2005, 5, 10);
-    private String cpf = "12345678901";
+    private LocalDate birthDate = LocalDate.of(2005, 5, 5);
+    private String cpf = "57469987029";
     private String motherName = "Default Mother";
     private String fatherName = "Default Father";
     private String emergencyContactName = "Default Emergency Contact";
