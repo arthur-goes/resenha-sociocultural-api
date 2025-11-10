@@ -1,9 +1,8 @@
 package br.com.resenhasociocultural.apiresenha.features.youth;
 
-import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthUpdateAdminDto;
+import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthUpdateDto;
 import br.com.resenhasociocultural.apiresenha.exception.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,7 +33,7 @@ public class YouthService {
         return youthRepository.save(youth);
     }
 
-    public Youth update(YouthUpdateAdminDto youthUpdatedDataDto){
+    public Youth update(YouthUpdateDto youthUpdatedDataDto){
         Youth youth = youthRepository.findById(youthUpdatedDataDto.id())
                 .orElseThrow(resourceNotFoundExceptionById(youthUpdatedDataDto.id()));
         youthMapper.updateYouthFromDto(youthUpdatedDataDto, youth);
