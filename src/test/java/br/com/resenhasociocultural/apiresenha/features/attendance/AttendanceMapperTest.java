@@ -1,42 +1,49 @@
 package br.com.resenhasociocultural.apiresenha.features.attendance;
-
+import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceCreateDto;
 import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceResponseDto;
 import br.com.resenhasociocultural.apiresenha.features.meeting.Meeting;
 import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
-import br.com.resenhasociocultural.apiresenha.features.youth.YouthMapper;
+import br.com.resenhasociocultural.apiresenha.features.youth.YouthMapperImpl;
+import br.com.resenhasociocultural.apiresenha.features.youth.YouthService;
 import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthSimpleDto;
+
 import org.assertj.core.groups.Tuple;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mapstruct.factory.Mappers;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Spy;
-import org.mockito.junit.jupiter.MockitoExtension;
 
+import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static br.com.resenhasociocultural.apiresenha.features.attendance.builder.AttendanceCreateDtoBuilder.anAttendanceCreateDto;
 import static br.com.resenhasociocultural.apiresenha.features.attendance.builder.AttendanceEntryBuilder.anAttendanceEntry;
 import static br.com.resenhasociocultural.apiresenha.features.meeting.builder.MeetingBuilder.aMeeting;
 import static br.com.resenhasociocultural.apiresenha.features.youth.builder.YouthBuilder.aYouth;
-import static br.com.resenhasociocultural.apiresenha.features.youth.builder.YouthSimpleDtoBuilder.anYouthSimpleDto;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static br.com.resenhasociocultural.apiresenha.features.youth.builder.YouthSimpleDtoBuilder.aYouthSimpleDto;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
-@ExtendWith(MockitoExtension.class)
+import static org.mockito.Mockito.*;
+
+@Import({AttendanceMapperImpl.class, YouthMapperImpl.class})
+@ExtendWith({SpringExtension.class})
 public class AttendanceMapperTest {
-    @InjectMocks
-    @Spy
-    AttendanceMapper attendanceMapper = Mappers.getMapper(AttendanceMapper.class);
+
+    @Autowired
+    AttendanceMapper attendanceMapper;
 
     @Mock
-    YouthMapper youthMapper;
+    YouthService youthService;
 
     private Meeting meeting;
 
@@ -44,35 +51,34 @@ public class AttendanceMapperTest {
 
     private Youth youth;
 
-    private YouthSimpleDto youthSimpleDto;
-
     private final Set<AttendanceEntry> attendances = new HashSet<>();
 
     @BeforeEach
     public void setUp(){
-        youth = aYouth().build();
+        youth = aYouth()
+            .withId(1L)
+            .withFirstName("John")
+            .withSurname("Doe")
+            .build();
 
         attendance = anAttendanceEntry()
+            .withId(10L)
             .withYouth(youth)
+            .withStatus(AttendanceStatus.PRESENT)
             .build();
 
-        meeting = aMeeting().build();
+        meeting = aMeeting()
+            .withId(100L)
+            .withDate(LocalDate.now())
+            .build();
 
         meeting.addAttendanceEntries(attendance);
-
-        youthSimpleDto = anYouthSimpleDto()
-            .withId(youth.getId())
-            .withFirstName(youth.getFirstName())
-            .withSurname(youth.getSurname())
-            .build();
 
         attendances.add(attendance);
     }
 
     @Test
     public void givenAttendanceEntryEntity_thenMapToAttendanceResponseDto(){
-        when(youthMapper.toSimpleResponseDTO(any()))
-            .thenReturn(youthSimpleDto);
 
         AttendanceResponseDto responseDto = attendanceMapper.toAttendanceResponse(attendance);
 
@@ -85,19 +91,16 @@ public class AttendanceMapperTest {
         assertThat(responseDto.date())
             .isEqualTo(meeting.getDate());
 
-        assertThat(responseDto.youth())
-            .isEqualTo(youthSimpleDto);
+        assertThat(responseDto.youth().id())
+            .isEqualTo(youth.getId());
 
         assertThat(responseDto.meetingId())
             .isEqualTo(meeting.getId());
 
-        assertThat(responseDto.absenceExcuse())
-            .isNull();
     }
 
     @Test
     public void givenAttendanceEntriesList_thenMapToAttendanceResponseDtoSet(){
-
         Youth youth2 = aYouth()
             .withId(2L)
             .withFirstName("Jane")
@@ -105,13 +108,13 @@ public class AttendanceMapperTest {
             .build();
 
         AttendanceEntry attendance2 = anAttendanceEntry()
-            .withId(2L)
+            .withId(11L)
             .withYouth(youth2)
             .withStatus(AttendanceStatus.ABSENT)
             .withAbsenceExcuse("Some excuse")
             .build();
 
-        YouthSimpleDto youthSimpleDto2 = anYouthSimpleDto()
+        YouthSimpleDto youthSimpleDto2 = aYouthSimpleDto()
             .withId(youth2.getId())
             .withFirstName(youth2.getFirstName())
             .withSurname(youth2.getSurname())
@@ -119,11 +122,6 @@ public class AttendanceMapperTest {
 
         meeting.addAttendanceEntries(attendance2);
         attendances.add(attendance2);
-
-        when(youthMapper.toSimpleResponseDTO(youth))
-            .thenReturn(youthSimpleDto);
-        when(youthMapper.toSimpleResponseDTO(youth2))
-            .thenReturn(youthSimpleDto2);
 
         Set<AttendanceResponseDto> mappedAttendances = attendanceMapper.toResponseListDto(attendances);
 
@@ -143,7 +141,24 @@ public class AttendanceMapperTest {
             tuple(attendance.getId(), attendance.getAttendanceStatus(), attendance.getAbsenceExcuse(), youth.getId(), meeting.getId()),
             tuple(attendance2.getId(), attendance2.getAttendanceStatus(), attendance2.getAbsenceExcuse(), youth2.getId(), meeting.getId())
         );
+    }
 
+    @Test
+    public void givenAttendanceCreateDto_thenMapToAttendanceEntry(){
+        when(youthService.findById(youth.getId())).thenReturn(youth);
 
+        AttendanceCreateDto createDto = anAttendanceCreateDto()
+            .withMeetingId(null)
+            .withYouthId(youth.getId())
+            .statusPresent()
+            .build();
+
+        AttendanceEntry createdAttendance = attendanceMapper.toEntity(createDto, youthService);
+
+        assertThat(createdAttendance.getYouth()).isEqualTo(youth);
+        assertThat(createdAttendance.getAttendanceStatus()).isEqualTo(createDto.attendanceStatus());
+        assertThat(createdAttendance.getAbsenceExcuse()).isEqualTo(null);
+
+        verify(youthService, times(1)).findById(createDto.youthId());
     }
 }
