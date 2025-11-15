@@ -6,7 +6,6 @@ import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceMapp
 import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingUpdateDto;
 import br.com.resenhasociocultural.apiresenha.features.participationpoint.ParticipationPointMapper;
 import br.com.resenhasociocultural.apiresenha.features.strike.StrikeMapper;
-import br.com.resenhasociocultural.apiresenha.features.youth.YouthService;
 import org.mapstruct.*;
 
 import java.util.List;
@@ -20,7 +19,7 @@ public interface MeetingMapper {
     MeetingResponseDto toResponseDto(Meeting meeting);
     List<MeetingResponseDto> meetingListToResponseDot(List<Meeting> meetings);
 
-    Meeting toEntity(MeetingCreateDto dto, @Context YouthService youthService);
+    Meeting toEntity(MeetingCreateDto dto);
 
-    Meeting toEntity(MeetingUpdateDto dto, @Context YouthService youthService);
+    Meeting toEntity(MeetingUpdateDto dto);
 }

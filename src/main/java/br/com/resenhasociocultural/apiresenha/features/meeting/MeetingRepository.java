@@ -9,6 +9,4 @@ import java.util.Optional;
 
 public interface MeetingRepository extends JpaRepository<Meeting, Long>, JpaSpecificationExecutor<Meeting> {
     Optional<Meeting> findById(Long id);
-    Optional<Meeting> findByDate(LocalDate date);
-    List<Meeting> findByTheme(String theme);
 }
