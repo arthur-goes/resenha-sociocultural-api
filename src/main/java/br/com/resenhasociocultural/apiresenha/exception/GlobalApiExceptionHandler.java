@@ -34,4 +34,16 @@ public class GlobalApiExceptionHandler {
         );
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponseDto> handleIllegalStateException(IllegalStateException exception, WebRequest request){
+        ErrorResponseDto errorDetails = new ErrorResponseDto(
+            LocalDateTime.now(),
+            HttpStatus.INTERNAL_SERVER_ERROR.value(),
+            HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
+            exception.getMessage(),
+            request.getContextPath()
+        );
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

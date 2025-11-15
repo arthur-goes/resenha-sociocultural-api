@@ -2,10 +2,13 @@ package br.com.resenhasociocultural.apiresenha.features.youth;
 
 import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthUpdateDto;
 import br.com.resenhasociocultural.apiresenha.exception.ResourceNotFoundException;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Supplier;
 
 @AllArgsConstructor
@@ -17,8 +20,7 @@ public class YouthService {
     private final YouthSpecs youthSpecs;
 
     public Youth findById(Long id){
-        return youthRepository.findById(id)
-            .orElseThrow(resourceNotFoundExceptionById(id));
+        return youthRepository.findById(id).orElseThrow(resourceNotFoundSupplier(id));
     }
 
     public List<Youth> findByName(String name){
@@ -33,9 +35,9 @@ public class YouthService {
         return youthRepository.save(youth);
     }
 
-    public Youth update(YouthUpdateDto youthUpdatedDataDto){
-        Youth youth = youthRepository.findById(youthUpdatedDataDto.id())
-                .orElseThrow(resourceNotFoundExceptionById(youthUpdatedDataDto.id()));
+    public Youth update(Long id, YouthUpdateDto youthUpdatedDataDto){
+        Youth youth = youthRepository.findById(id)
+                .orElseThrow(resourceNotFoundSupplier(id));
         youthMapper.updateYouthFromDto(youthUpdatedDataDto, youth);
         return youthRepository.save(youth);
     }
@@ -45,11 +47,19 @@ public class YouthService {
         youthRepository.delete(youth);
     }
 
-    public Supplier<ResourceNotFoundException> resourceNotFoundExceptionById(Long id){
-        return () -> new ResourceNotFoundException("Não foi possível encontrar um cadastro para o jovem de id " + id);
+    public Supplier<ResourceNotFoundException> resourceNotFoundSupplier(Long id){
+        return () -> new ResourceNotFoundException("Não foi possível encontrar um cadastro válido de um jovem para o id " + id);
     }
 
     public List<Youth> findAllActiveYouths() {
         return youthRepository.findByActive(true);
+    }
+
+    public Set<Long> findValidYouthIdsIn(Set<Long> idList){
+        return youthRepository.findIdsByIdIn(idList);
+    };
+
+    public Youth getYouthReference(Long id){
+        return youthRepository.getReferenceById(id);
     }
 }

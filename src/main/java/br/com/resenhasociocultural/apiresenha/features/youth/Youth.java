@@ -55,4 +55,8 @@ public class Youth implements Person {
 
     @Column(nullable = false)
     private boolean active;
+
+    public String getFullName(){
+        return firstName + " " + surname;
+    }
 }
