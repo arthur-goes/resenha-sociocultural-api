@@ -5,22 +5,20 @@ import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingFilter
 import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingResponseDto;
 import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingUpdateDto;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
+@AllArgsConstructor
 @RestController
-@RequestMapping("encontros")
+@RequestMapping("/encontros")
 public class MeetingController {
 
     private MeetingService meetingService;
     private MeetingMapper meetingMapper;
-
-    MeetingController(MeetingService meetingService, MeetingMapper meetingMapper){
-        this.meetingService = meetingService;
-        this.meetingMapper = meetingMapper;
-    }
 
     @GetMapping
     public ResponseEntity<List<MeetingResponseDto>> getMeetings(@ModelAttribute MeetingFilterDto filterDto){
@@ -29,23 +27,24 @@ public class MeetingController {
         return ResponseEntity.ok(meetingsDto);
     }
 
-    @GetMapping("/cadastro")
-    public ResponseEntity<MeetingResponseDto> prepareNewMeeting(){
-        Meeting meeting = meetingService.prepareNewMeetingData();
-        MeetingResponseDto responseDto = meetingMapper.toResponseDto(meeting);
+    @GetMapping("/{id}")
+    public ResponseEntity<MeetingResponseDto> findMeeting(@PathVariable Long id){
+        Meeting foundMeeting = meetingService.findById(id);
+        MeetingResponseDto responseDto = meetingMapper.toResponseDto(foundMeeting);
         return ResponseEntity.ok(responseDto);
     }
 
-    @PostMapping("/cadastro")
+    @PostMapping
     public ResponseEntity<Void> createMeeting(@Valid @RequestBody MeetingCreateDto meetingDto){
-        meetingService.create(meetingDto);
-        return ResponseEntity.noContent().build();
+        Meeting meeting = meetingService.create(meetingDto);
+        String location = "/encontros/" + meeting.getId();
+
+        return ResponseEntity.created(URI.create(location)).build();
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<MeetingResponseDto> updateMeeting(@PathVariable(name = "id") Long id, @Valid @RequestBody MeetingUpdateDto dto){
-        dto.setId(id);
-        Meeting meeting = meetingService.update(dto);
+        Meeting meeting = meetingService.update(id, dto);
         MeetingResponseDto meetingResponse = meetingMapper.toResponseDto(meeting);
         return ResponseEntity.ok(meetingResponse);
     }
