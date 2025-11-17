@@ -10,6 +10,10 @@ public record StrikeCreateDto(
     @NotNull
     Long youthId,
     @NotBlank
+    String youthFirstName,
+    @NotBlank
+    String youthSurname,
+    @NotBlank
     int amount,
     String reason,
     @NotNull

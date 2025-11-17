@@ -74,7 +74,7 @@ public class AttendanceService {
     }
 
     public AttendanceEntry create(AttendanceCreateDto dto){
-        AttendanceEntry attendance = attendanceMapper.toEntity(dto, youthService);
+        AttendanceEntry attendance = attendanceMapper.toEntity(dto);
         return attendanceRepository.save(attendance);
     }
 

@@ -9,6 +9,10 @@ public record ParticipationPointCreateDto(
     Long meetingId,
     @NotNull
     Long youthId,
+    @NotBlank
+    String youthFirstName,
+    @NotBlank
+    String youthSurname,
     @NotNull
     int amount,
     @NotBlank
