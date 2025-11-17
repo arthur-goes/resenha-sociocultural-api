@@ -9,6 +9,7 @@ import java.time.LocalDate;
 public record YouthCreateDto(
         @NotBlank
         String firstName,
+        @NotBlank
         String surname,
         @Past
         LocalDate birthDate,
