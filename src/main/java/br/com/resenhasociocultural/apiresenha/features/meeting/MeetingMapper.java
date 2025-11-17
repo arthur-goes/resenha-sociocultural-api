@@ -17,7 +17,7 @@ import java.util.List;
 )
 public interface MeetingMapper {
     MeetingResponseDto toResponseDto(Meeting meeting);
-    List<MeetingResponseDto> meetingListToResponseDot(List<Meeting> meetings);
+    List<MeetingResponseDto> toResponseDtoList(List<Meeting> meetings);
 
     Meeting toEntity(MeetingCreateDto dto);
 

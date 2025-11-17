@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
@@ -17,13 +18,13 @@ import java.util.List;
 @RequestMapping("/encontros")
 public class MeetingController {
 
-    private MeetingService meetingService;
-    private MeetingMapper meetingMapper;
+    private final MeetingService meetingService;
+    private final MeetingMapper meetingMapper;
 
     @GetMapping
     public ResponseEntity<List<MeetingResponseDto>> getMeetings(@ModelAttribute MeetingFilterDto filterDto){
         List<Meeting> meetings = meetingService.findWithFilters(filterDto);
-        List<MeetingResponseDto> meetingsDto = meetingMapper.meetingListToResponseDot(meetings);
+        List<MeetingResponseDto> meetingsDto = meetingMapper.toResponseDtoList(meetings);
         return ResponseEntity.ok(meetingsDto);
     }
 
@@ -37,9 +38,13 @@ public class MeetingController {
     @PostMapping
     public ResponseEntity<Void> createMeeting(@Valid @RequestBody MeetingCreateDto meetingDto){
         Meeting meeting = meetingService.create(meetingDto);
-        String location = "/encontros/" + meeting.getId();
+        URI location = ServletUriComponentsBuilder
+            .fromCurrentRequest()
+            .path("/{id}")
+            .buildAndExpand(meeting.getId())
+            .toUri();
 
-        return ResponseEntity.created(URI.create(location)).build();
+        return ResponseEntity.created(location).build();
     }
 
     @PutMapping("/{id}")
