@@ -3,32 +3,31 @@ package br.com.resenhasociocultural.apiresenha.features.attendance;
 import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceCreateDto;
 import br.com.resenhasociocultural.apiresenha.exception.ResourceNotFoundException;
 import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceFilterDto;
-import br.com.resenhasociocultural.apiresenha.features.youth.YouthService;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
+import java.util.List;
 
+@AllArgsConstructor
 @Service
 public class AttendanceService {
 
     private final AttendanceRepository attendanceRepository;
     private final AttendanceMapper attendanceMapper;
-    private final YouthService youthService;
     private final AttendanceSpecs attendanceSpecs;
 
-    public AttendanceService(AttendanceRepository attendanceRepository, YouthService youthService, AttendanceMapper attendanceMapper, AttendanceSpecs attendanceSpecs) {
-        this.attendanceRepository = attendanceRepository;
-        this.attendanceMapper = attendanceMapper;
-        this.youthService = youthService;
-        this.attendanceSpecs = attendanceSpecs;
-    }
-
-    public Set<AttendanceEntry> findByFilter(AttendanceFilterDto filters){
+    public List<AttendanceEntry> findWithFilters(AttendanceFilterDto filters){
         validateDateFilters(filters);
-        Specification<AttendanceEntry> specs = buildSpecificationsFromFilters(filters);
+        Specification<AttendanceEntry> specs = attendanceSpecs.buildSpecificationsFromFilters(filters);
 
-        return attendanceRepository.findAllAsSet(specs);
+        Sort youthSortByName = Sort.by(
+            Sort.Order.asc("youth.first_name"),
+            Sort.Order.asc("youth.surname")
+        );
+
+        return attendanceRepository.findAll(specs, youthSortByName);
     }
 
     private void validateDateFilters(AttendanceFilterDto filters){
@@ -44,30 +43,6 @@ public class AttendanceService {
         }
     }
 
-    private Specification<AttendanceEntry> buildSpecificationsFromFilters(AttendanceFilterDto filters){
-        boolean isDateBetweenApplied = filters.initialDate() != null && filters.finalDate() != null;
-        boolean isDateBetweenIntervalNotInverted = isDateBetweenApplied && (filters.initialDate().isBefore(filters.finalDate()));
-
-        Specification<AttendanceEntry> specifications = (root, query, cb) -> cb.conjunction();
-
-        if (filters.youthName() != null){
-            specifications = specifications.and(attendanceSpecs.youthNameOrSurnameLike(filters.youthName()));
-        }
-
-        if (filters.date() != null){
-            specifications = specifications.and(attendanceSpecs.dateEqual(filters.date()));
-        }
-
-        if (!isDateBetweenApplied){
-            return specifications;
-        }
-
-        if (isDateBetweenIntervalNotInverted) {
-            return specifications = specifications.and(attendanceSpecs.dateBetween(filters.initialDate(), filters.finalDate()));
-        }
-        return specifications.and(attendanceSpecs.dateBetween(filters.finalDate(), filters.initialDate()));
-
-    }
 
     public AttendanceEntry findById(Long id){
         return attendanceRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Não foi possível localizar uma presença de id " + id));

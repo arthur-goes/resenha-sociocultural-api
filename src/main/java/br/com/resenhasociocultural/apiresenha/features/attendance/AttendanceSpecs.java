@@ -1,24 +1,46 @@
 package br.com.resenhasociocultural.apiresenha.features.attendance;
 
+import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceFilterDto;
 import br.com.resenhasociocultural.apiresenha.features.meeting.Meeting;
-import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
+import br.com.resenhasociocultural.apiresenha.features.youth.YouthNameSpecs;
 import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.JoinType;
+import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
+@AllArgsConstructor
 @Component
 public class AttendanceSpecs {
 
-    public Specification<AttendanceEntry> youthNameOrSurnameLike(String youthName){
-        return (root, query, cb) -> {
-            Join<AttendanceEntry, Youth> youthJoin = root.join("youth");
-            Predicate nameLike = cb.like(cb.upper(youthJoin.get("firstName")), "%" + youthName.toUpperCase() + "%");
-            Predicate surnameLike = cb.like(cb.upper(youthJoin.get("surname")), "%" + youthName.toUpperCase() + "%");
-            return cb.or(nameLike, surnameLike);
-        };
+    private final YouthNameSpecs youthNameSpecs;
+
+    public Specification<AttendanceEntry> buildSpecificationsFromFilters(AttendanceFilterDto filters){
+        boolean isDateBetweenApplied = filters.initialDate() != null && filters.finalDate() != null;
+        boolean isDateBetweenIntervalNotInverted = isDateBetweenApplied && (filters.initialDate().isBefore(filters.finalDate()));
+
+        Specification<AttendanceEntry> specifications = fetchYouth();
+
+        if (filters.youthNameSubstring() != null){
+            specifications = specifications.and(youthNameSpecs.nameOrSurnameLikeForYouthEntry(filters.youthNameSubstring()));
+        }
+
+        if (filters.date() != null){
+            specifications = specifications.and(dateEqual(filters.date()));
+        }
+
+        if (!isDateBetweenApplied){
+            return specifications;
+        }
+
+        if (isDateBetweenIntervalNotInverted) {
+            return specifications = specifications.and(dateBetween(filters.initialDate(), filters.finalDate()));
+        }
+        specifications = specifications.and(dateBetween(filters.finalDate(), filters.initialDate()));
+
+        return specifications;
     }
 
     public Specification<AttendanceEntry> dateEqual(LocalDate date) {
@@ -33,5 +55,12 @@ public class AttendanceSpecs {
             Join<AttendanceEntry, Meeting> join = root.join("meeting");
             return cb.between(join.get("date"), initialDate, finalDate);
         };
+    }
+
+    public Specification<AttendanceEntry> fetchYouth(){
+        return ((root, query, cb) -> {
+            root.fetch("youth", JoinType.LEFT);
+            return cb.conjunction();
+        });
     }
 }
