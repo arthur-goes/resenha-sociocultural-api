@@ -14,7 +14,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/jovens")
+@RequestMapping("/youths")
 public class YouthController {
 
     private final YouthService youthService;
@@ -29,7 +29,7 @@ public class YouthController {
         return ResponseEntity.ok(youthMapper.toResponseDtoList(youthList));
     }
 
-    @GetMapping("/resumo")
+    @GetMapping("/summary")
     public ResponseEntity<List<YouthSimpleDto>> findYouthsSummary(
         @RequestParam(name = "nome", defaultValue = "", required = false) String name
     ){
