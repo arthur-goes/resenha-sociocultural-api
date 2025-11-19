@@ -6,6 +6,8 @@ import br.com.resenhasociocultural.apiresenha.features.attendance.dto.Attendance
 public class AttendanceCreateDtoBuilder {
     private Long meetingId = 1L;
     private Long youthId = 1L;
+    private String youthFirstName = "John";
+    private String youthSurname = "Doe";
     private AttendanceStatus status = AttendanceStatus.PRESENT;
     private String absenceExcuse = null;
 
@@ -20,6 +22,16 @@ public class AttendanceCreateDtoBuilder {
 
     public AttendanceCreateDtoBuilder withYouthId(Long id){
         this.youthId = id;
+        return this;
+    }
+
+    public AttendanceCreateDtoBuilder withYouthFirstName(String firstName){
+        this.youthFirstName = firstName;
+        return this;
+    }
+
+    public AttendanceCreateDtoBuilder withYouthSurname(String surname){
+        this.youthFirstName = surname;
         return this;
     }
 
@@ -47,6 +59,8 @@ public class AttendanceCreateDtoBuilder {
         return new AttendanceCreateDto(
             meetingId,
             youthId,
+            youthFirstName,
+            youthSurname,
             status,
             absenceExcuse
         );

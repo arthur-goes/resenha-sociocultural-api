@@ -6,7 +6,7 @@ import jakarta.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
 
 public final class AttendanceFilterDtoBuilder {
-    private String youthName;
+    private String youthNameSubstring;
     private @PastOrPresent LocalDate date;
     private @PastOrPresent LocalDate initialDate;
     private @PastOrPresent LocalDate finalDate;
@@ -18,8 +18,8 @@ public final class AttendanceFilterDtoBuilder {
         return new AttendanceFilterDtoBuilder();
     }
 
-    public AttendanceFilterDtoBuilder withYouthName(String youthName) {
-        this.youthName = youthName;
+    public AttendanceFilterDtoBuilder withYouthNameSubstring(String youthNameSubstring) {
+        this.youthNameSubstring = youthNameSubstring;
         return this;
     }
 
@@ -40,7 +40,7 @@ public final class AttendanceFilterDtoBuilder {
 
     public AttendanceFilterDto build() {
         return new AttendanceFilterDto(
-            youthName,
+            youthNameSubstring,
             date,
             initialDate,
             finalDate

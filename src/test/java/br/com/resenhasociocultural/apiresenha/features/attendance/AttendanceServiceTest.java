@@ -1,20 +1,26 @@
 package br.com.resenhasociocultural.apiresenha.features.attendance;
 
+import br.com.resenhasociocultural.apiresenha.exception.ResourceNotFoundException;
 import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceFilterDto;
-import br.com.resenhasociocultural.apiresenha.features.youth.YouthService;
-import org.assertj.core.api.ThrowableTypeAssert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
-import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.Optional;
+import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static br.com.resenhasociocultural.apiresenha.features.attendance.builder.AttendanceEntryBuilder.anAttendanceEntry;
+import static br.com.resenhasociocultural.apiresenha.features.attendance.builder.AttendanceFilterDtoBuilder.anAttendanceFilterDto;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -24,134 +30,122 @@ public class AttendanceServiceTest {
     private AttendanceRepository attendanceRepository;
 
     @Mock
-    private AttendanceMapper attendanceMapper;
-
-    @Mock
-    private YouthService youthService;
-
-    @Mock
     private AttendanceSpecs attendanceSpecs;
 
     @InjectMocks
     AttendanceService attendanceService;
 
-    @Test
-    public void givenSingleDateAndDateInterval_whenValidatingFilter_thenThrowsIllegalArgumentException(){
-        AttendanceFilterDto filters = new AttendanceFilterDto(
-            null,
-            LocalDate.now(),
-            LocalDate.now().minusDays(1),
-            LocalDate.now()
-        );
-        assertThatExceptionOfType(IllegalArgumentException.class)
-            .isThrownBy(() -> attendanceService.findByFilter(filters))
-            .withMessage("Inconsistência nos parâmetros de data enviado. A filtragem por data deve ser para uma data específica ou um intervalo, não para os dois simultâneamente.");
-
-        verify(attendanceRepository, never()).findAllAsSet(any(Specification.class));
-    }
-
-    @Test
-    public void givenIncompleteDateInterval_whenValidatingFilter_thenThrowsIllegalArgumnetException(){
-        AttendanceFilterDto filter1 = new AttendanceFilterDto(
-            null,
-            null,
-            LocalDate.of(2025,8,20),
-            null
-        );
-
-        AttendanceFilterDto filter2 = new AttendanceFilterDto(
-            null,
-            null,
-            null,
-            LocalDate.of(2025,8,20)
-        );
-
-        String message = "Inconsistência nos parâmetros de data enviado. A filtragem por intervalo de data deve obrigatoriamente ter uma data inicial e uma data final.";
+    @ParameterizedTest(name = "Cenario: {0}")
+    @MethodSource("invalidFilterScenarios")
+    public void givenInvalidFilter_whenFindWithFilters_thenThrowException(String description, AttendanceFilterDto filterDto, String errorMessage){
 
         assertThatExceptionOfType(IllegalArgumentException.class)
-            .isThrownBy(() -> attendanceService.findByFilter(filter1))
-            .withMessage(message);
+            .isThrownBy(() -> attendanceService.findWithFilters(filterDto))
+            .withMessage(errorMessage);
 
-        assertThatExceptionOfType(IllegalArgumentException.class)
-            .isThrownBy(() -> attendanceService.findByFilter(filter2))
-            .withMessage(message);
+        verify(attendanceRepository, never()).findAll(any(Specification.class), any(Sort.class));
+        verify(attendanceSpecs, never()).buildSpecificationsFromFilters(filterDto);
+    }
 
-        verify(attendanceRepository, never()).findAllAsSet(any(Specification.class));
+    private static Stream<Arguments> invalidFilterScenarios() {
+        AttendanceFilterDto onlyInitialDateFilter = anAttendanceFilterDto()
+          .withYouthNameSubstring(null)
+          .withDate(null)
+          .withInitialDate(LocalDate.of(2025, 8, 20))
+          .withFinalDate(null)
+          .build();
+
+        AttendanceFilterDto onlyFinalDateFilter = anAttendanceFilterDto()
+          .withYouthNameSubstring(null)
+          .withDate(null)
+          .withInitialDate(null)
+          .withFinalDate(LocalDate.of(2025, 8, 20))
+          .build();
+
+        AttendanceFilterDto allDateParamsFilledFilter = anAttendanceFilterDto()
+          .withYouthNameSubstring(null)
+          .withDate(LocalDate.of(2025, 5, 5))
+          .withInitialDate(LocalDate.of(2025, 8, 19))
+          .withFinalDate(LocalDate.of(2025, 8, 21))
+          .build();
+
+        String dateInconsistentMessage = "Inconsistência nos parâmetros de data enviado. A filtragem por intervalo de " +
+          "data deve obrigatoriamente ter uma data inicial e uma data final.";
+
+        String dateConflictMessage = "Inconsistência nos parâmetros de data enviado. " +
+          "A filtragem por data deve ser para uma data específica ou um intervalo, não para os dois simultâneamente.";
+
+        return Stream.of(
+          Arguments.of("Invalid filter. Missing final date, only initial date is given.", onlyInitialDateFilter, dateInconsistentMessage),
+          Arguments.of("Invalid filter. Missing initial date, only final date is given", onlyFinalDateFilter, dateInconsistentMessage),
+          Arguments.of("Invalid filter. All date params are given.", allDateParamsFilledFilter, dateConflictMessage)
+        );
+    }
+    @ParameterizedTest(name = "Cenario: {0}")
+    @MethodSource("validFilterScenarios")
+    public void givenValidFilter_whenFindWithFilters_thenFindAllAttendances(String description, AttendanceFilterDto filterDto){
+        Specification<AttendanceEntry> specs = (root, query, cb) -> cb.conjunction();
+        ArgumentCaptor<Sort> sortCaptor = ArgumentCaptor.forClass(Sort.class);
+
+        when(attendanceSpecs.buildSpecificationsFromFilters(filterDto)).thenReturn(specs);
+
+        attendanceService.findWithFilters(filterDto);
+
+        verify(attendanceRepository, times(1)).findAll(eq(specs), sortCaptor.capture());
+
+        Sort capturedSort = sortCaptor.getValue();
+
+        assertThat(capturedSort.getOrderFor("youth.first_name")).isNotNull();
+        assertThat(capturedSort.getOrderFor("youth.first_name").getDirection()).isEqualTo(Sort.Direction.ASC);
+
+        assertThat(capturedSort.getOrderFor("youth.surname")).isNotNull();
+        assertThat(capturedSort.getOrderFor("youth.surname").getDirection()).isEqualTo(Sort.Direction.ASC);
+
+    }
+
+    private static Stream<Arguments> validFilterScenarios() {
+        AttendanceFilterDto nameFilter = anAttendanceFilterDto()
+          .withYouthNameSubstring("ohn")
+          .withDate(null)
+          .withInitialDate(null)
+          .withFinalDate(null)
+          .build();
+
+        AttendanceFilterDto singleDateFilter = anAttendanceFilterDto()
+          .withYouthNameSubstring(null)
+          .withDate(LocalDate.of(2025, 8, 5))
+          .withInitialDate(null)
+          .withFinalDate(null)
+          .build();
+
+        AttendanceFilterDto dateBetweenFilter = anAttendanceFilterDto()
+          .withYouthNameSubstring(null)
+          .withDate(null)
+          .withInitialDate(LocalDate.of(2025, 8, 19))
+          .withFinalDate(LocalDate.of(2025, 8, 21))
+          .build();
+
+        return Stream.of(
+          Arguments.of("Valid filter. Youth name substring is given", nameFilter),
+          Arguments.of("Valid filter. Single date is given", singleDateFilter),
+          Arguments.of("Valid filter. Date interval is given", dateBetweenFilter)
+        );
     }
 
     @Test
-    public void whenFindByFilter_withName_thenNameSpecificationIsCalled(){
-        AttendanceFilterDto filters = new AttendanceFilterDto(
-            "Youthname",
-            null,
-            null,
-            null
-        );
+    public void givenInvalidId_whenFindById_thenThrowsException(){
+        Long invalidId = -1L;
+        when(attendanceRepository.findById(invalidId)).thenReturn(Optional.empty());
 
-        attendanceService.findByFilter(filters);
-
-        verify(attendanceSpecs, times(1)).youthNameOrSurnameLike(filters.youthName());
-
-        verify(attendanceSpecs, never()).dateEqual(any());
-        verify(attendanceSpecs, never()).dateBetween(any(), any());
-
-        verify(attendanceRepository, times(1)).findAllAsSet(any(Specification.class));
+        assertThatExceptionOfType(ResourceNotFoundException.class).isThrownBy(() -> attendanceService.findById(invalidId));
     }
 
     @Test
-    public void whenFindByFilter_withNameAndDate_thenNameAndDateSpecificationsAreCalled(){
-        AttendanceFilterDto filters = new AttendanceFilterDto(
-            "Youthname",
-            LocalDate.now(),
-            null,
-            null
-        );
-
-        attendanceService.findByFilter(filters);
-
-        verify(attendanceSpecs, times(1)).youthNameOrSurnameLike(filters.youthName());
-        verify(attendanceSpecs, times(1)).dateEqual(filters.date());
-
-        verify(attendanceSpecs, never()).dateBetween(any(LocalDate.class), any(LocalDate.class));
-
-        verify(attendanceRepository, times(1)).findAllAsSet(any(Specification.class));
-    }
-
-    @Test
-    public void whenFindByFilter_withDateInterval_thenDateIntervallSpecificationIsCalled(){
-        AttendanceFilterDto filters = new AttendanceFilterDto(
-            null,
-            null,
-            LocalDate.now().minusDays(1),
-            LocalDate.now()
-        );
-
-        attendanceService.findByFilter(filters);
-
-        verify(attendanceSpecs, times(1)).dateBetween(filters.initialDate(), filters.finalDate());
-
-        verify(attendanceSpecs, never()).youthNameOrSurnameLike(any());
-        verify(attendanceSpecs, never()).dateEqual(any());
-
-        verify(attendanceRepository, times(1)).findAllAsSet(any(Specification.class));
-    }
-
-    @Test
-    public void whenFindByFilter_withInvertedDateInterval_thenDateIntervallSpecificationIsCalled(){
-        AttendanceFilterDto filters = new AttendanceFilterDto(
-            null,
-            null,
-            LocalDate.now(),
-            LocalDate.now().minusDays(1)
-        );
-
-        attendanceService.findByFilter(filters);
-
-        verify(attendanceSpecs, times(1)).dateBetween(filters.finalDate(), filters.initialDate());
-
-        verify(attendanceSpecs, never()).youthNameOrSurnameLike(any());
-        verify(attendanceSpecs, never()).dateEqual(any());
-
-        verify(attendanceRepository, times(1)).findAllAsSet(any(Specification.class));
+    public void givenValidId_whenFindById_thenReturnEntity(){
+        Long validId = 1L;
+        AttendanceEntry attendance = anAttendanceEntry().build();
+        when(attendanceRepository.findById(validId)).thenReturn(Optional.of(attendance));
+        attendanceService.findById(validId);
+        verify(attendanceRepository,times(1)).findById(validId);
     }
 }
