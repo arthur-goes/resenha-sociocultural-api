@@ -21,7 +21,7 @@ public class YouthNameSpecs {
         return nameOrSurnameLike(nameSubstring, root -> root);
     }
 
-    public Specification<YouthEntry> nameOrSurnameLikeForYouthEntry(String nameSubstring){
+    public <E extends YouthEntry> Specification<E> nameOrSurnameLikeForYouthEntry(String nameSubstring){
         return nameOrSurnameLike(nameSubstring, root -> root.join("Youth"));
     }
 }
