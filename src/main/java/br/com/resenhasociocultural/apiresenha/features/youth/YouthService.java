@@ -17,14 +17,14 @@ public class YouthService {
 
     private final YouthRepository youthRepository;
     private final YouthMapper youthMapper;
-    private final YouthSpecs youthSpecs;
+    private final YouthNameSpecs youthNameSpecs;
 
     public Youth findById(Long id){
         return youthRepository.findById(id).orElseThrow(resourceNotFoundSupplier(id));
     }
 
     public List<Youth> findByName(String name){
-        return youthRepository.findAll(youthSpecs.nameOrSurnameLike(name));
+        return youthRepository.findAll(youthNameSpecs.nameOrSurnameLikeForYouth(name));
     }
 
     public List<Youth> findAll(){
