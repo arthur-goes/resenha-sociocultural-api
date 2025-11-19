@@ -3,6 +3,7 @@ import br.com.resenhasociocultural.apiresenha.features.attendance.dto.Attendance
 import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceResponseDto;
 import br.com.resenhasociocultural.apiresenha.features.meeting.Meeting;
 import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
+import br.com.resenhasociocultural.apiresenha.features.youth.YouthMapper;
 import br.com.resenhasociocultural.apiresenha.features.youth.YouthMapperImpl;
 import br.com.resenhasociocultural.apiresenha.features.youth.YouthService;
 import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthSimpleDto;
@@ -80,7 +81,7 @@ public class AttendanceMapperTest {
     @Test
     public void givenAttendanceEntryEntity_thenMapToAttendanceResponseDto(){
 
-        AttendanceResponseDto responseDto = attendanceMapper.toAttendanceResponse(attendance);
+        AttendanceResponseDto responseDto = attendanceMapper.toAttendanceResponseDto(attendance);
 
         assertThat(responseDto.id())
             .isEqualTo(attendance.getId());
@@ -123,7 +124,7 @@ public class AttendanceMapperTest {
         meeting.addAttendanceEntries(attendance2);
         attendances.add(attendance2);
 
-        Set<AttendanceResponseDto> mappedAttendances = attendanceMapper.toResponseListDto(attendances);
+        List<AttendanceResponseDto> mappedAttendances = attendanceMapper.toResponseListDto(attendances);
 
         assertThat(mappedAttendances.size()).isEqualTo(2);
 
@@ -153,7 +154,7 @@ public class AttendanceMapperTest {
             .statusPresent()
             .build();
 
-        AttendanceEntry createdAttendance = attendanceMapper.toEntity(createDto, youthService);
+        AttendanceEntry createdAttendance = attendanceMapper.toEntity(createDto);
 
         assertThat(createdAttendance.getYouth()).isEqualTo(youth);
         assertThat(createdAttendance.getAttendanceStatus()).isEqualTo(createDto.attendanceStatus());
