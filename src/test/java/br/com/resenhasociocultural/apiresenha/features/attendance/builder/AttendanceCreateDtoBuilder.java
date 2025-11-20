@@ -31,7 +31,7 @@ public class AttendanceCreateDtoBuilder {
     }
 
     public AttendanceCreateDtoBuilder withYouthSurname(String surname){
-        this.youthFirstName = surname;
+        this.youthSurname = surname;
         return this;
     }
 
