@@ -54,12 +54,27 @@ public class YouthBuilder {
     }
 
     public YouthBuilder withFatherName(String fatherName) {
-        this.motherName = fatherName;
+        this.fatherName = fatherName;
+        return this;
+    }
+
+    public YouthBuilder withEmergencyContactName(String contactName) {
+        this.emergencyContactName = contactName;
+        return this;
+    }
+
+    public YouthBuilder withEmergencyContactRelationship(String relationship) {
+        this.emergencyContactRelationship = relationship;
         return this;
     }
 
     public YouthBuilder withEmergencyContactPhone(String phone) {
         this.emergencyContactPhone = phone;
+        return this;
+    }
+
+    public YouthBuilder withCreationDate(LocalDate creationDate){
+        this.creationDate = creationDate;
         return this;
     }
 
