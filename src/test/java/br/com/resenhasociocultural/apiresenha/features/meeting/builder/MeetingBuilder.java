@@ -18,6 +18,10 @@ public class MeetingBuilder {
     private Set<StrikeEntry> strikes = new HashSet<>();
     private Set<ParticipationPointEntry> participationPoints = new HashSet<>();
 
+    private Set<AttendanceEntry> attendancesToAdd;
+    private Set<StrikeEntry> strikesToAdd;
+    private Set<ParticipationPointEntry> participationPointsToAdd;
+
     public static MeetingBuilder aMeeting(){
         return new MeetingBuilder();
     }
@@ -47,8 +51,23 @@ public class MeetingBuilder {
         return this;
     }
 
+    public MeetingBuilder withAttendances(Set<AttendanceEntry> attendances){
+        this.attendancesToAdd = attendances;
+        return this;
+    }
+
+    public MeetingBuilder withStrikes(Set<StrikeEntry> strikes){
+        this.strikesToAdd = strikes;
+        return this;
+    }
+
+    public MeetingBuilder withParticipationPoints(Set<ParticipationPointEntry> participationPoints){
+        this.participationPointsToAdd = participationPoints;
+        return this;
+    }
+
     public Meeting build(){
-        return new Meeting(
+        var meeting = new Meeting(
             id,
             date,
             theme,
@@ -57,6 +76,12 @@ public class MeetingBuilder {
             strikes,
             participationPoints
         );
+
+        if (attendancesToAdd != null) attendancesToAdd.forEach(meeting::addAttendanceEntries);
+        if (strikesToAdd != null) strikesToAdd.forEach(meeting::addStrikeEntries);
+        if (participationPointsToAdd != null) participationPointsToAdd.forEach(meeting::addParticipationPointEntries);
+
+        return meeting;
     }
 
 }
