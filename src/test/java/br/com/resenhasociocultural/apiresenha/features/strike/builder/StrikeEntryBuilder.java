@@ -14,7 +14,7 @@ public class StrikeEntryBuilder {
     private Meeting meeting = null;
     private boolean active;
 
-    public StrikeEntryBuilder aStrike(){
+    public static StrikeEntryBuilder aStrikeEntry(){
         return new StrikeEntryBuilder();
     }
 
@@ -28,7 +28,12 @@ public class StrikeEntryBuilder {
         return this;
     }
 
-    public StrikeEntryBuilder amount(int amount){
+    public StrikeEntryBuilder withYouth(Youth youth){
+        this.youth = youth;
+        return this;
+    }
+
+    public StrikeEntryBuilder withAmount(int amount){
         this.amount = amount;
         return this;
     }

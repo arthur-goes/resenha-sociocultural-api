@@ -14,7 +14,7 @@ public class ParticipationPointEntryBuilder {
     private Meeting meeting = null;
     private boolean active = true;
 
-    public ParticipationPointEntryBuilder aParticipationPoint(){
+    public static ParticipationPointEntryBuilder aParticipationPointEntry(){
         return new ParticipationPointEntryBuilder();
     }
 
@@ -28,7 +28,12 @@ public class ParticipationPointEntryBuilder {
         return this;
     }
 
-    public ParticipationPointEntryBuilder amount(int amount){
+    public ParticipationPointEntryBuilder withYouth(Youth youth){
+        this.youth = youth;
+        return this;
+    }
+
+    public ParticipationPointEntryBuilder withAmount(int amount){
         this.amount = amount;
         return this;
     }
