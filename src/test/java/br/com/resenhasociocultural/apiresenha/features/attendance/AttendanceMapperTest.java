@@ -43,9 +43,6 @@ public class AttendanceMapperTest {
     @Autowired
     AttendanceMapper attendanceMapper;
 
-    @Mock
-    YouthService youthService;
-
     private Meeting meeting;
 
     private AttendanceEntry attendance;
@@ -146,20 +143,21 @@ public class AttendanceMapperTest {
 
     @Test
     public void givenAttendanceCreateDto_thenMapToAttendanceEntry(){
-        when(youthService.findById(youth.getId())).thenReturn(youth);
-
         AttendanceCreateDto createDto = anAttendanceCreateDto()
             .withMeetingId(null)
             .withYouthId(youth.getId())
+            .withYouthFirstName(youth.getFirstName())
+            .withYouthSurname(youth.getSurname())
             .statusPresent()
             .build();
 
         AttendanceEntry createdAttendance = attendanceMapper.toEntity(createDto);
 
-        assertThat(createdAttendance.getYouth()).isEqualTo(youth);
+        assertThat(createdAttendance.getYouth().getId()).isEqualTo(youth.getId());
+        assertThat(createdAttendance.getYouth().getFirstName()).isEqualTo(youth.getFirstName());
+        assertThat(createdAttendance.getYouth().getSurname()).isEqualTo(youth.getSurname());
+
         assertThat(createdAttendance.getAttendanceStatus()).isEqualTo(createDto.attendanceStatus());
         assertThat(createdAttendance.getAbsenceExcuse()).isEqualTo(null);
-
-        verify(youthService, times(1)).findById(createDto.youthId());
     }
 }
