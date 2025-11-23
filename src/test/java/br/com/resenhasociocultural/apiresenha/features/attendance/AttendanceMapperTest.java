@@ -3,9 +3,7 @@ import br.com.resenhasociocultural.apiresenha.features.attendance.dto.Attendance
 import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceResponseDto;
 import br.com.resenhasociocultural.apiresenha.features.meeting.Meeting;
 import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
-import br.com.resenhasociocultural.apiresenha.features.youth.YouthMapper;
 import br.com.resenhasociocultural.apiresenha.features.youth.YouthMapperImpl;
-import br.com.resenhasociocultural.apiresenha.features.youth.YouthService;
 import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthSimpleDto;
 
 import org.assertj.core.groups.Tuple;
@@ -14,7 +12,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -78,7 +75,7 @@ public class AttendanceMapperTest {
     @Test
     public void givenAttendanceEntryEntity_thenMapToAttendanceResponseDto(){
 
-        AttendanceResponseDto responseDto = attendanceMapper.toAttendanceResponseDto(attendance);
+        AttendanceResponseDto responseDto = attendanceMapper.toResponseDto(attendance);
 
         assertThat(responseDto.id())
             .isEqualTo(attendance.getId());
@@ -143,11 +140,15 @@ public class AttendanceMapperTest {
 
     @Test
     public void givenAttendanceCreateDto_thenMapToAttendanceEntry(){
+        YouthSimpleDto youthDto = aYouthSimpleDto()
+            .withId(youth.getId())
+            .withFirstName(youth.getFirstName())
+            .withSurname(youth.getSurname())
+            .build();
+
         AttendanceCreateDto createDto = anAttendanceCreateDto()
             .withMeetingId(null)
-            .withYouthId(youth.getId())
-            .withYouthFirstName(youth.getFirstName())
-            .withYouthSurname(youth.getSurname())
+            .withYouth(youthDto)
             .statusPresent()
             .build();
 
