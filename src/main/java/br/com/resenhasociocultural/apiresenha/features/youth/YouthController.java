@@ -22,7 +22,7 @@ public class YouthController {
 
     @GetMapping
     public ResponseEntity<List<YouthResponseDto>> findYouths(
-            @RequestParam(name = "nome", defaultValue = "", required = false) String name
+            @RequestParam(name = "name", defaultValue = "", required = false) String name
     ){
         List<Youth> youthList = name.isBlank() ? youthService.findAll() : youthService.findByName(name);
 
@@ -31,7 +31,7 @@ public class YouthController {
 
     @GetMapping("/summary")
     public ResponseEntity<List<YouthSimpleDto>> findYouthsSummary(
-        @RequestParam(name = "nome", defaultValue = "", required = false) String name
+        @RequestParam(name = "name", defaultValue = "", required = false) String name
     ){
         List<Youth> youthList = name.isBlank() ? youthService.findAll() : youthService.findByName(name);
         return ResponseEntity.ok(youthMapper.toSimpleResponseDtoList(youthList));
