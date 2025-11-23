@@ -36,15 +36,15 @@ public class MeetingController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createMeeting(@Valid @RequestBody MeetingCreateDto meetingDto){
+    public ResponseEntity<MeetingResponseDto> createMeeting(@Valid @RequestBody MeetingCreateDto meetingDto){
         Meeting meeting = meetingService.create(meetingDto);
         URI location = ServletUriComponentsBuilder
             .fromCurrentRequest()
             .path("/{id}")
             .buildAndExpand(meeting.getId())
             .toUri();
-
-        return ResponseEntity.created(location).build();
+        var body = meetingMapper.toResponseDto(meeting);
+        return ResponseEntity.created(location).body(body);
     }
 
     @PutMapping("/{id}")
