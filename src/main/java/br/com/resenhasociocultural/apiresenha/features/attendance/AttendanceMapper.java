@@ -17,6 +17,8 @@ public interface AttendanceMapper extends YouthEntryMapper<AttendanceEntry, Atte
 
     @Mapping(source = "meeting.id", target = "meetingId")
     @Mapping(source = "meeting.date", target = "date")
-    AttendanceResponseDto toAttendanceResponseDto(AttendanceEntry attendance);
+    AttendanceResponseDto toResponseDto(AttendanceEntry attendance);
+
+    List<AttendanceCreateDto> toCreateDtoList(Set<AttendanceEntry> attendances);
 
 }
