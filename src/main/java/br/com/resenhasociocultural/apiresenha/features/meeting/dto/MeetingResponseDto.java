@@ -1,20 +1,20 @@
 package br.com.resenhasociocultural.apiresenha.features.meeting.dto;
 
-import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceForMeetingResponseDto;
-import br.com.resenhasociocultural.apiresenha.features.participationpoint.dto.ParticipationPointForMeetingResponseDto;
-import br.com.resenhasociocultural.apiresenha.features.strike.dto.StrikeForMeetingResponseDto;
+import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceResponseDto;
+import br.com.resenhasociocultural.apiresenha.features.participationpoint.dto.ParticipationPointResponseDto;
+import br.com.resenhasociocultural.apiresenha.features.strike.dto.StrikeResponseDto;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 public record MeetingResponseDto(
     Long id,
     LocalDate date,
     String theme,
     String minutosDeSabedoriaLesson,
-    Set<AttendanceForMeetingResponseDto> attendanceEntries,
-    Set<StrikeForMeetingResponseDto> strikeEntries,
-    Set<ParticipationPointForMeetingResponseDto> participationPointEntries
+    List<AttendanceResponseDto> attendanceEntries,
+    List<StrikeResponseDto> strikeEntries,
+    List<ParticipationPointResponseDto> participationPointEntries
 ) {
 
 }
