@@ -1,7 +1,6 @@
 package br.com.resenhasociocultural.apiresenha.features.userprofile;
 
 import br.com.resenhasociocultural.apiresenha.features.role.Role;
-import br.com.resenhasociocultural.apiresenha.shared.domain.Person;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -17,7 +16,7 @@ import java.util.Set;
 @Setter
 @EntityListeners(AuditingEntityListener.class)
 @Entity
-public class UserProfile implements Person {
+public class UserProfile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
