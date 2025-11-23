@@ -8,11 +8,12 @@ import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = {"youth", "meeting"})
 @Getter
 @Setter
 @Table(name = "participation_points")
 @Entity
+@ToString(exclude = {"meeting"})
 public class ParticipationPointEntry implements YouthEntry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
