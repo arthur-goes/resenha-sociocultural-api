@@ -1,13 +1,11 @@
 package br.com.resenhasociocultural.apiresenha.features.strike;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
-import java.time.LocalDate;
-import java.util.List;
+import java.util.Optional;
 
 public interface StrikeRepository extends JpaRepository<StrikeEntry, Long> {
-    List<StrikeEntry> findByYouthFirstNameContainingIgnoreCaseOrYouthSurnameContainingIgnoreCase(String firstName, String surname);
-    List<StrikeEntry> findByMeetingDate(LocalDate date);
-    List<StrikeEntry> findByMeetingDateBetween(LocalDate date1, LocalDate date2);
-    List<StrikeEntry> findByMeetingDateGreaterThanEqual(LocalDate date);
+    @Query("SELECT s FROM StrikeEntry s LEFT JOIN FETCH s.youth WHERE s.id = :id")
+    Optional<StrikeEntry> findById();
 }
