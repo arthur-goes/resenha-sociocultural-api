@@ -7,6 +7,7 @@ import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingUpdate
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -22,6 +23,7 @@ public class MeetingController {
     private final MeetingMapper meetingMapper;
 
     @GetMapping
+    @PreAuthorize("hasRole('COORDINATOR')")
     public ResponseEntity<List<MeetingResponseDto>> getMeetings(@ModelAttribute MeetingFilterDto filterDto){
         List<Meeting> meetings = meetingService.findWithFilters(filterDto);
         List<MeetingResponseDto> meetingsDto = meetingMapper.toResponseDtoList(meetings);
@@ -29,6 +31,7 @@ public class MeetingController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('COORDINATOR')")
     public ResponseEntity<MeetingResponseDto> findMeeting(@PathVariable Long id){
         Meeting foundMeeting = meetingService.findById(id);
         MeetingResponseDto responseDto = meetingMapper.toResponseDto(foundMeeting);
@@ -36,6 +39,7 @@ public class MeetingController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('COORDINATOR')")
     public ResponseEntity<MeetingResponseDto> createMeeting(@Valid @RequestBody MeetingCreateDto meetingDto){
         Meeting meeting = meetingService.create(meetingDto);
         URI location = ServletUriComponentsBuilder
@@ -48,6 +52,7 @@ public class MeetingController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('COORDINATOR')")
     public ResponseEntity<MeetingResponseDto> updateMeeting(@PathVariable(name = "id") Long id, @Valid @RequestBody MeetingUpdateDto dto){
         Meeting meeting = meetingService.update(id, dto);
         MeetingResponseDto meetingResponse = meetingMapper.toResponseDto(meeting);
@@ -55,6 +60,7 @@ public class MeetingController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('COORDINATOR')")
     public ResponseEntity<Void> deleteMeeting(@PathVariable(name = "id") Long id){
         meetingService.delete(id);
         return ResponseEntity.noContent().build();

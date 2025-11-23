@@ -5,6 +5,7 @@ import br.com.resenhasociocultural.apiresenha.features.attendance.dto.Attendance
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class AttendanceController {
     private final AttendanceMapper attendanceMapper;
 
     @GetMapping
+    @PreAuthorize("hasRole('COORDINATOR')")
     public ResponseEntity<List<AttendanceResponseDto>> find(@Valid @ModelAttribute AttendanceFilterDto dto) {
         List<Attendance> attendances = attendanceService.findWithFilters(dto);
         List<AttendanceResponseDto> response = attendanceMapper.toResponseListDto(attendances);
