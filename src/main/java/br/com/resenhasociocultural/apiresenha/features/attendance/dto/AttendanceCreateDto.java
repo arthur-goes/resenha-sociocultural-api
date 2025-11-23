@@ -8,19 +8,10 @@ import jakarta.validation.constraints.NotNull;
 public record AttendanceCreateDto(
     Long meetingId,
 
-    @NotNull
-    Long youthId,
-
-    @NotNull
-    String youthFirstName,
-
-    @NotNull
-    String youthSurname,
+    YouthSimpleDto youth,
 
     @NotNull
     AttendanceStatus attendanceStatus,
 
     String absenceExcuse
-)
-implements YouthEntryDto {
-};
+) implements YouthEntryDto {};
