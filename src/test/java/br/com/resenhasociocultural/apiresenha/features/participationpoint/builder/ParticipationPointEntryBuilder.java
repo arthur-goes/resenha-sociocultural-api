@@ -1,7 +1,7 @@
 package br.com.resenhasociocultural.apiresenha.features.participationpoint.builder;
 
 import br.com.resenhasociocultural.apiresenha.features.meeting.Meeting;
-import br.com.resenhasociocultural.apiresenha.features.participationpoint.ParticipationPointEntry;
+import br.com.resenhasociocultural.apiresenha.features.participationpoint.ParticipationPoint;
 import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
 import lombok.NoArgsConstructor;
 
@@ -53,8 +53,8 @@ public class ParticipationPointEntryBuilder {
         return this;
     }
 
-    public ParticipationPointEntry build(){
-        return new ParticipationPointEntry(
+    public ParticipationPoint build(){
+        return new ParticipationPoint(
             id,
             youth,
             amount,

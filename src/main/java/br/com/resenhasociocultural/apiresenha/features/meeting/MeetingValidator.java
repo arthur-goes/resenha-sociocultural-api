@@ -6,7 +6,7 @@ import br.com.resenhasociocultural.apiresenha.exception.MalformedMeetingExceptio
 import br.com.resenhasociocultural.apiresenha.features.attendance.Attendance;
 import br.com.resenhasociocultural.apiresenha.features.meeting.dto.EntryValidationDto;
 import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingFilterDto;
-import br.com.resenhasociocultural.apiresenha.features.participationpoint.ParticipationPointEntry;
+import br.com.resenhasociocultural.apiresenha.features.participationpoint.ParticipationPoint;
 import br.com.resenhasociocultural.apiresenha.features.strike.StrikeEntry;
 import br.com.resenhasociocultural.apiresenha.features.youth.YouthEntry;
 import br.com.resenhasociocultural.apiresenha.features.youth.YouthService;
@@ -32,7 +32,7 @@ public class MeetingValidator {
         YOUTH_ENTRY_DESCRIPTIONS = Map.of(
             Attendance.class, "uma Presença",
             StrikeEntry.class, "um Strike",
-            ParticipationPointEntry.class, "um Ponto de Participação"
+            ParticipationPoint.class, "um Ponto de Participação"
         );
     }
 

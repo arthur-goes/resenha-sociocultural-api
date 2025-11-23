@@ -2,7 +2,7 @@ package br.com.resenhasociocultural.apiresenha.features.meeting.builder;
 
 import br.com.resenhasociocultural.apiresenha.features.attendance.Attendance;
 import br.com.resenhasociocultural.apiresenha.features.meeting.Meeting;
-import br.com.resenhasociocultural.apiresenha.features.participationpoint.ParticipationPointEntry;
+import br.com.resenhasociocultural.apiresenha.features.participationpoint.ParticipationPoint;
 import br.com.resenhasociocultural.apiresenha.features.strike.StrikeEntry;
 
 import java.time.LocalDate;
@@ -16,11 +16,11 @@ public class MeetingBuilder {
     private String minutosDeSabedoriaLesson = "Standar Lesson";
     private Set<Attendance> attendances = new HashSet<>();
     private Set<StrikeEntry> strikes = new HashSet<>();
-    private Set<ParticipationPointEntry> participationPoints = new HashSet<>();
+    private Set<ParticipationPoint> participationPoints = new HashSet<>();
 
     private Set<Attendance> attendancesToAdd;
     private Set<StrikeEntry> strikesToAdd;
-    private Set<ParticipationPointEntry> participationPointsToAdd;
+    private Set<ParticipationPoint> participationPointsToAdd;
 
     public static MeetingBuilder aMeeting(){
         return new MeetingBuilder();
@@ -61,7 +61,7 @@ public class MeetingBuilder {
         return this;
     }
 
-    public MeetingBuilder withParticipationPoints(Set<ParticipationPointEntry> participationPoints){
+    public MeetingBuilder withParticipationPoints(Set<ParticipationPoint> participationPoints){
         this.participationPointsToAdd = participationPoints;
         return this;
     }

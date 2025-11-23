@@ -12,7 +12,7 @@ public class ParticipationPointService {
         this.participationPointRepository = participationPointRepository;
     }
 
-    public ParticipationPointEntry findById(Long id){
+    public ParticipationPoint findById(Long id){
         return participationPointRepository.findById(id).orElseThrow(
             () -> new ResourceNotFoundException("Não foi possível encontrar um lançamento de ponto de participação com id " + id)
         );

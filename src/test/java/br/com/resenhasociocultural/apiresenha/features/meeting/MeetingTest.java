@@ -2,7 +2,7 @@ package br.com.resenhasociocultural.apiresenha.features.meeting;
 
 import br.com.resenhasociocultural.apiresenha.features.attendance.Attendance;
 import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceStatus;
-import br.com.resenhasociocultural.apiresenha.features.participationpoint.ParticipationPointEntry;
+import br.com.resenhasociocultural.apiresenha.features.participationpoint.ParticipationPoint;
 import br.com.resenhasociocultural.apiresenha.features.strike.StrikeEntry;
 import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
 import org.junit.jupiter.api.BeforeEach;
@@ -103,7 +103,7 @@ public class MeetingTest {
 
     @Test
     public void shouldNotAllowDuplicatedParticipationPointInMeeting(){
-        ParticipationPointEntry participation = new ParticipationPointEntry();
+        ParticipationPoint participation = new ParticipationPoint();
         participation.setId(1L);
         participation.setAmount(1);
         participation.setYouth(this.youth);
@@ -112,20 +112,20 @@ public class MeetingTest {
         this.meeting.addParticipationPointEntries(participation);
         this.meeting.addParticipationPointEntries(participation);
 
-        Set<ParticipationPointEntry> participationPointEntries = this.meeting.getParticipationPointEntries();
+        Set<ParticipationPoint> participationPointEntries = this.meeting.getParticipationPointEntries();
 
         assertThat(participationPointEntries.size()).isEqualTo(1);
     }
 
     @Test
     public void shouldAllowTwoDifferentParticipationPointForSameYouth(){
-        ParticipationPointEntry participation1 = new ParticipationPointEntry();
+        ParticipationPoint participation1 = new ParticipationPoint();
         participation1.setId(1L);
         participation1.setAmount(1);
         participation1.setYouth(this.youth);
         participation1.setReason("Any Reason 1");
 
-        ParticipationPointEntry participation2 = new ParticipationPointEntry();
+        ParticipationPoint participation2 = new ParticipationPoint();
         participation2.setId(2L);
         participation2.setAmount(1);
         participation2.setYouth(this.youth);
@@ -133,7 +133,7 @@ public class MeetingTest {
 
         this.meeting.addParticipationPointEntries(participation1);
         this.meeting.addParticipationPointEntries(participation2);
-        Set<ParticipationPointEntry> participationPointEntries = this.meeting.getParticipationPointEntries();
+        Set<ParticipationPoint> participationPointEntries = this.meeting.getParticipationPointEntries();
 
         assertThat(participationPointEntries.size()).isEqualTo(2);
     }

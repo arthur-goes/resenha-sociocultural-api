@@ -14,7 +14,7 @@ import lombok.*;
 @Table(name = "participation_points")
 @Entity
 @ToString(exclude = {"meeting"})
-public class ParticipationPointEntry implements YouthEntry {
+public class ParticipationPoint implements YouthEntry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

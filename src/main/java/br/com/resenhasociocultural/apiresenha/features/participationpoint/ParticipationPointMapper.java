@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.Set;
 
 @Mapper(componentModel = "spring", uses = {YouthMapper.class})
-public interface ParticipationPointMapper extends YouthEntryMapper<ParticipationPointEntry, ParticipationPointCreateDto> {
+public interface ParticipationPointMapper extends YouthEntryMapper<ParticipationPoint, ParticipationPointCreateDto> {
     @Mapping(source = "meeting.id", target = "meetingId")
-    ParticipationPointResponseDto toResponseDto(ParticipationPointEntry entity);
+    ParticipationPointResponseDto toResponseDto(ParticipationPoint entity);
 
-    Set<ParticipationPointResponseDto> toResponseDtoList(Set<ParticipationPointEntry> participationPoints);
-    List<ParticipationPointResponseDto> toResponseDtoList(List<ParticipationPointEntry> participationPoints);
+    Set<ParticipationPointResponseDto> toResponseDtoList(Set<ParticipationPoint> participationPoints);
+    List<ParticipationPointResponseDto> toResponseDtoList(List<ParticipationPoint> participationPoints);
 }
