@@ -32,7 +32,7 @@ public class YouthController {
     }
 
     @GetMapping("/summary")
-    @PreAuthorize("hasRole('COORDINATOR')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<YouthSimpleDto>> findYouthsSummary(
         @RequestParam(name = "name", defaultValue = "", required = false) String name
     ){
@@ -76,7 +76,7 @@ public class YouthController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('COORDINATOR')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteYouthById(@PathVariable Long id){
         youthService.deleteById(id);
         return ResponseEntity.noContent().build();

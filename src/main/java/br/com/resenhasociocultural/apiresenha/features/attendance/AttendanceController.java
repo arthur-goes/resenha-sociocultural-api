@@ -19,7 +19,7 @@ public class AttendanceController {
     private final AttendanceMapper attendanceMapper;
 
     @GetMapping
-    @PreAuthorize("hasRole('COORDINATOR')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<AttendanceResponseDto>> find(@Valid @ModelAttribute AttendanceFilterDto dto) {
         List<Attendance> attendances = attendanceService.findWithFilters(dto);
         List<AttendanceResponseDto> response = attendanceMapper.toResponseListDto(attendances);

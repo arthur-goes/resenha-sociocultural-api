@@ -23,7 +23,7 @@ public class MeetingController {
     private final MeetingMapper meetingMapper;
 
     @GetMapping
-    @PreAuthorize("hasRole('COORDINATOR')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<MeetingResponseDto>> getMeetings(@ModelAttribute MeetingFilterDto filterDto){
         List<Meeting> meetings = meetingService.findWithFilters(filterDto);
         List<MeetingResponseDto> meetingsDto = meetingMapper.toResponseDtoList(meetings);
@@ -31,7 +31,7 @@ public class MeetingController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('COORDINATOR')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<MeetingResponseDto> findMeeting(@PathVariable Long id){
         Meeting foundMeeting = meetingService.findById(id);
         MeetingResponseDto responseDto = meetingMapper.toResponseDto(foundMeeting);
@@ -60,7 +60,7 @@ public class MeetingController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('COORDINATOR')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteMeeting(@PathVariable(name = "id") Long id){
         meetingService.delete(id);
         return ResponseEntity.noContent().build();
