@@ -1,6 +1,5 @@
 package br.com.resenhasociocultural.apiresenha.features.attendance;
 
-import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceCreateDto;
 import br.com.resenhasociocultural.apiresenha.exception.ResourceNotFoundException;
 import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceFilterDto;
 import lombok.AllArgsConstructor;
@@ -15,19 +14,18 @@ import java.util.List;
 public class AttendanceService {
 
     private final AttendanceRepository attendanceRepository;
-    private final AttendanceMapper attendanceMapper;
     private final AttendanceSpecs attendanceSpecs;
 
-    public List<AttendanceEntry> findWithFilters(AttendanceFilterDto filters){
+    public List<Attendance> findWithFilters(AttendanceFilterDto filters){
         validateDateFilters(filters);
-        Specification<AttendanceEntry> specs = attendanceSpecs.buildSpecificationsFromFilters(filters);
+        Specification<Attendance> specs = attendanceSpecs.buildSpecificationsFromFilters(filters);
 
-        Sort youthSortByName = Sort.by(
+        Sort sortByYouthName = Sort.by(
             Sort.Order.asc("youth.first_name"),
             Sort.Order.asc("youth.surname")
         );
 
-        return attendanceRepository.findAll(specs, youthSortByName);
+        return attendanceRepository.findAll(specs, sortByYouthName);
     }
 
     private void validateDateFilters(AttendanceFilterDto filters){
@@ -43,14 +41,7 @@ public class AttendanceService {
         }
     }
 
-
-    public AttendanceEntry findById(Long id){
+    public Attendance findById(Long id){
         return attendanceRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Não foi possível localizar uma presença de id " + id));
     }
-
-    public AttendanceEntry create(AttendanceCreateDto dto){
-        AttendanceEntry attendance = attendanceMapper.toEntity(dto);
-        return attendanceRepository.save(attendance);
-    }
-
 }

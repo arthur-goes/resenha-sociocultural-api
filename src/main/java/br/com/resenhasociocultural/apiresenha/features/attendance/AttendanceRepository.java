@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
-public interface AttendanceRepository extends JpaRepository<AttendanceEntry, Long>, JpaSpecificationExecutor<AttendanceEntry> {
+public interface AttendanceRepository extends JpaRepository<Attendance, Long>, JpaSpecificationExecutor<Attendance> {
 
     @Query("SELECT a FROM AttendanceEntry a LEFT JOIN FETCH a.youth WHERE a.id = :id")
-    Optional<AttendanceEntry> findById();
+    Optional<Attendance> findById();
 }

@@ -31,8 +31,6 @@ import static br.com.resenhasociocultural.apiresenha.features.youth.builder.Yout
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
-import static org.mockito.Mockito.*;
-
 @Import({AttendanceMapperImpl.class, YouthMapperImpl.class})
 @ExtendWith({SpringExtension.class})
 public class AttendanceMapperTest {
@@ -42,11 +40,11 @@ public class AttendanceMapperTest {
 
     private Meeting meeting;
 
-    private AttendanceEntry attendance;
+    private Attendance attendance;
 
     private Youth youth;
 
-    private final Set<AttendanceEntry> attendances = new HashSet<>();
+    private final Set<Attendance> attendances = new HashSet<>();
 
     @BeforeEach
     public void setUp(){
@@ -102,7 +100,7 @@ public class AttendanceMapperTest {
             .withSurname("Dane")
             .build();
 
-        AttendanceEntry attendance2 = anAttendanceEntry()
+        Attendance attendance2 = anAttendanceEntry()
             .withId(11L)
             .withYouth(youth2)
             .withStatus(AttendanceStatus.ABSENT)
@@ -152,7 +150,7 @@ public class AttendanceMapperTest {
             .statusPresent()
             .build();
 
-        AttendanceEntry createdAttendance = attendanceMapper.toEntity(createDto);
+        Attendance createdAttendance = attendanceMapper.toEntity(createDto);
 
         assertThat(createdAttendance.getYouth().getId()).isEqualTo(youth.getId());
         assertThat(createdAttendance.getYouth().getFirstName()).isEqualTo(youth.getFirstName());

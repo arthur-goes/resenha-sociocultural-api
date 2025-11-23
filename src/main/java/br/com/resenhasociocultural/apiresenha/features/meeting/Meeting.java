@@ -1,6 +1,6 @@
 package br.com.resenhasociocultural.apiresenha.features.meeting;
 
-import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceEntry;
+import br.com.resenhasociocultural.apiresenha.features.attendance.Attendance;
 import br.com.resenhasociocultural.apiresenha.features.participationpoint.ParticipationPointEntry;
 import br.com.resenhasociocultural.apiresenha.features.strike.StrikeEntry;
 import jakarta.persistence.*;
@@ -32,7 +32,7 @@ public class Meeting {
     private String minutosDeSabedoriaLesson;
 
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<AttendanceEntry> attendanceEntries = new HashSet<>();
+    private Set<Attendance> attendanceEntries = new HashSet<>();
 
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<StrikeEntry> strikeEntries = new HashSet<>();
@@ -40,7 +40,7 @@ public class Meeting {
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<ParticipationPointEntry> participationPointEntries = new HashSet<>();
 
-    public void addAttendanceEntries(AttendanceEntry attendance){
+    public void addAttendanceEntries(Attendance attendance){
         attendance.setMeeting(this);
         attendanceEntries.add(attendance);
     }

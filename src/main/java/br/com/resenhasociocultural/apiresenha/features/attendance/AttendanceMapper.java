@@ -10,15 +10,15 @@ import java.util.List;
 import java.util.Set;
 
 @Mapper(componentModel = "spring", uses = {YouthMapper.class})
-public interface AttendanceMapper extends YouthEntryMapper<AttendanceEntry, AttendanceCreateDto> {
+public interface AttendanceMapper extends YouthEntryMapper<Attendance, AttendanceCreateDto> {
 
-    List<AttendanceResponseDto> toResponseListDto(Set<AttendanceEntry> attendance);
-    List<AttendanceResponseDto> toResponseListDto(List<AttendanceEntry> attendance);
+    List<AttendanceResponseDto> toResponseListDto(Set<Attendance> attendance);
+    List<AttendanceResponseDto> toResponseListDto(List<Attendance> attendance);
 
     @Mapping(source = "meeting.id", target = "meetingId")
     @Mapping(source = "meeting.date", target = "date")
-    AttendanceResponseDto toResponseDto(AttendanceEntry attendance);
+    AttendanceResponseDto toResponseDto(Attendance attendance);
 
-    List<AttendanceCreateDto> toCreateDtoList(Set<AttendanceEntry> attendances);
+    List<AttendanceCreateDto> toCreateDtoList(Set<Attendance> attendances);
 
 }

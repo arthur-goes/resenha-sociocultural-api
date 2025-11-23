@@ -1,6 +1,6 @@
 package br.com.resenhasociocultural.apiresenha.features.meeting;
 
-import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceEntry;
+import br.com.resenhasociocultural.apiresenha.features.attendance.Attendance;
 import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingCreateDto;
 import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingFilterDto;
 import br.com.resenhasociocultural.apiresenha.exception.ResourceNotFoundException;
@@ -43,7 +43,7 @@ public class MeetingService {
     }
 
     private void addYouthProxies(Meeting meeting){
-        Set<AttendanceEntry> attendances = meeting.getAttendanceEntries();
+        Set<Attendance> attendances = meeting.getAttendanceEntries();
         Set<StrikeEntry> strikes = meeting.getStrikeEntries();
         Set<ParticipationPointEntry> participationPoints = meeting.getParticipationPointEntries();
 

@@ -1,6 +1,6 @@
 package br.com.resenhasociocultural.apiresenha.features.meeting;
 
-import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceEntry;
+import br.com.resenhasociocultural.apiresenha.features.attendance.Attendance;
 import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceStatus;
 import br.com.resenhasociocultural.apiresenha.features.participationpoint.ParticipationPointEntry;
 import br.com.resenhasociocultural.apiresenha.features.strike.StrikeEntry;
@@ -10,8 +10,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,12 +41,12 @@ public class MeetingTest {
     @Test
     @DisplayName("Should not allow multiple Attendances for same Youth, even if Attendance IDs are distinct")
     public void shouldNotAllowMultipleAttendancesForSameYouthInMeeting(){
-        AttendanceEntry attendance1 = new AttendanceEntry();
+        Attendance attendance1 = new Attendance();
         attendance1.setId(1L);
         attendance1.setAttendanceStatus(AttendanceStatus.PRESENT);
         attendance1.setYouth(this.youth);
 
-        AttendanceEntry attendance2 = new AttendanceEntry();
+        Attendance attendance2 = new Attendance();
         attendance2.setId(2L);
         attendance2.setAttendanceStatus(AttendanceStatus.ABSENT);
         attendance2.setYouth(this.youth);
@@ -56,7 +54,7 @@ public class MeetingTest {
         this.meeting.addAttendanceEntries(attendance1);
         this.meeting.addAttendanceEntries(attendance2);
 
-        Set<AttendanceEntry> attendanceEntries = this.meeting.getAttendanceEntries();
+        Set<Attendance> attendanceEntries = this.meeting.getAttendanceEntries();
 
         assertThat(attendanceEntries.size()).isEqualTo(1);
 

@@ -1,6 +1,6 @@
 package br.com.resenhasociocultural.apiresenha.features.attendance.builder;
 
-import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceEntry;
+import br.com.resenhasociocultural.apiresenha.features.attendance.Attendance;
 import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceStatus;
 import br.com.resenhasociocultural.apiresenha.features.meeting.Meeting;
 import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
@@ -41,8 +41,8 @@ public class AttendanceEntryBuilder {
         return this;
     }
 
-    public AttendanceEntry build(){
-        return new AttendanceEntry(
+    public Attendance build(){
+        return new Attendance(
             id,
             meeting,
             youth,

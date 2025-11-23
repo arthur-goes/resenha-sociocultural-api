@@ -3,7 +3,7 @@ package br.com.resenhasociocultural.apiresenha.features.meeting;
 import br.com.resenhasociocultural.apiresenha.exception.DateConflictArgumentException;
 import br.com.resenhasociocultural.apiresenha.exception.InconsistentDateIntervalArgumentException;
 import br.com.resenhasociocultural.apiresenha.exception.MalformedMeetingException;
-import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceEntry;
+import br.com.resenhasociocultural.apiresenha.features.attendance.Attendance;
 import br.com.resenhasociocultural.apiresenha.features.meeting.dto.EntryValidationDto;
 import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingFilterDto;
 import br.com.resenhasociocultural.apiresenha.features.participationpoint.ParticipationPointEntry;
@@ -30,7 +30,7 @@ public class MeetingValidator {
 
     static {
         YOUTH_ENTRY_DESCRIPTIONS = Map.of(
-            AttendanceEntry.class, "uma Presença",
+            Attendance.class, "uma Presença",
             StrikeEntry.class, "um Strike",
             ParticipationPointEntry.class, "um Ponto de Participação"
         );

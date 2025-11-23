@@ -17,11 +17,11 @@ public class AttendanceSpecs {
 
     private final YouthNameSpecs youthNameSpecs;
 
-    public Specification<AttendanceEntry> buildSpecificationsFromFilters(AttendanceFilterDto filters){
+    public Specification<Attendance> buildSpecificationsFromFilters(AttendanceFilterDto filters){
         boolean isDateBetweenApplied = filters.initialDate() != null && filters.finalDate() != null;
         boolean isDateBetweenIntervalNotInverted = isDateBetweenApplied && (filters.initialDate().isBefore(filters.finalDate()));
 
-        Specification<AttendanceEntry> specifications = fetchYouth();
+        Specification<Attendance> specifications = fetchYouth();
 
         if (filters.youthNameSubstring() != null){
             specifications = specifications.and(youthNameSpecs.nameOrSurnameLikeForYouthEntry(filters.youthNameSubstring()));
@@ -43,21 +43,21 @@ public class AttendanceSpecs {
         return specifications;
     }
 
-    public Specification<AttendanceEntry> dateEqual(LocalDate date) {
+    public Specification<Attendance> dateEqual(LocalDate date) {
         return (root, query, cb) -> {
-            Join<AttendanceEntry, Meeting> join = root.join("meeting");
+            Join<Attendance, Meeting> join = root.join("meeting");
             return cb.equal(join.get("date"), date);
         };
     }
 
-    public Specification<AttendanceEntry> dateBetween(LocalDate initialDate, LocalDate finalDate) {
+    public Specification<Attendance> dateBetween(LocalDate initialDate, LocalDate finalDate) {
         return (root, query, cb) -> {
-            Join<AttendanceEntry, Meeting> join = root.join("meeting");
+            Join<Attendance, Meeting> join = root.join("meeting");
             return cb.between(join.get("date"), initialDate, finalDate);
         };
     }
 
-    public Specification<AttendanceEntry> fetchYouth(){
+    public Specification<Attendance> fetchYouth(){
         return ((root, query, cb) -> {
             root.fetch("youth", JoinType.LEFT);
             return cb.conjunction();

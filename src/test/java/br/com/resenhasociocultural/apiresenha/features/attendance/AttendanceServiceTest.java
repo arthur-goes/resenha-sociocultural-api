@@ -84,7 +84,7 @@ public class AttendanceServiceTest {
     @ParameterizedTest(name = "Cenario: {0}")
     @MethodSource("validFilterScenarios")
     public void givenValidFilter_whenFindWithFilters_thenFindAllAttendances(String description, AttendanceFilterDto filterDto){
-        Specification<AttendanceEntry> specs = (root, query, cb) -> cb.conjunction();
+        Specification<Attendance> specs = (root, query, cb) -> cb.conjunction();
         ArgumentCaptor<Sort> sortCaptor = ArgumentCaptor.forClass(Sort.class);
 
         when(attendanceSpecs.buildSpecificationsFromFilters(filterDto)).thenReturn(specs);
@@ -143,7 +143,7 @@ public class AttendanceServiceTest {
     @Test
     public void givenValidId_whenFindById_thenReturnEntity(){
         Long validId = 1L;
-        AttendanceEntry attendance = anAttendanceEntry().build();
+        Attendance attendance = anAttendanceEntry().build();
         when(attendanceRepository.findById(validId)).thenReturn(Optional.of(attendance));
         attendanceService.findById(validId);
         verify(attendanceRepository,times(1)).findById(validId);

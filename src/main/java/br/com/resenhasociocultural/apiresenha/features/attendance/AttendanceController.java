@@ -19,7 +19,7 @@ public class AttendanceController {
 
     @GetMapping
     public ResponseEntity<List<AttendanceResponseDto>> find(@Valid @ModelAttribute AttendanceFilterDto dto) {
-        List<AttendanceEntry> attendances = attendanceService.findWithFilters(dto);
+        List<Attendance> attendances = attendanceService.findWithFilters(dto);
         List<AttendanceResponseDto> response = attendanceMapper.toResponseListDto(attendances);
         return ResponseEntity.ok(response);
     }
