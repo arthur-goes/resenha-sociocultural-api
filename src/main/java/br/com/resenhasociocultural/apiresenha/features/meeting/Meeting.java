@@ -40,17 +40,17 @@ public class Meeting {
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<ParticipationPoint> participationPointEntries = new HashSet<>();
 
-    public void addAttendanceEntries(Attendance attendance){
+    public void addAttendances(Attendance attendance){
         attendance.setMeeting(this);
         attendanceEntries.add(attendance);
     }
 
-    public void addStrikeEntries(Strike strike){
+    public void addStrikes(Strike strike){
         strike.setMeeting(this);
         strikeEntries.add(strike);
     }
 
-    public void addParticipationPointEntries(ParticipationPoint participation){
+    public void addParticipationPoints(ParticipationPoint participation){
         participation.setMeeting(this);
         participationPointEntries.add(participation);
     }

@@ -77,9 +77,9 @@ public class MeetingBuilder {
             participationPoints
         );
 
-        if (attendancesToAdd != null) attendancesToAdd.forEach(meeting::addAttendanceEntries);
-        if (strikesToAdd != null) strikesToAdd.forEach(meeting::addStrikeEntries);
-        if (participationPointsToAdd != null) participationPointsToAdd.forEach(meeting::addParticipationPointEntries);
+        if (attendancesToAdd != null) attendancesToAdd.forEach(meeting::addAttendances);
+        if (strikesToAdd != null) strikesToAdd.forEach(meeting::addStrikes);
+        if (participationPointsToAdd != null) participationPointsToAdd.forEach(meeting::addParticipationPoints);
 
         return meeting;
     }

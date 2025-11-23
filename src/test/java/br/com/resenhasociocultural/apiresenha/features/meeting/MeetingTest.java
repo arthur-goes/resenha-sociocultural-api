@@ -51,8 +51,8 @@ public class MeetingTest {
         attendance2.setAttendanceStatus(AttendanceStatus.ABSENT);
         attendance2.setYouth(this.youth);
 
-        this.meeting.addAttendanceEntries(attendance1);
-        this.meeting.addAttendanceEntries(attendance2);
+        this.meeting.addAttendances(attendance1);
+        this.meeting.addAttendances(attendance2);
 
         Set<Attendance> attendanceEntries = this.meeting.getAttendanceEntries();
 
@@ -71,8 +71,8 @@ public class MeetingTest {
         strike.setYouth(this.youth);
         strike.setReason("Any Reason");
 
-        this.meeting.addStrikeEntries(strike);
-        this.meeting.addStrikeEntries(strike);
+        this.meeting.addStrikes(strike);
+        this.meeting.addStrikes(strike);
 
         Set<Strike> strikeEntries = this.meeting.getStrikeEntries();
 
@@ -93,8 +93,8 @@ public class MeetingTest {
         strike2.setYouth(this.youth);
         strike2.setReason("Any Reason 2");
 
-        this.meeting.addStrikeEntries(strike1);
-        this.meeting.addStrikeEntries(strike2);
+        this.meeting.addStrikes(strike1);
+        this.meeting.addStrikes(strike2);
 
         Set<Strike> strikeEntries = this.meeting.getStrikeEntries();
 
@@ -109,8 +109,8 @@ public class MeetingTest {
         participation.setYouth(this.youth);
         participation.setReason("Any Reason");
 
-        this.meeting.addParticipationPointEntries(participation);
-        this.meeting.addParticipationPointEntries(participation);
+        this.meeting.addParticipationPoints(participation);
+        this.meeting.addParticipationPoints(participation);
 
         Set<ParticipationPoint> participationPointEntries = this.meeting.getParticipationPointEntries();
 
@@ -131,8 +131,8 @@ public class MeetingTest {
         participation2.setYouth(this.youth);
         participation2.setReason("Any Reason 2");
 
-        this.meeting.addParticipationPointEntries(participation1);
-        this.meeting.addParticipationPointEntries(participation2);
+        this.meeting.addParticipationPoints(participation1);
+        this.meeting.addParticipationPoints(participation2);
         Set<ParticipationPoint> participationPointEntries = this.meeting.getParticipationPointEntries();
 
         assertThat(participationPointEntries.size()).isEqualTo(2);

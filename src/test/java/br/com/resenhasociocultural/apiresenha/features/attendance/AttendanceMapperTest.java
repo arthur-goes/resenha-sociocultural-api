@@ -65,7 +65,7 @@ public class AttendanceMapperTest {
             .withDate(LocalDate.now())
             .build();
 
-        meeting.addAttendanceEntries(attendance);
+        meeting.addAttendances(attendance);
 
         attendances.add(attendance);
     }
@@ -113,7 +113,7 @@ public class AttendanceMapperTest {
             .withSurname(youth2.getSurname())
             .build();
 
-        meeting.addAttendanceEntries(attendance2);
+        meeting.addAttendances(attendance2);
         attendances.add(attendance2);
 
         List<AttendanceResponseDto> mappedAttendances = attendanceMapper.toResponseListDto(attendances);
