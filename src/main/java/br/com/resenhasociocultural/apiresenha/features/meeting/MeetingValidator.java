@@ -7,7 +7,7 @@ import br.com.resenhasociocultural.apiresenha.features.attendance.Attendance;
 import br.com.resenhasociocultural.apiresenha.features.meeting.dto.EntryValidationDto;
 import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingFilterDto;
 import br.com.resenhasociocultural.apiresenha.features.participationpoint.ParticipationPoint;
-import br.com.resenhasociocultural.apiresenha.features.strike.StrikeEntry;
+import br.com.resenhasociocultural.apiresenha.features.strike.Strike;
 import br.com.resenhasociocultural.apiresenha.features.youth.YouthEntry;
 import br.com.resenhasociocultural.apiresenha.features.youth.YouthService;
 import lombok.AllArgsConstructor;
@@ -31,7 +31,7 @@ public class MeetingValidator {
     static {
         YOUTH_ENTRY_DESCRIPTIONS = Map.of(
             Attendance.class, "uma Presença",
-            StrikeEntry.class, "um Strike",
+            Strike.class, "um Strike",
             ParticipationPoint.class, "um Ponto de Participação"
         );
     }

@@ -14,7 +14,7 @@ import lombok.*;
 @AllArgsConstructor
 @EqualsAndHashCode(of = {"youth", "meeting"})
 @ToString(exclude = "meeting")
-public class StrikeEntry implements YouthEntry {
+public class Strike implements YouthEntry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

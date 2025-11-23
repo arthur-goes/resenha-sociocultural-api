@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Set;
 
 @Mapper(componentModel = "spring", uses = {YouthMapper.class})
-public interface StrikeMapper extends YouthEntryMapper<StrikeEntry, StrikeCreateDto> {
+public interface StrikeMapper extends YouthEntryMapper<Strike, StrikeCreateDto> {
     @Mapping(source = "meeting.id", target = "meetingId")
-    StrikeResponseDto toResponseDto(StrikeEntry strike);
+    StrikeResponseDto toResponseDto(Strike strike);
 
-    Set<StrikeResponseDto> toResponseDtoList(Set<StrikeEntry> strikes);
-    List<StrikeResponseDto> toResponseDtoList(List<StrikeEntry> strikes);
+    Set<StrikeResponseDto> toResponseDtoList(Set<Strike> strikes);
+    List<StrikeResponseDto> toResponseDtoList(List<Strike> strikes);
 
 }

@@ -3,7 +3,7 @@ package br.com.resenhasociocultural.apiresenha.features.meeting;
 import br.com.resenhasociocultural.apiresenha.features.attendance.Attendance;
 import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceStatus;
 import br.com.resenhasociocultural.apiresenha.features.participationpoint.ParticipationPoint;
-import br.com.resenhasociocultural.apiresenha.features.strike.StrikeEntry;
+import br.com.resenhasociocultural.apiresenha.features.strike.Strike;
 import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -65,7 +65,7 @@ public class MeetingTest {
 
     @Test
     public void shouldNotAllowDuplicatedStrikeInMeeting(){
-        StrikeEntry strike = new StrikeEntry();
+        Strike strike = new Strike();
         strike.setId(1L);
         strike.setAmount(1);
         strike.setYouth(this.youth);
@@ -74,20 +74,20 @@ public class MeetingTest {
         this.meeting.addStrikeEntries(strike);
         this.meeting.addStrikeEntries(strike);
 
-        Set<StrikeEntry> strikeEntries = this.meeting.getStrikeEntries();
+        Set<Strike> strikeEntries = this.meeting.getStrikeEntries();
 
         assertThat(strikeEntries.size()).isEqualTo(1);
     }
 
     @Test
     public void shouldAllowTwoDifferentStrikesForSameYouth(){
-        StrikeEntry strike1 = new StrikeEntry();
+        Strike strike1 = new Strike();
         strike1.setId(1L);
         strike1.setAmount(1);
         strike1.setYouth(this.youth);
         strike1.setReason("Any Reason 1");
 
-        StrikeEntry strike2 = new StrikeEntry();
+        Strike strike2 = new Strike();
         strike2.setId(2L);
         strike2.setAmount(1);
         strike2.setYouth(this.youth);
@@ -96,7 +96,7 @@ public class MeetingTest {
         this.meeting.addStrikeEntries(strike1);
         this.meeting.addStrikeEntries(strike2);
 
-        Set<StrikeEntry> strikeEntries = this.meeting.getStrikeEntries();
+        Set<Strike> strikeEntries = this.meeting.getStrikeEntries();
 
         assertThat(strikeEntries.size()).isEqualTo(2);
     }

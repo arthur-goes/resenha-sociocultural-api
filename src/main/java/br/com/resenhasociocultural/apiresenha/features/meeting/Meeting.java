@@ -2,7 +2,7 @@ package br.com.resenhasociocultural.apiresenha.features.meeting;
 
 import br.com.resenhasociocultural.apiresenha.features.attendance.Attendance;
 import br.com.resenhasociocultural.apiresenha.features.participationpoint.ParticipationPoint;
-import br.com.resenhasociocultural.apiresenha.features.strike.StrikeEntry;
+import br.com.resenhasociocultural.apiresenha.features.strike.Strike;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,7 +35,7 @@ public class Meeting {
     private Set<Attendance> attendanceEntries = new HashSet<>();
 
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<StrikeEntry> strikeEntries = new HashSet<>();
+    private Set<Strike> strikeEntries = new HashSet<>();
 
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<ParticipationPoint> participationPointEntries = new HashSet<>();
@@ -45,7 +45,7 @@ public class Meeting {
         attendanceEntries.add(attendance);
     }
 
-    public void addStrikeEntries(StrikeEntry strike){
+    public void addStrikeEntries(Strike strike){
         strike.setMeeting(this);
         strikeEntries.add(strike);
     }

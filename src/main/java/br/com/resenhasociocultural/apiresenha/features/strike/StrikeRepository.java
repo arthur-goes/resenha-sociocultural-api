@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
-public interface StrikeRepository extends JpaRepository<StrikeEntry, Long> {
+public interface StrikeRepository extends JpaRepository<Strike, Long> {
     @Query("SELECT s FROM StrikeEntry s LEFT JOIN FETCH s.youth WHERE s.id = :id")
-    Optional<StrikeEntry> findById();
+    Optional<Strike> findById();
 }

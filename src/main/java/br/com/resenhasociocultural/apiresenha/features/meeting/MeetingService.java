@@ -6,7 +6,7 @@ import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingFilter
 import br.com.resenhasociocultural.apiresenha.exception.ResourceNotFoundException;
 import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingUpdateDto;
 import br.com.resenhasociocultural.apiresenha.features.participationpoint.ParticipationPoint;
-import br.com.resenhasociocultural.apiresenha.features.strike.StrikeEntry;
+import br.com.resenhasociocultural.apiresenha.features.strike.Strike;
 import br.com.resenhasociocultural.apiresenha.features.youth.*;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
@@ -44,7 +44,7 @@ public class MeetingService {
 
     private void addYouthProxies(Meeting meeting){
         Set<Attendance> attendances = meeting.getAttendanceEntries();
-        Set<StrikeEntry> strikes = meeting.getStrikeEntries();
+        Set<Strike> strikes = meeting.getStrikeEntries();
         Set<ParticipationPoint> participationPoints = meeting.getParticipationPointEntries();
 
         Consumer<Set<? extends YouthEntry>> replaceYouthWithProxies = (youthEntries) -> {

@@ -1,7 +1,7 @@
 package br.com.resenhasociocultural.apiresenha.features.strike.builder;
 
 import br.com.resenhasociocultural.apiresenha.features.meeting.Meeting;
-import br.com.resenhasociocultural.apiresenha.features.strike.StrikeEntry;
+import br.com.resenhasociocultural.apiresenha.features.strike.Strike;
 import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
 import lombok.NoArgsConstructor;
 
@@ -53,8 +53,8 @@ public class StrikeEntryBuilder {
         return this;
     }
 
-    public StrikeEntry build(){
-        return new StrikeEntry(
+    public Strike build(){
+        return new Strike(
             id,
             youth,
             amount,
