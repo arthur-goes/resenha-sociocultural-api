@@ -12,9 +12,9 @@ public record MeetingResponseDto(
     LocalDate date,
     String theme,
     String minutosDeSabedoriaLesson,
-    List<AttendanceResponseDto> attendanceEntries,
-    List<StrikeResponseDto> strikeEntries,
-    List<ParticipationPointResponseDto> participationPointEntries
+    List<AttendanceResponseDto> attendances,
+    List<StrikeResponseDto> strikes,
+    List<ParticipationPointResponseDto> participationPoints
 ) {
 
 }
