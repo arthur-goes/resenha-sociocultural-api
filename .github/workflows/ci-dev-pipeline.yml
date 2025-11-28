@@ -28,3 +28,5 @@ jobs:
 
       - name: Build and Test with Maven
         run: ./mvnw -B clean install
+        env:
+          DOCKER_HOST: unix:///var/run/docker.sock
