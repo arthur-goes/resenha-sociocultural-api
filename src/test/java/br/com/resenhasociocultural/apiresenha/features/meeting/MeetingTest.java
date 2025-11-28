@@ -5,13 +5,18 @@ import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceStat
 import br.com.resenhasociocultural.apiresenha.features.participationpoint.ParticipationPoint;
 import br.com.resenhasociocultural.apiresenha.features.strike.Strike;
 import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
+import br.com.resenhasociocultural.apiresenha.utils.CPFGenerator;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.Set;
 
+import static br.com.resenhasociocultural.apiresenha.features.attendance.builder.AttendanceBuilder.anAttendance;
+import static br.com.resenhasociocultural.apiresenha.features.meeting.builder.MeetingBuilder.aMeeting;
+import static br.com.resenhasociocultural.apiresenha.features.participationpoint.builder.ParticipationPointBuilder.aParticipationPoint;
+import static br.com.resenhasociocultural.apiresenha.features.strike.builder.StrikeBuilder.aStrike;
+import static br.com.resenhasociocultural.apiresenha.features.youth.builder.YouthBuilder.aYouth;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MeetingTest {
@@ -21,55 +26,59 @@ public class MeetingTest {
 
     @BeforeEach
     public void setUp(){
-        Meeting meeting = new Meeting();
-        meeting.setId(1L);
-        meeting.setDate(LocalDate.now());
-        meeting.setTheme("Test");
-        meeting.setMinutosDeSabedoriaLesson("Test Lesson");
-        this.meeting = meeting;
+        meeting = aMeeting()
+            .withId(1L)
+            .withDate(LocalDate.now())
+            .withTheme("Test Theme")
+            .withMinutosDeSabedoriaLesson("Test Lesson")
+            .build();
 
-        Youth youth = new Youth();
-        youth.setActive(true);
-        youth.setId(1L);
-        youth.setCpf("11111111111");
-        youth.setFirstName("Youth");
-        youth.setSurname("Test");
+        youth = aYouth()
+            .withId(1L)
+            .withFirstName("Test fisrstName")
+            .withSurname("Test surname")
+            .withCpf(CPFGenerator.generate())
+            .active()
+            .build();
 
         this.youth = youth;
     }
 
     @Test
-    @DisplayName("Should not allow multiple Attendances for same Youth, even if Attendance IDs are distinct")
     public void shouldNotAllowMultipleAttendancesForSameYouthInMeeting(){
-        Attendance attendance1 = new Attendance();
-        attendance1.setId(1L);
-        attendance1.setAttendanceStatus(AttendanceStatus.PRESENT);
-        attendance1.setYouth(this.youth);
 
-        Attendance attendance2 = new Attendance();
-        attendance2.setId(2L);
-        attendance2.setAttendanceStatus(AttendanceStatus.ABSENT);
-        attendance2.setYouth(this.youth);
+        Attendance attendance1 = anAttendance()
+            .withoutId()
+            .withStatus(AttendanceStatus.PRESENT)
+            .withYouth(youth)
+            .build();
+
+        Attendance attendance2 = anAttendance()
+            .withoutId()
+            .withStatus(AttendanceStatus.ABSENT)
+            .withYouth(youth)
+            .build();
 
         this.meeting.addAttendances(attendance1);
         this.meeting.addAttendances(attendance2);
 
-        Set<Attendance> attendanceEntries = this.meeting.getAttendanceEntries();
+        Set<Attendance> attendances = this.meeting.getAttendanceEntries();
 
-        assertThat(attendanceEntries.size()).isEqualTo(1);
+        assertThat(attendances.size()).isEqualTo(1);
 
-        attendanceEntries.stream().forEach((attendanceEntry) -> {
-            assertThat(attendanceEntry.getId()).isEqualTo(1L);
+        attendances.forEach((attendanceEntry) -> {
+            assertThat(attendanceEntry.getAttendanceStatus()).isEqualTo(attendance1.getAttendanceStatus());
         });
     }
 
     @Test
     public void shouldNotAllowDuplicatedStrikeInMeeting(){
-        Strike strike = new Strike();
-        strike.setId(1L);
-        strike.setAmount(1);
-        strike.setYouth(this.youth);
-        strike.setReason("Any Reason");
+        Strike strike = aStrike()
+            .withoutId()
+            .withAmount(1)
+            .withYouth(youth)
+            .withReason("Test reason")
+            .build();
 
         this.meeting.addStrikes(strike);
         this.meeting.addStrikes(strike);
@@ -81,17 +90,19 @@ public class MeetingTest {
 
     @Test
     public void shouldAllowTwoDifferentStrikesForSameYouth(){
-        Strike strike1 = new Strike();
-        strike1.setId(1L);
-        strike1.setAmount(1);
-        strike1.setYouth(this.youth);
-        strike1.setReason("Any Reason 1");
+        Strike strike1 = aStrike()
+            .withoutId()
+            .withYouth(youth)
+            .withReason("Any Reason 1")
+            .withAmount(1)
+            .build();
 
-        Strike strike2 = new Strike();
-        strike2.setId(2L);
-        strike2.setAmount(1);
-        strike2.setYouth(this.youth);
-        strike2.setReason("Any Reason 2");
+        Strike strike2 = aStrike()
+            .withoutId()
+            .withYouth(youth)
+            .withReason("Any Reason 2")
+            .withAmount(1)
+            .build();
 
         this.meeting.addStrikes(strike1);
         this.meeting.addStrikes(strike2);
@@ -103,11 +114,12 @@ public class MeetingTest {
 
     @Test
     public void shouldNotAllowDuplicatedParticipationPointInMeeting(){
-        ParticipationPoint participation = new ParticipationPoint();
-        participation.setId(1L);
-        participation.setAmount(1);
-        participation.setYouth(this.youth);
-        participation.setReason("Any Reason");
+        ParticipationPoint participation = aParticipationPoint()
+            .withoutId()
+            .withAmount(1)
+            .withYouth(youth)
+            .withReason("Test reason")
+            .build();
 
         this.meeting.addParticipationPoints(participation);
         this.meeting.addParticipationPoints(participation);
@@ -119,17 +131,19 @@ public class MeetingTest {
 
     @Test
     public void shouldAllowTwoDifferentParticipationPointForSameYouth(){
-        ParticipationPoint participation1 = new ParticipationPoint();
-        participation1.setId(1L);
-        participation1.setAmount(1);
-        participation1.setYouth(this.youth);
-        participation1.setReason("Any Reason 1");
+        ParticipationPoint participation1 = aParticipationPoint()
+            .withoutId()
+            .withYouth(youth)
+            .withReason("Any Reason 1")
+            .withAmount(1)
+            .build();
 
-        ParticipationPoint participation2 = new ParticipationPoint();
-        participation2.setId(2L);
-        participation2.setAmount(1);
-        participation2.setYouth(this.youth);
-        participation2.setReason("Any Reason 2");
+        ParticipationPoint participation2 = aParticipationPoint()
+            .withoutId()
+            .withYouth(youth)
+            .withReason("Any Reason 2")
+            .withAmount(1)
+            .build();
 
         this.meeting.addParticipationPoints(participation1);
         this.meeting.addParticipationPoints(participation2);
