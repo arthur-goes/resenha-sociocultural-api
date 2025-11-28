@@ -12,7 +12,7 @@ public class YouthNameSpecs {
         return (root, query, cb) -> {
             Path<Youth> youthPath = pathGenerator.apply(root);
             Predicate nameLike = cb.like(cb.upper(youthPath.get("firstName")), "%" + youthNameSubstring.toUpperCase() + "%");
-            Predicate surnameLike = cb.like(cb.upper(youthPath.get("firstName")), "%" + youthNameSubstring.toUpperCase() + "%");
+            Predicate surnameLike = cb.like(cb.upper(youthPath.get("surname")), "%" + youthNameSubstring.toUpperCase() + "%");
             return cb.or(nameLike, surnameLike);
         };
     }
@@ -22,6 +22,6 @@ public class YouthNameSpecs {
     }
 
     public <E extends YouthEntry> Specification<E> nameOrSurnameLikeForYouthEntry(String nameSubstring){
-        return nameOrSurnameLike(nameSubstring, root -> root.join("Youth"));
+        return nameOrSurnameLike(nameSubstring, root -> root.join("youth"));
     }
 }
