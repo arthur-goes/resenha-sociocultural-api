@@ -12,7 +12,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = {"youth", "meeting"})
+@EqualsAndHashCode(of = {"youth", "meeting", "reason"})
 @ToString(exclude = "meeting")
 public class Strike implements YouthEntry {
     @Id

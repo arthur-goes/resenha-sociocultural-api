@@ -8,7 +8,7 @@ import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = {"youth", "meeting"})
+@EqualsAndHashCode(of = {"youth", "meeting", "reason"})
 @Getter
 @Setter
 @Table(name = "participation_points")
