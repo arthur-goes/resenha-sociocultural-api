@@ -23,7 +23,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static br.com.resenhasociocultural.apiresenha.features.attendance.builder.AttendanceCreateDtoBuilder.anAttendanceCreateDto;
-import static br.com.resenhasociocultural.apiresenha.features.attendance.builder.AttendanceEntryBuilder.anAttendanceEntry;
+import static br.com.resenhasociocultural.apiresenha.features.attendance.builder.AttendanceBuilder.anAttendance;
 import static br.com.resenhasociocultural.apiresenha.features.meeting.builder.MeetingBuilder.aMeeting;
 import static br.com.resenhasociocultural.apiresenha.features.youth.builder.YouthBuilder.aYouth;
 import static br.com.resenhasociocultural.apiresenha.features.youth.builder.YouthSimpleDtoBuilder.aYouthSimpleDto;
@@ -54,7 +54,7 @@ public class AttendanceMapperTest {
             .withSurname("Doe")
             .build();
 
-        attendance = anAttendanceEntry()
+        attendance = anAttendance()
             .withId(10L)
             .withYouth(youth)
             .withStatus(AttendanceStatus.PRESENT)
@@ -100,7 +100,7 @@ public class AttendanceMapperTest {
             .withSurname("Dane")
             .build();
 
-        Attendance attendance2 = anAttendanceEntry()
+        Attendance attendance2 = anAttendance()
             .withId(11L)
             .withYouth(youth2)
             .withStatus(AttendanceStatus.ABSENT)

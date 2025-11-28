@@ -5,38 +5,38 @@ import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceStat
 import br.com.resenhasociocultural.apiresenha.features.meeting.Meeting;
 import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
 
-public class AttendanceEntryBuilder {
+public class AttendanceBuilder {
     private Long id = 1L;
     private Meeting meeting = null;
     private Youth youth = null;
     private AttendanceStatus attendanceStatus = AttendanceStatus.PRESENT;
     private String absenceExcuse = null;
 
-    public static AttendanceEntryBuilder anAttendanceEntry(){
-        return new AttendanceEntryBuilder();
+    public static AttendanceBuilder anAttendance(){
+        return new AttendanceBuilder();
     }
 
-    public AttendanceEntryBuilder withId(Long id){
+    public AttendanceBuilder withId(Long id){
         this.id = id;
         return this;
     }
 
-    public AttendanceEntryBuilder withoutId(){
+    public AttendanceBuilder withoutId(){
         this.id = null;
         return this;
     }
 
-    public AttendanceEntryBuilder withYouth(Youth youth){
+    public AttendanceBuilder withYouth(Youth youth){
         this.youth = youth;
         return this;
     }
 
-    public AttendanceEntryBuilder withStatus(AttendanceStatus status){
+    public AttendanceBuilder withStatus(AttendanceStatus status){
         this.attendanceStatus = status;
         return this;
     }
 
-    public AttendanceEntryBuilder withAbsenceExcuse(String excuse){
+    public AttendanceBuilder withAbsenceExcuse(String excuse){
         this.absenceExcuse = excuse;
         return this;
     }

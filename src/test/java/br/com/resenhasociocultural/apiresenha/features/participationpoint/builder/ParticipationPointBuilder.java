@@ -6,7 +6,7 @@ import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class ParticipationPointEntryBuilder {
+public class ParticipationPointBuilder {
     private Long id;
     private Youth youth = null;
     private int amount;
@@ -14,41 +14,41 @@ public class ParticipationPointEntryBuilder {
     private Meeting meeting = null;
     private boolean active = true;
 
-    public static ParticipationPointEntryBuilder aParticipationPointEntry(){
-        return new ParticipationPointEntryBuilder();
+    public static ParticipationPointBuilder aParticipationPoint(){
+        return new ParticipationPointBuilder();
     }
 
-    public ParticipationPointEntryBuilder withId(Long id){
+    public ParticipationPointBuilder withId(Long id){
         this.id = id;
         return this;
     }
 
-    public ParticipationPointEntryBuilder withoutId(){
+    public ParticipationPointBuilder withoutId(){
         this.id = null;
         return this;
     }
 
-    public ParticipationPointEntryBuilder withYouth(Youth youth){
+    public ParticipationPointBuilder withYouth(Youth youth){
         this.youth = youth;
         return this;
     }
 
-    public ParticipationPointEntryBuilder withAmount(int amount){
+    public ParticipationPointBuilder withAmount(int amount){
         this.amount = amount;
         return this;
     }
 
-    public ParticipationPointEntryBuilder withReason(String reason){
+    public ParticipationPointBuilder withReason(String reason){
         this.reason = reason;
         return this;
     }
 
-    public ParticipationPointEntryBuilder active(){
+    public ParticipationPointBuilder active(){
         this.active = true;
         return this;
     }
 
-    public ParticipationPointEntryBuilder inactive(){
+    public ParticipationPointBuilder inactive(){
         this.active = false;
         return this;
     }

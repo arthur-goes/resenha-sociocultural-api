@@ -18,7 +18,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static br.com.resenhasociocultural.apiresenha.features.attendance.builder.AttendanceEntryBuilder.anAttendanceEntry;
+import static br.com.resenhasociocultural.apiresenha.features.attendance.builder.AttendanceBuilder.anAttendance;
 import static br.com.resenhasociocultural.apiresenha.features.attendance.builder.AttendanceFilterDtoBuilder.anAttendanceFilterDto;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -143,7 +143,7 @@ public class AttendanceServiceTest {
     @Test
     public void givenValidId_whenFindById_thenReturnEntity(){
         Long validId = 1L;
-        Attendance attendance = anAttendanceEntry().build();
+        Attendance attendance = anAttendance().build();
         when(attendanceRepository.findById(validId)).thenReturn(Optional.of(attendance));
         attendanceService.findById(validId);
         verify(attendanceRepository,times(1)).findById(validId);

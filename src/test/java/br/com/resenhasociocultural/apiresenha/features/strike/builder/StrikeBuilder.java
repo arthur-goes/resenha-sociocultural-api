@@ -6,7 +6,7 @@ import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class StrikeEntryBuilder {
+public class StrikeBuilder {
     private Long id = 1L;
     private Youth youth = null;
     private int amount;
@@ -14,41 +14,41 @@ public class StrikeEntryBuilder {
     private Meeting meeting = null;
     private boolean active;
 
-    public static StrikeEntryBuilder aStrikeEntry(){
-        return new StrikeEntryBuilder();
+    public static StrikeBuilder aStrike(){
+        return new StrikeBuilder();
     }
 
-    public StrikeEntryBuilder withId(Long id){
+    public StrikeBuilder withId(Long id){
         this.id = id;
         return this;
     }
 
-    public StrikeEntryBuilder withoutId(){
+    public StrikeBuilder withoutId(){
         this.id = null;
         return this;
     }
 
-    public StrikeEntryBuilder withYouth(Youth youth){
+    public StrikeBuilder withYouth(Youth youth){
         this.youth = youth;
         return this;
     }
 
-    public StrikeEntryBuilder withAmount(int amount){
+    public StrikeBuilder withAmount(int amount){
         this.amount = amount;
         return this;
     }
 
-    public StrikeEntryBuilder withReason(String reason){
+    public StrikeBuilder withReason(String reason){
         this.reason = reason;
         return this;
     }
 
-    public StrikeEntryBuilder active(){
+    public StrikeBuilder active(){
         this.active = true;
         return this;
     }
 
-    public StrikeEntryBuilder inactive(){
+    public StrikeBuilder inactive(){
         this.active = false;
         return this;
     }
