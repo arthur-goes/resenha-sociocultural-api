@@ -1,8 +1,4 @@
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/resenha
-    username: ${POSTGRESQL_USERNAME_DEV}
-    password: ${POSTGRESQL_PASSWORD_DEV}
   jpa:
     show-sql: true
     hibernate:
