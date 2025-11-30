@@ -13,6 +13,7 @@ import java.util.Set;
 @Mapper(componentModel = "spring", uses = {YouthMapper.class})
 public interface StrikeMapper extends YouthEntryMapper<Strike, StrikeCreateDto> {
     @Mapping(source = "meeting.id", target = "meetingId")
+    @Mapping(source = "meeting.date", target = "date")
     StrikeResponseDto toResponseDto(Strike strike);
 
     Set<StrikeResponseDto> toResponseDtoList(Set<Strike> strikes);
