@@ -43,9 +43,9 @@ public class MeetingService {
     }
 
     private void addYouthProxies(Meeting meeting){
-        Set<Attendance> attendances = meeting.getAttendanceEntries();
-        Set<Strike> strikes = meeting.getStrikeEntries();
-        Set<ParticipationPoint> participationPoints = meeting.getParticipationPointEntries();
+        Set<Attendance> attendances = meeting.getAttendances();
+        Set<Strike> strikes = meeting.getStrikes();
+        Set<ParticipationPoint> participationPoints = meeting.getParticipationPoints();
 
         Consumer<Set<? extends YouthEntry>> replaceYouthWithProxies = (youthEntries) -> {
             for (YouthEntry youthEntry: youthEntries) {

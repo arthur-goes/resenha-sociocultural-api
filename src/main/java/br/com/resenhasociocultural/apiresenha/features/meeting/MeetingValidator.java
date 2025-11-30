@@ -67,9 +67,9 @@ public class MeetingValidator {
     public void validateYouthEntries(Meeting meeting) {
         List<EntryValidationDto> entriesToValidate = new ArrayList<>();
 
-        addEntriesToBeValidated(entriesToValidate, meeting.getAttendanceEntries());
-        addEntriesToBeValidated(entriesToValidate, meeting.getStrikeEntries());
-        addEntriesToBeValidated(entriesToValidate, meeting.getParticipationPointEntries());
+        addEntriesToBeValidated(entriesToValidate, meeting.getAttendances());
+        addEntriesToBeValidated(entriesToValidate, meeting.getStrikes());
+        addEntriesToBeValidated(entriesToValidate, meeting.getParticipationPoints());
 
         if (entriesToValidate.isEmpty()) {
             return;

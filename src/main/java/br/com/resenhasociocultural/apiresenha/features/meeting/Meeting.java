@@ -32,26 +32,26 @@ public class Meeting {
     private String minutosDeSabedoriaLesson;
 
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<Attendance> attendanceEntries = new HashSet<>();
+    private Set<Attendance> attendances = new HashSet<>();
 
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<Strike> strikeEntries = new HashSet<>();
+    private Set<Strike> strikes = new HashSet<>();
 
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<ParticipationPoint> participationPointEntries = new HashSet<>();
+    private Set<ParticipationPoint> participationPoints = new HashSet<>();
 
     public void addAttendances(Attendance attendance){
         attendance.setMeeting(this);
-        attendanceEntries.add(attendance);
+        attendances.add(attendance);
     }
 
     public void addStrikes(Strike strike){
         strike.setMeeting(this);
-        strikeEntries.add(strike);
+        strikes.add(strike);
     }
 
     public void addParticipationPoints(ParticipationPoint participation){
         participation.setMeeting(this);
-        participationPointEntries.add(participation);
+        participationPoints.add(participation);
     }
 }
