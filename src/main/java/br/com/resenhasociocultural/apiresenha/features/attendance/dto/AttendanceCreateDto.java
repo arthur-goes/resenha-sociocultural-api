@@ -6,8 +6,6 @@ import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthSimpleDto;
 import jakarta.validation.constraints.NotNull;
 
 public record AttendanceCreateDto(
-    Long meetingId,
-
     YouthSimpleDto youth,
 
     @NotNull

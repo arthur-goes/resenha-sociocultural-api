@@ -6,8 +6,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record ParticipationPointCreateDto(
-    Long id,
-    Long meetingId,
     YouthSimpleDto youth,
     @NotNull
     int amount,
