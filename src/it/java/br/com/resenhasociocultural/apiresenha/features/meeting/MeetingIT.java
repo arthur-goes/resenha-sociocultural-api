@@ -1,13 +1,10 @@
-package features.meeting;
+package br.com.resenhasociocultural.apiresenha.features.meeting;
 
 import br.com.resenhasociocultural.apiresenha.Application;
 import br.com.resenhasociocultural.apiresenha.factories.*;
 import br.com.resenhasociocultural.apiresenha.factories.dto.MeetingFactoryResult;
 import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceRepository;
 import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceStatus;
-import br.com.resenhasociocultural.apiresenha.features.meeting.Meeting;
-import br.com.resenhasociocultural.apiresenha.features.meeting.MeetingMapper;
-import br.com.resenhasociocultural.apiresenha.features.meeting.MeetingRepository;
 import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingCreateDto;
 import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingResponseDto;
 import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingUpdateDto;
