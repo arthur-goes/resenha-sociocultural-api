@@ -1,15 +1,18 @@
 package br.com.resenhasociocultural.apiresenha.features.attendance.dto;
 
 import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceStatus;
-import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthEntryDto;
 import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthSimpleDto;
 import jakarta.validation.constraints.NotNull;
 
-public record AttendanceCreateDto(
-    YouthSimpleDto youth,
+public record AttendanceUpdateDto(
+  @NotNull
+  Long id,
 
-    @NotNull
-    AttendanceStatus attendanceStatus,
+  YouthSimpleDto youth,
 
-    String absenceExcuse
-) implements YouthEntryDto {};
+  @NotNull
+  AttendanceStatus attendanceStatus,
+
+  String absenceExcuse
+) {
+}

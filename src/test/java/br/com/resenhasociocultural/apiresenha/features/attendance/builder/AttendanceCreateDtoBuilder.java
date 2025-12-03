@@ -46,7 +46,6 @@ public class AttendanceCreateDtoBuilder {
 
     public AttendanceCreateDto build(){
         return new AttendanceCreateDto(
-            meetingId,
             youth,
             status,
             absenceExcuse

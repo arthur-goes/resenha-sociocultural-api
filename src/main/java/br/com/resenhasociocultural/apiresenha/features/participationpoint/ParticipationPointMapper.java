@@ -13,6 +13,7 @@ import java.util.Set;
 @Mapper(componentModel = "spring", uses = {YouthMapper.class})
 public interface ParticipationPointMapper extends YouthEntryMapper<ParticipationPoint, ParticipationPointCreateDto> {
     @Mapping(source = "meeting.id", target = "meetingId")
+    @Mapping(source = "meeting.date", target = "date")
     ParticipationPointResponseDto toResponseDto(ParticipationPoint entity);
 
     Set<ParticipationPointResponseDto> toResponseDtoList(Set<ParticipationPoint> participationPoints);

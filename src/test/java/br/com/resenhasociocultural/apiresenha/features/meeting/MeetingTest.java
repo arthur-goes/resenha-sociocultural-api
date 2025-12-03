@@ -62,7 +62,7 @@ public class MeetingTest {
         this.meeting.addAttendances(attendance1);
         this.meeting.addAttendances(attendance2);
 
-        Set<Attendance> attendances = this.meeting.getAttendanceEntries();
+        Set<Attendance> attendances = this.meeting.getAttendances();
 
         assertThat(attendances.size()).isEqualTo(1);
 
@@ -83,7 +83,7 @@ public class MeetingTest {
         this.meeting.addStrikes(strike);
         this.meeting.addStrikes(strike);
 
-        Set<Strike> strikeEntries = this.meeting.getStrikeEntries();
+        Set<Strike> strikeEntries = this.meeting.getStrikes();
 
         assertThat(strikeEntries.size()).isEqualTo(1);
     }
@@ -107,7 +107,7 @@ public class MeetingTest {
         this.meeting.addStrikes(strike1);
         this.meeting.addStrikes(strike2);
 
-        Set<Strike> strikeEntries = this.meeting.getStrikeEntries();
+        Set<Strike> strikeEntries = this.meeting.getStrikes();
 
         assertThat(strikeEntries.size()).isEqualTo(2);
     }
@@ -124,7 +124,7 @@ public class MeetingTest {
         this.meeting.addParticipationPoints(participation);
         this.meeting.addParticipationPoints(participation);
 
-        Set<ParticipationPoint> participationPointEntries = this.meeting.getParticipationPointEntries();
+        Set<ParticipationPoint> participationPointEntries = this.meeting.getParticipationPoints();
 
         assertThat(participationPointEntries.size()).isEqualTo(1);
     }
@@ -147,7 +147,7 @@ public class MeetingTest {
 
         this.meeting.addParticipationPoints(participation1);
         this.meeting.addParticipationPoints(participation2);
-        Set<ParticipationPoint> participationPointEntries = this.meeting.getParticipationPointEntries();
+        Set<ParticipationPoint> participationPointEntries = this.meeting.getParticipationPoints();
 
         assertThat(participationPointEntries.size()).isEqualTo(2);
     }
