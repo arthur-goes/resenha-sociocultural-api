@@ -1,8 +1,11 @@
 package br.com.resenhasociocultural.apiresenha.features.meeting.dto;
 
 import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceCreateDto;
+import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceUpdateDto;
 import br.com.resenhasociocultural.apiresenha.features.participationpoint.dto.ParticipationPointCreateDto;
+import br.com.resenhasociocultural.apiresenha.features.participationpoint.dto.ParticipationPointUpdateDto;
 import br.com.resenhasociocultural.apiresenha.features.strike.dto.StrikeCreateDto;
+import br.com.resenhasociocultural.apiresenha.features.strike.dto.StrikeUpdateDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
@@ -23,7 +26,7 @@ public record MeetingUpdateDto(
 
     String minutosDeSabedoriaLesson,
 
-    Set<AttendanceCreateDto> attendances,
-    Set<StrikeCreateDto> strikes,
-    Set<ParticipationPointCreateDto> participationPoints
+    Set<AttendanceUpdateDto> attendances,
+    Set<StrikeUpdateDto> strikes,
+    Set<ParticipationPointUpdateDto> participationPoints
 ){}
