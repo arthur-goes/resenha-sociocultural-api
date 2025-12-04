@@ -12,6 +12,9 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
+    env:
+      SPRING_PROFILES_ACTIVE: test
+
     steps:
       - name: Repository Checkout
         uses: actions/checkout@v4
@@ -27,6 +30,6 @@ jobs:
         run: chmod +x mvnw
 
       - name: Build and Test with Maven
-        run: ./mvnw -B clean install
+        run: ./mvnw -B clean verify
         env:
           DOCKER_HOST: unix:///var/run/docker.sock

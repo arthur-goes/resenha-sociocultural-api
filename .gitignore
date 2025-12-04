@@ -34,3 +34,10 @@ build/
 
 ### MacOs ###
 *.DS_Store
+
+### ENVIROMENT ###
+.env
+.env.local
+.env.*.local
+.env.prod
+!.env.example
