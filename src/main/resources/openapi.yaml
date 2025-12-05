@@ -17,13 +17,13 @@ components:
         type: oauth2
         description: "Authentication via JWT. The token must contain the roles (scopes) required for the operation."
         flows:
-          implicit:
-            authorizationUrl: http://localhost:8080/oauth/authorize
+          authorizationCode: # Este é o fluxo recomendado!
+            authorizationUrl: http://localhost:8080/oauth2/authorize
+            tokenUrl: http://localhost:8080/oauth2/token
             scopes:
-              ADMIN: "Grants full access to all operations, including destructive and administrative ones."
-              
-              COORDINATOR: "Grants access to create and update data, in addition to read operations."
-              USER: "Grants basic access to read data."
+              ADMIN: "Acesso total a todas as operações."
+              COORDINATOR: "Acesso para criar e atualizar dados."
+              USER: "Acesso básico de leitura de dados."
 
   responses:
     Unauthorized:
@@ -64,7 +64,7 @@ components:
         - EXCUSED_ABSENCE
 
     ########## YOUTH SCHEMAS ##########
-    Youth:
+    YouthResponse:
       type: object
       properties:
         id:
@@ -98,6 +98,10 @@ components:
     YouthSummary:
       type: object
       description: "Lightweight version of Youth for lists and embedding."
+      required:
+        - id
+        - firstName
+        - surname
       properties:
         id:
           type: integer
@@ -107,7 +111,7 @@ components:
         surname:
           type: string
 
-    NewYouth:
+    YouthCreate:
       type: object
       required:
         - firstName
@@ -137,7 +141,7 @@ components:
           type: string
           pattern: '^\d{10,11}$'
 
-    UpdateYouth:
+    YouthUpdate:
       type: object
       properties:
         firstName:
@@ -163,7 +167,7 @@ components:
           pattern: '^\d{10,11}$'
 
     ########## MEETING SCHEMAS ##########
-    Meeting:
+    MeetingResponse:
       type: object
       properties:
         id:
@@ -179,17 +183,17 @@ components:
         attendances:
           type: array
           items:
-            $ref: '#/components/schemas/Attendance'
+            $ref: '#/components/schemas/AttendanceResponse'
         strikes:
           type: array
           items:
-            $ref: '#/components/schemas/Strike'
+            $ref: '#/components/schemas/StrikeResponse'
         participationPoints:
           type: array
           items:
-            $ref: '#/components/schemas/ParticipationPoint'
+            $ref: '#/components/schemas/ParticipationPointResponse'
 
-    NewMeeting:
+    MeetingCreate:
       type: object
       required:
         - date
@@ -205,17 +209,17 @@ components:
         attendances:
           type: array
           items:
-            $ref: '#/components/schemas/NewAttendance'
+            $ref: '#/components/schemas/AttendanceCreate'
         strikes:
           type: array
           items:
-            $ref: '#/components/schemas/NewStrike'
+            $ref: '#/components/schemas/StrikeCreate'
         participationPoints:
           type: array
           items:
-            $ref: '#/components/schemas/NewParticipationPoint'
+            $ref: '#/components/schemas/ParticipationPointCreate'
 
-    UpdateMeeting:
+    MeetingUpdate:
       type: object
       properties:
         date:
@@ -225,14 +229,34 @@ components:
           type: string
         minutosDeSabedoriaLesson:
           type: string
+        attendances:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttendanceUpdate'
+        strikes:
+          type: array
+          items:
+            $ref: '#/components/schemas/StrikeUpdate'
+        participationPoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParticipationPointUpdate'
 
     ########## ATTENDANCE SCHEMAS ##########
-    Attendance:
+    AttendanceResponse:
       type: object
+      required:
+        - id
+        - meetingId
+        - youth
+        - date
+        - attendanceStatus
+        - absenceExcuse
       properties:
         id:
           type: integer
           format: int64
+          readOnly: true
         meetingId:
           type: integer
           format: int64
@@ -245,26 +269,37 @@ components:
           $ref: '#/components/schemas/AttendanceStatus'
         absenceExcuse:
           type: string
+          nullable: true
 
-    NewAttendance:
+    AttendanceCreate:
       type: object
       required:
-        - youthId
+        - youth
         - attendanceStatus
       properties:
         meetingId:
           type: integer
           format: int64
-        youthId:
-          type: integer
-          format: int64
+          nullable: true
+        youth:
+          $ref: '#/components/schemas/YouthSummary'
+        attendanceStatus:
+          $ref: '#/components/schemas/AttendanceStatus'
+        absenceExcuse:
+          type: string
+
+    AttendanceUpdate:
+      type: object
+      required:
+        - attendanceStatus
+      properties:
         attendanceStatus:
           $ref: '#/components/schemas/AttendanceStatus'
         absenceExcuse:
           type: string
 
     ########## STRIKE SCHEMAS ##########
-    Strike:
+    StrikeResponse:
       type: object
       properties:
         id:
@@ -283,19 +318,19 @@ components:
         active:
           type: boolean
 
-    NewStrike:
+    StrikeCreate:
       type: object
       required:
-        - youthId
+        - youth
         - amount
         - active
       properties:
         meetingId:
           type: integer
           format: int64
-        youthId:
-          type: integer
-          format: int64
+          nullable: true
+        youth:
+          $ref: '#/components/schemas/YouthSummary'
         amount:
           type: integer
           format: int64
@@ -303,9 +338,21 @@ components:
           type: string
         active:
           type: boolean
+
+    StrikeUpdate:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        amount:
+          type: integer
+          format: int64
+        reason:
+          type: string
 
     ########## PARTICIPATION POINT SCHEMAS ##########
-    ParticipationPoint:
+    ParticipationPointResponse:
       type: object
       properties:
         id:
@@ -324,19 +371,19 @@ components:
         active:
           type: boolean
 
-    NewParticipationPoint:
+    ParticipationPointCreate:
       type: object
       required:
-        - youthId
+        - youth
         - amount
         - active
       properties:
         meetingId:
           type: integer
           format: int64
-        youthId:
-          type: integer
-          format: int64
+          nullable: true
+        youth:
+          $ref: '#/components/schemas/YouthSummary'
         amount:
           type: integer
           format: int64
@@ -344,6 +391,20 @@ components:
           type: string
         active:
           type: boolean
+
+    ParticipationPointUpdate:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+          format: int64
+        amount:
+          type: integer
+          format: int64
+        reason:
+          type: string
 
     ########## ERROR SCHEMA ##########
     ApiError:
@@ -371,7 +432,8 @@ paths:
       tags: [Youths]
       security:
         - bearerAuth: [COORDINATOR, ADMIN]   
-      summary: List Youth with optional filter for name.
+      summary: List Youth with optional filter for name and/or surname
+      operationId: findYouths
       parameters:
         - name: name
           in: query
@@ -385,7 +447,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Youth'
+                  $ref: '#/components/schemas/YouthResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -395,12 +457,13 @@ paths:
       security:
         - bearerAuth: [COORDINATOR, ADMIN]
       summary: Create new Youth
+      operationId: createYouth
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NewYouth'
+              $ref: '#/components/schemas/YouthCreate'
       responses:
         '201':
           description: Created
@@ -423,6 +486,7 @@ paths:
       security:
         - bearerAuth: [USER, COORDINATOR, ADMIN]
       summary: Summarized list for Youths containing id, name and surname.
+      operationId: findYouthsSummarized
       parameters:
         - name: name
           in: query
@@ -448,6 +512,7 @@ paths:
       security:
         - bearerAuth: [COORDINATOR, ADMIN]
       summary: Search a Youth by its ID
+      operationId: findYouthById
       parameters:
         - name: id
           in: path
@@ -459,7 +524,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Youth'
+                $ref: '#/components/schemas/YouthResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -471,6 +536,7 @@ paths:
       security:
         - bearerAuth: [COORDINATOR, ADMIN]
       summary: Partially update a Youth by its ID.
+      operationId: updateYouth
       parameters:
         - name: id
           in: path
@@ -481,14 +547,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateYouth'
+              $ref: '#/components/schemas/YouthUpdate'
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Youth'
+                $ref: '#/components/schemas/YouthResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -500,6 +566,7 @@ paths:
       security:
         - bearerAuth: [ADMIN]
       summary: Delete a Youth by its ID.
+      operationId: deleteYouthById
       parameters:
         - name: id
           in: path
@@ -521,19 +588,35 @@ paths:
       security:
         - bearerAuth: [USER, COORDINATOR, ADMIN]
       summary: List meetings, optionally filtering by date and/or theme.
+      description: |
+        Returns a list of meetings according to the specified filters.
+
+        If no filters are provided, all meetings are returned.
+
+        For date filtering, you have two options:
+          - Use the `date` parameter to find meetings on a specific day.
+          - Use `initialDate` and `finalDate` to find meetings within a date range.
+
+        Note: The single date filter and the date range filter are mutually exclusive and cannot be used at the same time.
+
+      operationId: getMeetings
       parameters:
         - name: theme
           in: query
           schema: { type: string }
+          required: false
         - name: initialDate
           in: query
           schema: { type: string, format: date }
+          required: false
         - name: finalDate
           in: query
           schema: { type: string, format: date }
+          required: false
         - name: date
           in: query
           schema: { type: string, format: date }
+          required: false
       responses:
         '200':
           description: OK
@@ -542,7 +625,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Meeting'
+                  $ref: '#/components/schemas/MeetingResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -552,12 +635,13 @@ paths:
       security:
         - bearerAuth: [COORDINATOR, ADMIN]
       summary: Create a new meeting
+      operationId: createMeeting
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NewMeeting'
+              $ref: '#/components/schemas/MeetingCreate'
       responses:
         '201':
           description: Created
@@ -569,7 +653,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Meeting'
+                $ref: '#/components/schemas/MeetingResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -583,6 +667,7 @@ paths:
       security:
         - bearerAuth: [USER, COORDINATOR, ADMIN]
       summary: Search meeting by its ID
+      operationId: findMeeting
       parameters:
         - name: id
           in: path
@@ -594,7 +679,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Meeting'
+                $ref: '#/components/schemas/MeetingResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -606,6 +691,7 @@ paths:
       security:
         - bearerAuth: [COORDINATOR, ADMIN]
       summary: Update a meeting by its ID
+      operationId: updateMeeting
       parameters:
         - name: id
           in: path
@@ -616,14 +702,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateMeeting'
+              $ref: '#/components/schemas/MeetingUpdate'
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Meeting'
+                $ref: '#/components/schemas/MeetingResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -635,6 +721,7 @@ paths:
       security:
         - bearerAuth: [ADMIN]
       summary: Delete a meeting by its ID
+      operationId: deleteMeeting
       parameters:
         - name: id
           in: path
@@ -655,22 +742,27 @@ paths:
       tags: [Attendances]
       security:
         - bearerAuth: [USER, COORDINATOR, ADMIN]
-      summary: List Attendances by associated meeting ID. Optionally filtering by Youth name or date.
+      summary: List all Attendances. Optionally can filter by Youth name or date.
+      operationId: findAttendances
       parameters:
         - name: name
           in: query
+          required: false
           description: "Substring to search. Will be compared against both name and surname."
           schema: { type: string }
         - name: date
           in: query
+          required: false
           description: "Specific date filter."
           schema: { type: string, format: date }
         - name: initialDate
           in: query
+          required: false
           description: "Start date for range filter."
           schema: { type: string, format: date }
         - name: finalDate
           in: query
+          required: false
           description: "End date for range filter."
           schema: { type: string, format: date }
       responses:
@@ -681,7 +773,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Attendance'
+                  $ref: '#/components/schemas/AttendanceResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
