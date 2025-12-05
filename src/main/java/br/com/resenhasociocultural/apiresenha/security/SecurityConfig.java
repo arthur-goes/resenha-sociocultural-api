@@ -32,12 +32,13 @@ public class SecurityConfig {
         http
             .cors(Customizer.withDefaults())
             .csrf(csrf -> csrf.disable())
-            .httpBasic(Customizer.withDefaults())
+//            .httpBasic(Customizer.withDefaults())
             .formLogin(Customizer.withDefaults())
             .oauth2ResourceServer(oauth2rs -> oauth2rs.jwt(Customizer.withDefaults()))
             .authorizeHttpRequests(authorization -> {
                 authorization
                     .requestMatchers(HttpMethod.POST, "/user").anonymous()
+                    .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/swagger-resources").permitAll()
                     .requestMatchers("/login").permitAll()
                     .anyRequest().authenticated();
             });

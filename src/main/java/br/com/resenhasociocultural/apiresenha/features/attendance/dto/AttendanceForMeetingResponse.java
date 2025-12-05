@@ -1,15 +1,11 @@
 package br.com.resenhasociocultural.apiresenha.features.attendance.dto;
 
-import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthSimpleDto;
+import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthSummary;
 import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceStatus;
 
-import java.time.LocalDate;
-
-public record AttendanceResponseDto (
+public record AttendanceForMeetingResponse(
     Long id,
-    Long meetingId,
-    YouthSimpleDto youth,
-    LocalDate date,
+    YouthSummary youth,
     AttendanceStatus attendanceStatus,
     String absenceExcuse
 ){};

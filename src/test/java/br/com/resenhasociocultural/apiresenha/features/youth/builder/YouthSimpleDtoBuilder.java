@@ -1,6 +1,6 @@
 package br.com.resenhasociocultural.apiresenha.features.youth.builder;
 
-import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthSimpleDto;
+import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthSummary;
 
 public final class YouthSimpleDtoBuilder {
     private Long id = 1L;
@@ -29,7 +29,7 @@ public final class YouthSimpleDtoBuilder {
         return this;
     }
 
-    public YouthSimpleDto build() {
-        return new YouthSimpleDto(id, firstName, surname);
+    public YouthSummary build() {
+        return new YouthSummary(id, firstName, surname);
     }
 }

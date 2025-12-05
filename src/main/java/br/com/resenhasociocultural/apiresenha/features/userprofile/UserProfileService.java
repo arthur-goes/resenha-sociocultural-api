@@ -1,13 +1,12 @@
 package br.com.resenhasociocultural.apiresenha.features.userprofile;
 
 import br.com.resenhasociocultural.apiresenha.exception.ResourceNotFoundException;
-import br.com.resenhasociocultural.apiresenha.features.userprofile.dto.UserProfileCreateDto;
-import br.com.resenhasociocultural.apiresenha.features.userprofile.dto.UserProfileUpdateDto;
+import br.com.resenhasociocultural.apiresenha.features.userprofile.dto.UserProfileCreate;
+import br.com.resenhasociocultural.apiresenha.features.userprofile.dto.UserProfileUpdate;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,15 +31,14 @@ public class UserProfileService {
         return userProfileRepository.findByUsername(username);
     }
 
-    public void create(UserProfileCreateDto dto){
+    public void create(UserProfileCreate dto){
         UserProfile user = userProfileMapper.toEntity(dto);
         String encodedPassword = encoder.encode(dto.password());
-        System.out.println("Encoded password: " + encodedPassword);
         user.setPassword(encodedPassword);
         userProfileRepository.save(user);
     }
 
-    public UserProfile update(UserProfileUpdateDto dto){
+    public UserProfile update(UserProfileUpdate dto){
         Optional<UserProfile> userProfile = userProfileRepository.findById(dto.id());
         if (userProfile.isEmpty()){
             throw new ResourceNotFoundException("Erro ao tentar atualizar os dados do usuário. Usuário inexistente.");

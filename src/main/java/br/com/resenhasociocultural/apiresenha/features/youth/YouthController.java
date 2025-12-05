@@ -1,10 +1,10 @@
 package br.com.resenhasociocultural.apiresenha.features.youth;
 
+import br.com.resenhasociocultura.apiresenha.api.controller.YouthsApi;
 import br.com.resenhasociocultural.apiresenha.features.youth.dto.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +16,14 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/youths")
-public class YouthController {
+public class YouthController implements YouthsApi {
 
     private final YouthService youthService;
     private final YouthMapper youthMapper;
 
     @GetMapping
-    @PreAuthorize("hasRole('COORDINATOR')")
-    public ResponseEntity<List<YouthResponseDto>> findYouths(
+    @PreAuthorize("hasAnyRole('COORDINATOR', 'ADMIN')")
+    public ResponseEntity<List<YouthResponse>> findYouths(
             @RequestParam(name = "name", defaultValue = "", required = false) String name
     ){
         List<Youth> youthList = name.isBlank() ? youthService.findAll() : youthService.findByName(name);
@@ -32,8 +32,8 @@ public class YouthController {
     }
 
     @GetMapping("/summary")
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<List<YouthSimpleDto>> findYouthsSummary(
+    @PreAuthorize("hasAnyRole('USER', 'COORDINATOR', 'ADMIN')")
+    public ResponseEntity<List<YouthSummary>> findYouthsSummarized(
         @RequestParam(name = "name", defaultValue = "", required = false) String name
     ){
         List<Youth> youthList = name.isBlank() ? youthService.findAll() : youthService.findByName(name);
@@ -41,21 +41,22 @@ public class YouthController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('COORDINATOR')")
-    public ResponseEntity<YouthResponseDto> findYouthById(
+    @PreAuthorize("hasAnyRole('COORDINATOR', 'ADMIN')")
+    public ResponseEntity<YouthResponse> findYouthById(
         @PathVariable("id")
-        @Positive Long id
+        @Positive
+        Long id
     ){
         Youth response = youthService.findById(id);
 
-        YouthResponseDto youthResponseDto = youthMapper.toResponseDto(response);
-        return ResponseEntity.ok(youthResponseDto);
+        YouthResponse youthResponse = youthMapper.toResponseDto(response);
+        return ResponseEntity.ok(youthResponse);
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('COORDINATOR')")
-    public ResponseEntity<Void> createYouth(@RequestBody @Valid YouthCreateDto youthCreateDto){
-        Youth youthToSave = youthMapper.toEntity(youthCreateDto);
+    @PreAuthorize("hasAnyRole('COORDINATOR', 'ADMIN')")
+    public ResponseEntity<Void> createYouth(@RequestBody @Valid YouthCreate youthCreate){
+        Youth youthToSave = youthMapper.toEntity(youthCreate);
         Youth savedYouth = youthService.save(youthToSave);
 
         URI location = ServletUriComponentsBuilder
@@ -68,10 +69,10 @@ public class YouthController {
     }
 
     @PatchMapping("/{id}")
-    @PreAuthorize("hasRole('COORDINATOR')")
-    public ResponseEntity<YouthResponseDto> updateYouth(@PathVariable Long id, @RequestBody YouthUpdateDto updatedDataDto){
-        Youth youthResponse = youthService.update(id, updatedDataDto);
-        YouthResponseDto youthResponseDto = youthMapper.toResponseDto(youthResponse);
+    @PreAuthorize("hasAnyRole('COORDINATOR', 'ADMIN')")
+    public ResponseEntity<YouthResponse> updateYouth(@PathVariable Long id, @RequestBody YouthUpdate updatedData){
+        Youth youthResponse = youthService.update(id, updatedData);
+        YouthResponse youthResponseDto = youthMapper.toResponseDto(youthResponse);
         return ResponseEntity.ok(youthResponseDto);
     }
 

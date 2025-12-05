@@ -1,9 +1,9 @@
 package br.com.resenhasociocultural.apiresenha.features.youth;
 
-import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthCreateDto;
-import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthResponseDto;
-import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthSimpleDto;
-import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthUpdateDto;
+import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthCreate;
+import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthResponse;
+import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthSummary;
+import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthUpdate;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
@@ -13,14 +13,14 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface YouthMapper {
-    YouthResponseDto toResponseDto(Youth youth);
-    List<YouthResponseDto> toResponseDtoList(List<Youth> youths);
+    YouthResponse toResponseDto(Youth youth);
+    List<YouthResponse> toResponseDtoList(List<Youth> youths);
 
-    YouthSimpleDto toSimpleResponseDto(Youth youth);
-    List<YouthSimpleDto> toSimpleResponseDtoList(List<Youth> youths);
+    YouthSummary toSimpleResponseDto(Youth youth);
+    List<YouthSummary> toSimpleResponseDtoList(List<Youth> youths);
 
-    Youth toEntity(YouthCreateDto youthCreateDto);
+    Youth toEntity(YouthCreate youthCreate);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateYouthFromDto(YouthUpdateDto updateDto, @MappingTarget Youth youth);
+    void updateYouthFromDto(YouthUpdate updateDto, @MappingTarget Youth youth);
 }

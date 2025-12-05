@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 public class GlobalApiExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponseDto> handleResourceNotFoundException(ResourceNotFoundException exception, WebRequest request) {
-        ErrorResponseDto errorDetails = new ErrorResponseDto(
+    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException exception, WebRequest request) {
+        ErrorResponse errorDetails = new ErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.NOT_FOUND.value(),
                 HttpStatus.NOT_FOUND.getReasonPhrase(),
@@ -24,8 +24,8 @@ public class GlobalApiExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResponseDto> handleIllegalArgumentException(IllegalArgumentException exception, WebRequest request){
-        ErrorResponseDto errorDetails = new ErrorResponseDto(
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException exception, WebRequest request){
+        ErrorResponse errorDetails = new ErrorResponse(
             LocalDateTime.now(),
             HttpStatus.BAD_REQUEST.value(),
             HttpStatus.BAD_REQUEST.getReasonPhrase(),
@@ -36,8 +36,8 @@ public class GlobalApiExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResponseDto> handleIllegalStateException(IllegalStateException exception, WebRequest request){
-        ErrorResponseDto errorDetails = new ErrorResponseDto(
+    public ResponseEntity<ErrorResponse> handleIllegalStateException(IllegalStateException exception, WebRequest request){
+        ErrorResponse errorDetails = new ErrorResponse(
             LocalDateTime.now(),
             HttpStatus.INTERNAL_SERVER_ERROR.value(),
             HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),

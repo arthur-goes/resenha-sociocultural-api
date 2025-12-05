@@ -4,7 +4,7 @@ import jakarta.validation.constraints.PastOrPresent;
 
 import java.time.LocalDate;
 
-public record MeetingFilterDto(
+public record MeetingFilter(
     String theme,
 
     @PastOrPresent

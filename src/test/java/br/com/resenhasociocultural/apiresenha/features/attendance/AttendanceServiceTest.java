@@ -1,7 +1,7 @@
 package br.com.resenhasociocultural.apiresenha.features.attendance;
 
 import br.com.resenhasociocultural.apiresenha.exception.ResourceNotFoundException;
-import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceFilterDto;
+import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceFilter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -37,7 +37,7 @@ public class AttendanceServiceTest {
 
     @ParameterizedTest(name = "Cenario: {0}")
     @MethodSource("invalidFilterScenarios")
-    public void givenInvalidFilter_whenFindWithFilters_thenThrowException(String description, AttendanceFilterDto filterDto, String errorMessage){
+    public void givenInvalidFilter_whenFindWithFilters_thenThrowException(String description, AttendanceFilter filterDto, String errorMessage){
 
         assertThatExceptionOfType(IllegalArgumentException.class)
             .isThrownBy(() -> attendanceService.findWithFilters(filterDto))
@@ -48,21 +48,21 @@ public class AttendanceServiceTest {
     }
 
     private static Stream<Arguments> invalidFilterScenarios() {
-        AttendanceFilterDto onlyInitialDateFilter = anAttendanceFilterDto()
+        AttendanceFilter onlyInitialDateFilter = anAttendanceFilterDto()
           .withYouthNameSubstring(null)
           .withDate(null)
           .withInitialDate(LocalDate.of(2025, 8, 20))
           .withFinalDate(null)
           .build();
 
-        AttendanceFilterDto onlyFinalDateFilter = anAttendanceFilterDto()
+        AttendanceFilter onlyFinalDateFilter = anAttendanceFilterDto()
           .withYouthNameSubstring(null)
           .withDate(null)
           .withInitialDate(null)
           .withFinalDate(LocalDate.of(2025, 8, 20))
           .build();
 
-        AttendanceFilterDto allDateParamsFilledFilter = anAttendanceFilterDto()
+        AttendanceFilter allDateParamsFilledFilter = anAttendanceFilterDto()
           .withYouthNameSubstring(null)
           .withDate(LocalDate.of(2025, 5, 5))
           .withInitialDate(LocalDate.of(2025, 8, 19))
@@ -83,7 +83,7 @@ public class AttendanceServiceTest {
     }
     @ParameterizedTest(name = "Cenario: {0}")
     @MethodSource("validFilterScenarios")
-    public void givenValidFilter_whenFindWithFilters_thenFindAllAttendances(String description, AttendanceFilterDto filterDto){
+    public void givenValidFilter_whenFindWithFilters_thenFindAllAttendances(String description, AttendanceFilter filterDto){
         Specification<Attendance> specs = (root, query, cb) -> cb.conjunction();
         ArgumentCaptor<Sort> sortCaptor = ArgumentCaptor.forClass(Sort.class);
 
@@ -104,21 +104,21 @@ public class AttendanceServiceTest {
     }
 
     private static Stream<Arguments> validFilterScenarios() {
-        AttendanceFilterDto nameFilter = anAttendanceFilterDto()
+        AttendanceFilter nameFilter = anAttendanceFilterDto()
           .withYouthNameSubstring("ohn")
           .withDate(null)
           .withInitialDate(null)
           .withFinalDate(null)
           .build();
 
-        AttendanceFilterDto singleDateFilter = anAttendanceFilterDto()
+        AttendanceFilter singleDateFilter = anAttendanceFilterDto()
           .withYouthNameSubstring(null)
           .withDate(LocalDate.of(2025, 8, 5))
           .withInitialDate(null)
           .withFinalDate(null)
           .build();
 
-        AttendanceFilterDto dateBetweenFilter = anAttendanceFilterDto()
+        AttendanceFilter dateBetweenFilter = anAttendanceFilterDto()
           .withYouthNameSubstring(null)
           .withDate(null)
           .withInitialDate(LocalDate.of(2025, 8, 19))

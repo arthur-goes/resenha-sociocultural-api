@@ -1,17 +1,12 @@
 package br.com.resenhasociocultural.apiresenha.features.youth.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Past;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
 
-public record YouthCreateDto(
-        @NotBlank
+public record YouthUpdate(
         String firstName,
-        @NotBlank
         String surname,
-        @Past
         LocalDate birthDate,
         @CPF
         String cpf,
@@ -20,5 +15,5 @@ public record YouthCreateDto(
         String emergencyContactName,
         String emergencyContactRelationship,
         String emergencyContactPhone
-) implements YouthView {
+) {
 }

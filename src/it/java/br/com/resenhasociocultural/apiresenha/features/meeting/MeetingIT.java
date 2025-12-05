@@ -5,9 +5,9 @@ import br.com.resenhasociocultural.apiresenha.factories.*;
 import br.com.resenhasociocultural.apiresenha.factories.dto.MeetingFactoryResult;
 import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceRepository;
 import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceStatus;
-import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingCreateDto;
-import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingResponseDto;
-import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingUpdateDto;
+import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingCreate;
+import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingResponse;
+import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingUpdate;
 import br.com.resenhasociocultural.apiresenha.features.participationpoint.ParticipationPointRepository;
 import br.com.resenhasociocultural.apiresenha.features.strike.StrikeRepository;
 import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
@@ -72,7 +72,7 @@ public class MeetingIT {
     List<Youth> persistedYouths = createYouthsAndPersist(amountOfYouths);
 
     MeetingFactoryResult meetingFactoryResult = MeetingFactory.generateCompleteMeeting(persistedYouths);
-    MeetingCreateDto createDto = meetingMapper.toCreateDto(meetingFactoryResult.meeting());
+    MeetingCreate createDto = meetingMapper.toCreateDto(meetingFactoryResult.meeting());
     String requestBody = objectMapper.writeValueAsString(createDto);
 
     var result = mvcTester.post()
@@ -81,7 +81,7 @@ public class MeetingIT {
       .content(requestBody)
       .exchange();
 
-    MeetingResponseDto responseMeeting = objectMapper.readValue(result.getResponse().getContentAsString(), MeetingResponseDto.class);
+    MeetingResponse responseMeeting = objectMapper.readValue(result.getResponse().getContentAsString(), MeetingResponse.class);
 
     result.assertThat().hasStatus(HttpStatus.CREATED);
     result.assertThat().bodyJson().isNotNull();
@@ -147,7 +147,7 @@ public class MeetingIT {
 
     Long updatedAttendanceId = updatedAttendance.getId();
     updatedAttendance.setAttendanceStatus(AttendanceStatus.ABSENT);
-    MeetingUpdateDto updateDto = meetingMapper.toUpdateDto(meeting);
+    MeetingUpdate updateDto = meetingMapper.toUpdateDto(meeting);
     String bodyJson = objectMapper.writeValueAsString(updateDto);
 
     var result = mvcTester
@@ -187,7 +187,7 @@ public class MeetingIT {
 
     Long updatedStrikeId = updatedStrike.getId();
     updatedStrike.setReason(newReason);
-    MeetingUpdateDto updateDto = meetingMapper.toUpdateDto(meeting);
+    MeetingUpdate updateDto = meetingMapper.toUpdateDto(meeting);
     String bodyJson = objectMapper.writeValueAsString(updateDto);
 
     var result = mvcTester
@@ -228,7 +228,7 @@ public class MeetingIT {
 
     Long updatedParticipationPointId = updatedParticipationPoint.getId();
     updatedParticipationPoint.setReason(newReason);
-    MeetingUpdateDto updateDto = meetingMapper.toUpdateDto(meeting);
+    MeetingUpdate updateDto = meetingMapper.toUpdateDto(meeting);
     String bodyJson = objectMapper.writeValueAsString(updateDto);
 
     var result = mvcTester

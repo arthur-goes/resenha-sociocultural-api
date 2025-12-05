@@ -1,6 +1,6 @@
 package br.com.resenhasociocultural.apiresenha.features.meeting;
 
-import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingFilterDto;
+import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingFilter;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Component
 public class MeetingSpecs {
 
-    public Specification<Meeting> buildSpecificationsFromFilter(MeetingFilterDto filters){
+    public Specification<Meeting> buildSpecificationsFromFilter(MeetingFilter filters){
         Specification<Meeting> specs = ((root, query, cb) -> cb.conjunction());
 
         boolean isDateBetweenFilterApplied = filters.initialDate() != null && filters.finalDate() != null;

@@ -1,6 +1,6 @@
 package br.com.resenhasociocultural.apiresenha.features.attendance;
 
-import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceFilterDto;
+import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceFilter;
 import br.com.resenhasociocultural.apiresenha.features.meeting.Meeting;
 import br.com.resenhasociocultural.apiresenha.features.youth.YouthNameSpecs;
 import jakarta.persistence.criteria.Join;
@@ -17,7 +17,7 @@ public class AttendanceSpecs {
 
     private final YouthNameSpecs youthNameSpecs;
 
-    public Specification<Attendance> buildSpecificationsFromFilters(AttendanceFilterDto filters){
+    public Specification<Attendance> buildSpecificationsFromFilters(AttendanceFilter filters){
         boolean isDateBetweenApplied = filters.initialDate() != null && filters.finalDate() != null;
         boolean isDateBetweenIntervalNotInverted = isDateBetweenApplied && (filters.initialDate().isBefore(filters.finalDate()));
 

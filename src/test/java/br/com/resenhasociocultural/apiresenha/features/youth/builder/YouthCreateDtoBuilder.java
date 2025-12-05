@@ -1,6 +1,6 @@
 package br.com.resenhasociocultural.apiresenha.features.youth.builder;
 
-import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthCreateDto;
+import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthCreate;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 import org.hibernate.validator.constraints.br.CPF;
@@ -70,7 +70,7 @@ public final class YouthCreateDtoBuilder {
         return this;
     }
 
-    public YouthCreateDto build() {
-        return new YouthCreateDto(firstName, surname, birthDate, cpf, motherName, fatherName, emergencyContactName, emergencyContactRelationship, emergencyContactPhone);
+    public YouthCreate build() {
+        return new YouthCreate(firstName, surname, birthDate, cpf, motherName, fatherName, emergencyContactName, emergencyContactRelationship, emergencyContactPhone);
     }
 }

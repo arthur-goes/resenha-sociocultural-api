@@ -1,7 +1,9 @@
 package br.com.resenhasociocultural.apiresenha.features.role.dto;
 
-public record RoleResponseDto(
-    Long id,
+import jakarta.validation.constraints.NotBlank;
+
+public record RoleCreate(
+    @NotBlank
     String name
 ) {
 }
