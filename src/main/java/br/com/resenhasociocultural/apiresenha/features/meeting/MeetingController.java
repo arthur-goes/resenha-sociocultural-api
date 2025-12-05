@@ -1,9 +1,11 @@
 package br.com.resenhasociocultural.apiresenha.features.meeting;
 
-import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingCreateDto;
-import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingFilterDto;
-import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingResponseDto;
-import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingUpdateDto;
+import br.com.resenhasociocultura.apiresenha.api.controller.MeetingsApi;
+import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingCreate;
+import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingFilter;
+import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingResponse;
+import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingUpdate;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,35 +14,42 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("/meetings")
-public class MeetingController {
+public class MeetingController implements MeetingsApi {
 
     private final MeetingService meetingService;
     private final MeetingMapper meetingMapper;
 
     @GetMapping
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<List<MeetingResponseDto>> getMeetings(@ModelAttribute MeetingFilterDto filterDto){
-        List<Meeting> meetings = meetingService.findWithFilters(filterDto);
-        List<MeetingResponseDto> meetingsDto = meetingMapper.toResponseDtoList(meetings);
+    @PreAuthorize("hasAnyRole('USER', 'COORDINATOR', 'ADMIN')")
+    public ResponseEntity<List<MeetingResponse>> getMeetings(
+        @RequestParam(name = "theme", required = false) String theme,
+        @RequestParam(name = "date", required = false) LocalDate date,
+        @RequestParam(name = "initialDate", required = false) LocalDate initialDate,
+        @RequestParam(name = "finalDate", required = false) LocalDate finalDate
+    ){
+        MeetingFilter filter = new MeetingFilter(theme, initialDate, finalDate, date);
+        List<Meeting> meetings = meetingService.findWithFilters(filter);
+        List<MeetingResponse> meetingsDto = meetingMapper.toResponseDtoList(meetings);
         return ResponseEntity.ok(meetingsDto);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<MeetingResponseDto> findMeeting(@PathVariable Long id){
+    @PreAuthorize("hasAnyRole('USER', 'COORDINATOR', 'ADMIN')")
+    public ResponseEntity<MeetingResponse> findMeeting(@PathVariable Long id){
         Meeting foundMeeting = meetingService.findById(id);
-        MeetingResponseDto responseDto = meetingMapper.toResponseDto(foundMeeting);
+        MeetingResponse responseDto = meetingMapper.toResponseDto(foundMeeting);
         return ResponseEntity.ok(responseDto);
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('COORDINATOR')")
-    public ResponseEntity<MeetingResponseDto> createMeeting(@Valid @RequestBody MeetingCreateDto meetingDto){
+    @PreAuthorize("hasAnyRole('COORDINATOR', 'ADMIN')")
+    public ResponseEntity<MeetingResponse> createMeeting(@Valid @RequestBody MeetingCreate meetingDto){
         Meeting meeting = meetingService.create(meetingDto);
         URI location = ServletUriComponentsBuilder
             .fromCurrentRequest()
@@ -52,10 +61,10 @@ public class MeetingController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('COORDINATOR')")
-    public ResponseEntity<MeetingResponseDto> updateMeeting(@PathVariable(name = "id") Long id, @Valid @RequestBody MeetingUpdateDto dto){
+    @PreAuthorize("hasAnyRole('COORDINATOR', 'ADMIN')")
+    public ResponseEntity<MeetingResponse> updateMeeting(@PathVariable(name = "id") Long id, @Valid @RequestBody MeetingUpdate dto){
         Meeting meeting = meetingService.update(id, dto);
-        MeetingResponseDto meetingResponse = meetingMapper.toResponseDto(meeting);
+        MeetingResponse meetingResponse = meetingMapper.toResponseDto(meeting);
         return ResponseEntity.ok(meetingResponse);
     }
 

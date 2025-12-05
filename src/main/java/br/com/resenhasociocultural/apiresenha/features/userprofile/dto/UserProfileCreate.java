@@ -2,7 +2,7 @@ package br.com.resenhasociocultural.apiresenha.features.userprofile.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record UserProfileCreateDto(
+public record UserProfileCreate(
     @NotBlank
     String username,
 

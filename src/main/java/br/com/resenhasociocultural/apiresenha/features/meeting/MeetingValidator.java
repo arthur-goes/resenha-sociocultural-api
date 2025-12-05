@@ -4,8 +4,8 @@ import br.com.resenhasociocultural.apiresenha.exception.DateConflictArgumentExce
 import br.com.resenhasociocultural.apiresenha.exception.InconsistentDateIntervalArgumentException;
 import br.com.resenhasociocultural.apiresenha.exception.MalformedMeetingException;
 import br.com.resenhasociocultural.apiresenha.features.attendance.Attendance;
-import br.com.resenhasociocultural.apiresenha.features.meeting.dto.EntryValidationDto;
-import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingFilterDto;
+import br.com.resenhasociocultural.apiresenha.features.meeting.dto.EntryValidation;
+import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingFilter;
 import br.com.resenhasociocultural.apiresenha.features.participationpoint.ParticipationPoint;
 import br.com.resenhasociocultural.apiresenha.features.strike.Strike;
 import br.com.resenhasociocultural.apiresenha.features.youth.YouthEntry;
@@ -36,7 +36,7 @@ public class MeetingValidator {
         );
     }
 
-    public void validateFilters(MeetingFilterDto filters) {
+    public void validateFilters(MeetingFilter filters) {
 
         LocalDate initialDate = filters.initialDate();
         LocalDate finalDate = filters.finalDate();
@@ -65,7 +65,7 @@ public class MeetingValidator {
     }
 
     public void validateYouthEntries(Meeting meeting) {
-        List<EntryValidationDto> entriesToValidate = new ArrayList<>();
+        List<EntryValidation> entriesToValidate = new ArrayList<>();
 
         addEntriesToBeValidated(entriesToValidate, meeting.getAttendances());
         addEntriesToBeValidated(entriesToValidate, meeting.getStrikes());
@@ -76,11 +76,11 @@ public class MeetingValidator {
         }
 
         Set<Long> idsToValidate = entriesToValidate.stream()
-            .map(EntryValidationDto::youthId)
+            .map(EntryValidation::youthId)
             .collect(Collectors.toSet());
 
         Set<Long> foundIds = youthService.findValidYouthIdsIn(idsToValidate);
-        List<EntryValidationDto> invalidEntries = entriesToValidate.stream()
+        List<EntryValidation> invalidEntries = entriesToValidate.stream()
             .filter(entryToValidate -> !foundIds.contains(entryToValidate.youthId()))
             .toList();
 
@@ -89,7 +89,7 @@ public class MeetingValidator {
         }
 
         StringBuilder errorMessage = new StringBuilder("Não foi possível prosseguir com a solicitação. Os seguintes erros foram encontrados:");
-        for (EntryValidationDto youthEntry : invalidEntries) {
+        for (EntryValidation youthEntry : invalidEntries) {
             errorMessage.append(
                 String.format("\n- O jovem %s com id %d vinculado a %s não foi encontrado no banco de dados",
                     youthEntry.fullName(),
@@ -100,7 +100,7 @@ public class MeetingValidator {
         throw new MalformedMeetingException(errorMessage.toString());
     }
 
-    private void addEntriesToBeValidated(List<EntryValidationDto> entriesToValidate, Set<? extends YouthEntry> entries) {
+    private void addEntriesToBeValidated(List<EntryValidation> entriesToValidate, Set<? extends YouthEntry> entries) {
         if (entries == null || entries.isEmpty()) {
             return;
         }
@@ -117,7 +117,7 @@ public class MeetingValidator {
                 );
             }
 
-            EntryValidationDto validationDto = new EntryValidationDto(
+            EntryValidation validationDto = new EntryValidation(
                 entry.getYouth().getId(),
                 entry.getYouth().getFullName(),
                 originDescription

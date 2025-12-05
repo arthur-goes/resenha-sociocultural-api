@@ -1,8 +1,8 @@
 package br.com.resenhasociocultural.apiresenha.features.userprofile;
 
-import br.com.resenhasociocultural.apiresenha.features.userprofile.dto.UserProfileCreateDto;
-import br.com.resenhasociocultural.apiresenha.features.userprofile.dto.UserProfileResponseDto;
-import br.com.resenhasociocultural.apiresenha.features.userprofile.dto.UserProfileUpdateDto;
+import br.com.resenhasociocultural.apiresenha.features.userprofile.dto.UserProfileCreate;
+import br.com.resenhasociocultural.apiresenha.features.userprofile.dto.UserProfileResponse;
+import br.com.resenhasociocultural.apiresenha.features.userprofile.dto.UserProfileUpdate;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,25 +21,25 @@ public class UserProfileController {
 
     @PostMapping
     @PreAuthorize("isAnonymous()")
-    public ResponseEntity<UserProfile> createUser(@RequestBody @Valid UserProfileCreateDto dto){
+    public ResponseEntity<UserProfile> createUser(@RequestBody @Valid UserProfileCreate dto){
         userProfileService.create(dto);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<UserProfileResponseDto> adminUpdateUser(@PathVariable(name = "id") Long id, @RequestBody UserProfileUpdateDto dto) {
-        UserProfileUpdateDto updateDto = dto.withId(id);
+    public ResponseEntity<UserProfileResponse> adminUpdateUser(@PathVariable(name = "id") Long id, @RequestBody UserProfileUpdate dto) {
+        UserProfileUpdate updateDto = dto.withId(id);
         UserProfile updatedUser = userProfileService.update(updateDto);
-        UserProfileResponseDto responseDto = userProfileMapper.toDto(updatedUser);
+        UserProfileResponse responseDto = userProfileMapper.toDto(updatedUser);
         return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<UserProfileResponseDto>> findUser(@RequestParam(name = "search", required = false) String searchText){
+    public ResponseEntity<List<UserProfileResponse>> findUser(@RequestParam(name = "search", required = false) String searchText){
         List<UserProfile> users = userProfileService.findAllWithFilters(searchText);
-        List<UserProfileResponseDto> response =  userProfileMapper.toResponseDtoList(users);
+        List<UserProfileResponse> response =  userProfileMapper.toResponseDtoList(users);
         return ResponseEntity.ok(response);
     }
 

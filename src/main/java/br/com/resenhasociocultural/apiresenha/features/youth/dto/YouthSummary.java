@@ -3,7 +3,7 @@ package br.com.resenhasociocultural.apiresenha.features.youth.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record YouthSimpleDto(
+public record YouthSummary(
     @NotNull
     Long id,
 

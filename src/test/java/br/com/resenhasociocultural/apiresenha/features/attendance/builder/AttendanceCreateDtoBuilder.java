@@ -1,12 +1,12 @@
 package br.com.resenhasociocultural.apiresenha.features.attendance.builder;
 
 import br.com.resenhasociocultural.apiresenha.features.attendance.AttendanceStatus;
-import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceCreateDto;
-import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthSimpleDto;
+import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceCreate;
+import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthSummary;
 
 public class AttendanceCreateDtoBuilder {
     private Long meetingId = 1L;
-    private YouthSimpleDto youth;
+    private YouthSummary youth;
     private AttendanceStatus status = AttendanceStatus.PRESENT;
     private String absenceExcuse = null;
 
@@ -19,7 +19,7 @@ public class AttendanceCreateDtoBuilder {
         return this;
     }
 
-    public AttendanceCreateDtoBuilder withYouth(YouthSimpleDto youth){
+    public AttendanceCreateDtoBuilder withYouth(YouthSummary youth){
         this.youth = youth;
         return this;
     }
@@ -44,8 +44,8 @@ public class AttendanceCreateDtoBuilder {
         return this;
     }
 
-    public AttendanceCreateDto build(){
-        return new AttendanceCreateDto(
+    public AttendanceCreate build(){
+        return new AttendanceCreate(
             youth,
             status,
             absenceExcuse

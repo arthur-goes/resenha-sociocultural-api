@@ -1,6 +1,6 @@
 package br.com.resenhasociocultural.apiresenha.features.youth.builder;
 
-import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthResponseDto;
+import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthResponse;
 
 import java.time.LocalDate;
 
@@ -79,7 +79,7 @@ public final class YouthResponseDtoBuilder {
         return this;
     }
 
-    public YouthResponseDto build() {
-        return new YouthResponseDto(id, firstName, surname, birthDate, cpf, motherName, fatherName, emergencyContactName, emergencyContactRelationship, emergencyContactPhone, creationDate);
+    public YouthResponse build() {
+        return new YouthResponse(id, firstName, surname, birthDate, cpf, motherName, fatherName, emergencyContactName, emergencyContactRelationship, emergencyContactPhone, creationDate);
     }
 }

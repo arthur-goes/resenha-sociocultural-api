@@ -1,10 +1,10 @@
 package br.com.resenhasociocultural.apiresenha.features.attendance;
-import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceCreateDto;
-import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceResponseDto;
+import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceCreate;
+import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceResponse;
 import br.com.resenhasociocultural.apiresenha.features.meeting.Meeting;
 import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
 import br.com.resenhasociocultural.apiresenha.features.youth.YouthMapperImpl;
-import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthSimpleDto;
+import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthSummary;
 
 import org.assertj.core.groups.Tuple;
 
@@ -73,7 +73,7 @@ public class AttendanceMapperTest {
     @Test
     public void givenAttendanceEntryEntity_thenMapToAttendanceResponseDto(){
 
-        AttendanceResponseDto responseDto = attendanceMapper.toResponseDto(attendance);
+        AttendanceResponse responseDto = attendanceMapper.toResponseDto(attendance);
 
         assertThat(responseDto.id())
             .isEqualTo(attendance.getId());
@@ -107,7 +107,7 @@ public class AttendanceMapperTest {
             .withAbsenceExcuse("Some excuse")
             .build();
 
-        YouthSimpleDto youthSimpleDto2 = aYouthSimpleDto()
+        YouthSummary youthSummary2 = aYouthSimpleDto()
             .withId(youth2.getId())
             .withFirstName(youth2.getFirstName())
             .withSurname(youth2.getSurname())
@@ -116,7 +116,7 @@ public class AttendanceMapperTest {
         meeting.addAttendances(attendance2);
         attendances.add(attendance2);
 
-        List<AttendanceResponseDto> mappedAttendances = attendanceMapper.toResponseListDto(attendances);
+        List<AttendanceResponse> mappedAttendances = attendanceMapper.toResponseListDto(attendances);
 
         assertThat(mappedAttendances.size()).isEqualTo(2);
 
@@ -138,13 +138,13 @@ public class AttendanceMapperTest {
 
     @Test
     public void givenAttendanceCreateDto_thenMapToAttendanceEntry(){
-        YouthSimpleDto youthDto = aYouthSimpleDto()
+        YouthSummary youthDto = aYouthSimpleDto()
             .withId(youth.getId())
             .withFirstName(youth.getFirstName())
             .withSurname(youth.getSurname())
             .build();
 
-        AttendanceCreateDto createDto = anAttendanceCreateDto()
+        AttendanceCreate createDto = anAttendanceCreateDto()
             .withMeetingId(null)
             .withYouth(youthDto)
             .statusPresent()

@@ -1,5 +1,5 @@
 package br.com.resenhasociocultural.apiresenha.features.youth.dto;
 
 public interface YouthEntryDto {
-    YouthSimpleDto youth();
+    YouthSummary youth();
 };

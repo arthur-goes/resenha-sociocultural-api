@@ -4,7 +4,7 @@ import jakarta.validation.constraints.PastOrPresent;
 
 import java.time.LocalDate;
 
-public record AttendanceFilterDto(
+public record AttendanceFilter(
     String youthNameSubstring,
 
     @PastOrPresent

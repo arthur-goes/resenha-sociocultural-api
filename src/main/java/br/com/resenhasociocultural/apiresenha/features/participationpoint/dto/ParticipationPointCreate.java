@@ -1,15 +1,15 @@
-package br.com.resenhasociocultural.apiresenha.features.strike.dto;
+package br.com.resenhasociocultural.apiresenha.features.participationpoint.dto;
 
 import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthEntryDto;
-import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthSimpleDto;
+import br.com.resenhasociocultural.apiresenha.features.youth.dto.YouthSummary;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record StrikeCreateDto(
-    YouthSimpleDto youth,
-    @NotBlank
-    int amount,
-    String reason,
+public record ParticipationPointCreate(
+    YouthSummary youth,
     @NotNull
+    int amount,
+    @NotBlank
+    String reason,
     boolean active
 ) implements YouthEntryDto {};

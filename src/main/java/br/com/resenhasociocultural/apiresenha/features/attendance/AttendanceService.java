@@ -1,7 +1,7 @@
 package br.com.resenhasociocultural.apiresenha.features.attendance;
 
 import br.com.resenhasociocultural.apiresenha.exception.ResourceNotFoundException;
-import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceFilterDto;
+import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -16,7 +16,7 @@ public class AttendanceService {
     private final AttendanceRepository attendanceRepository;
     private final AttendanceSpecs attendanceSpecs;
 
-    public List<Attendance> findWithFilters(AttendanceFilterDto filters){
+    public List<Attendance> findWithFilters(AttendanceFilter filters){
         validateDateFilters(filters);
         Specification<Attendance> specs = attendanceSpecs.buildSpecificationsFromFilters(filters);
 
@@ -28,7 +28,7 @@ public class AttendanceService {
         return attendanceRepository.findAll(specs, sortByYouthName);
     }
 
-    private void validateDateFilters(AttendanceFilterDto filters){
+    private void validateDateFilters(AttendanceFilter filters){
         boolean areDateParamsConflicting = filters.date() != null && (filters.initialDate() !=null || filters.finalDate() != null);
         boolean isDateBetweenInconsitent = (filters.initialDate() == null && filters.finalDate() != null) || (filters.initialDate() != null && filters.finalDate() == null);
 

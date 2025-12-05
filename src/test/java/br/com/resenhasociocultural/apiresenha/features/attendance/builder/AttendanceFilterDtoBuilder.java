@@ -1,6 +1,6 @@
 package br.com.resenhasociocultural.apiresenha.features.attendance.builder;
 
-import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceFilterDto;
+import br.com.resenhasociocultural.apiresenha.features.attendance.dto.AttendanceFilter;
 import jakarta.validation.constraints.PastOrPresent;
 
 import java.time.LocalDate;
@@ -38,8 +38,8 @@ public final class AttendanceFilterDtoBuilder {
         return this;
     }
 
-    public AttendanceFilterDto build() {
-        return new AttendanceFilterDto(
+    public AttendanceFilter build() {
+        return new AttendanceFilter(
             youthNameSubstring,
             date,
             initialDate,
