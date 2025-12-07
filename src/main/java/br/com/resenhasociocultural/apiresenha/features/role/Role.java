@@ -1,10 +1,7 @@
 package br.com.resenhasociocultural.apiresenha.features.role;
 
 import br.com.resenhasociocultural.apiresenha.features.userprofile.UserProfile;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -18,6 +15,7 @@ import java.util.Set;
 @Entity
 public class Role implements GrantedAuthority {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true)
