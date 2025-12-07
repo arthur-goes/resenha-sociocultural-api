@@ -24,7 +24,7 @@ public class Attendance implements YouthEntry {
     private Meeting meeting;
 
     @ManyToOne
-    @JoinColumn(name = "youngster_id", nullable = false)
+    @JoinColumn(name = "youth_id", nullable = false)
     private Youth youth;
 
     @Enumerated(EnumType.STRING)
