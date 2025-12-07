@@ -9,3 +9,11 @@ spring:
   output:
     ansi:
       enabled: ALWAYS
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    url: /openapi.yaml
+    oauth:
+      use-pkce-with-authorization-code-grant: true
