@@ -8,22 +8,28 @@ servers:
     description: Development Server
 tags:
   - name: Youths
+    description: "Operations related to managing youths."
+
   - name: Meetings
+    description: "Operations for creating, finding, and managing meetings."
+
   - name: Attendances
+    description: "Operations for querying attendance records."
+
+security:
+  - bearerAuth: []
 
 components:
   securitySchemes:
     bearerAuth:
         type: oauth2
-        description: "Authentication via JWT. The token must contain the roles (scopes) required for the operation."
+        description: "Authentication via JWT. The token must contain the roles required for the operation."
         flows:
-          authorizationCode: # Este é o fluxo recomendado!
+          authorizationCode:
             authorizationUrl: http://localhost:8080/oauth2/authorize
             tokenUrl: http://localhost:8080/oauth2/token
             scopes:
-              ADMIN: "Acesso total a todas as operações."
-              COORDINATOR: "Acesso para criar e atualizar dados."
-              USER: "Acesso básico de leitura de dados."
+              api: "Grants general access to the API. Authorization for specific endpoints is determined by user roles."
 
   responses:
     Unauthorized:
@@ -31,28 +37,28 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ApiError'
+            $ref: '#/components/schemas/ErrorResponse'
 
     Forbidden:
       description: Access denied. User does not have permission for this resource.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ApiError'
+            $ref: '#/components/schemas/ErrorResponse'
 
     NotFound:
       description: Resource not found.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ApiError'
+            $ref: '#/components/schemas/ErrorResponse'
 
     BadRequest:
       description: Invalid input data.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ApiError'
+            $ref: '#/components/schemas/ErrorResponse'
 
   schemas:
     AttendanceStatus:
@@ -62,6 +68,85 @@ components:
         - PRESENT
         - ABSENT
         - EXCUSED_ABSENCE
+
+    ########## MEETING SCHEMAS ##########
+    MeetingResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        date:
+          type: string
+          format: date
+        theme:
+          type: string
+        minutosDeSabedoriaLesson:
+          type: string
+          description: "The specific lesson or message read from the book 'Minutos de Sabedoria' (Minutes of Wisdom) during the meeting."
+        attendances:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttendanceResponse'
+        strikes:
+          type: array
+          items:
+            $ref: '#/components/schemas/StrikeResponse'
+        participationPoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParticipationPointResponse'
+
+    MeetingCreate:
+      type: object
+      required:
+        - date
+        - theme
+      properties:
+        date:
+          type: string
+          format: date
+        theme:
+          type: string
+        minutosDeSabedoriaLesson:
+          type: string
+          description: "The specific lesson or message read from the book 'Minutos de Sabedoria' (Minutes of Wisdom) during the meeting."
+        attendances:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttendanceCreate'
+        strikes:
+          type: array
+          items:
+            $ref: '#/components/schemas/StrikeCreate'
+        participationPoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParticipationPointCreate'
+
+    MeetingUpdate:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        theme:
+          type: string
+        minutosDeSabedoriaLesson:
+          type: string
+          description: "The specific lesson or message read from the book 'Minutos de Sabedoria' (Minutes of Wisdom) during the meeting."
+        attendances:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttendanceUpdate'
+        strikes:
+          type: array
+          items:
+            $ref: '#/components/schemas/StrikeUpdate'
+        participationPoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParticipationPointUpdate'
 
     ########## YOUTH SCHEMAS ##########
     YouthResponse:
@@ -165,82 +250,6 @@ components:
         emergencyContactPhone:
           type: string
           pattern: '^\d{10,11}$'
-
-    ########## MEETING SCHEMAS ##########
-    MeetingResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        date:
-          type: string
-          format: date
-        theme:
-          type: string
-        minutosDeSabedoriaLesson:
-          type: string
-        attendances:
-          type: array
-          items:
-            $ref: '#/components/schemas/AttendanceResponse'
-        strikes:
-          type: array
-          items:
-            $ref: '#/components/schemas/StrikeResponse'
-        participationPoints:
-          type: array
-          items:
-            $ref: '#/components/schemas/ParticipationPointResponse'
-
-    MeetingCreate:
-      type: object
-      required:
-        - date
-        - theme
-      properties:
-        date:
-          type: string
-          format: date
-        theme:
-          type: string
-        minutosDeSabedoriaLesson:
-          type: string
-        attendances:
-          type: array
-          items:
-            $ref: '#/components/schemas/AttendanceCreate'
-        strikes:
-          type: array
-          items:
-            $ref: '#/components/schemas/StrikeCreate'
-        participationPoints:
-          type: array
-          items:
-            $ref: '#/components/schemas/ParticipationPointCreate'
-
-    MeetingUpdate:
-      type: object
-      properties:
-        date:
-          type: string
-          format: date
-        theme:
-          type: string
-        minutosDeSabedoriaLesson:
-          type: string
-        attendances:
-          type: array
-          items:
-            $ref: '#/components/schemas/AttendanceUpdate'
-        strikes:
-          type: array
-          items:
-            $ref: '#/components/schemas/StrikeUpdate'
-        participationPoints:
-          type: array
-          items:
-            $ref: '#/components/schemas/ParticipationPointUpdate'
 
     ########## ATTENDANCE SCHEMAS ##########
     AttendanceResponse:
@@ -407,7 +416,7 @@ components:
           type: string
 
     ########## ERROR SCHEMA ##########
-    ApiError:
+    ErrorResponse:
       type: object
       description: "Standard error response."
       properties:
@@ -423,16 +432,283 @@ components:
         path:
           type: string
 
-security:
-  - bearerAuth: []
-
 paths:
+  /attendances:
+    get:
+      tags: [ Attendances ]
+      security:
+        - bearerAuth: [ USER, COORDINATOR, ADMIN ]
+      summary: List attendances
+      description: |
+        Returns a list of attendance records. The list can be filtered by the youth's name and/or the date of the meeting.
+
+        Date filtering can be performed in two mutually exclusive ways:
+        - **By a specific day:** Use the `date` parameter.
+        - **By a date range:** Use both `initialDate` and `finalDate` parameters.
+
+        Attempting to use `date` in conjunction with `initialDate` or `finalDate` will result in a 400 Bad Request error.
+
+      operationId: findAttendances
+      parameters:
+        - name: name
+          in: query
+          required: false
+          description: "Filter by a partial match on the youth's name or surname."
+          schema: { type: string }
+        - name: date
+          in: query
+          required: false
+          description: "Filter attendances for a specific date. Cannot be used with 'initialDate' or 'finalDate'."
+          schema: { type: string, format: date }
+        - name: initialDate
+          in: query
+          required: false
+          description: "The start date for a date range filter. Must be used with 'finalDate'."
+          schema: { type: string, format: date }
+        - name: finalDate
+          in: query
+          required: false
+          description: "The end date for a date range filter. Must be used with 'initialDate'."
+          schema: { type: string, format: date }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AttendanceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+    post:
+      tags: [ Attendances ]
+      security:
+        - bearerAuth: [ ADMIN ]
+      deprecated: true
+      summary: Create a new Attendance (Not Implemented)
+      description: |
+        **This endpoint is reserved for future functionality and is not yet active.**
+
+        It is designed to allow the creation of a single, standalone attendance record. 
+        Currently, any call to this endpoint will result in a `501 Not Implemented` status.
+      operationId: createAttendance
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttendanceCreate'
+      responses:
+        '501':
+          description: Not Implemented - This endpoint is planned but not yet available.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /meetings:
+    get:
+      tags: [ Meetings ]
+      security:
+        - bearerAuth: [ USER, COORDINATOR, ADMIN ]
+      summary: List meetings with optional filters
+      description: |
+        Returns a list of all meetings. The list can be filtered by theme and/or date.
+
+        Date filtering can be performed in two mutually exclusive ways:
+        - **By a specific day:** Use the `date` parameter.
+        - **By a date range:** Use both `initialDate` and `finalDate` parameters.
+
+        Attempting to use `date` in conjunction with `initialDate` or `finalDate` will result in a 400 Bad Request error.
+
+      operationId: getMeetings
+      parameters:
+        - name: theme
+          in: query
+          description: Filter the list by a partial match on the meeting's theme.
+          schema: { type: string }
+          required: false
+        - name: initialDate
+          in: query
+          description: The start date for a date range filter. Must be used together with 'finalDate'.
+          schema: { type: string, format: date }
+          required: false
+        - name: finalDate
+          in: query
+          description: The end date for a date range filter. Must be used together with 'initialDate'.
+          schema: { type: string, format: date }
+          required: false
+        - name: date
+          in: query
+          description: A specific date to filter meetings. Cannot be used with 'initialDate' or 'finalDate'.
+          schema: { type: string, format: date }
+          required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MeetingResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+    post:
+      tags: [ Meetings ]
+      security:
+        - bearerAuth: [ COORDINATOR, ADMIN ]
+      summary: Create a new meeting
+      description: |
+        Registers a new meeting in the system.
+
+        While `date` and `theme` are required, other information can be provided optionally:
+        - **Attendances:** The `attendances` list can be omitted during creation. This allows for registering the meeting first and adding attendance records later via an update (e.g., using the PUT endpoint).
+        - **Behavioral Records:** The `strikes` and `participationPoints` lists are also optional, as it is common for a meeting to occur without any specific behavioral incidents to record.
+
+        Upon successful creation, the endpoint returns the complete meeting object and its URL in the Location header.
+
+      operationId: createMeeting
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeetingCreate'
+      responses:
+        '201':
+          description: Created
+          headers:
+            Location:
+              description: The URL of the newly created meeting resource
+              schema:
+                type: string
+                format: uri
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeetingResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /meetings/{id}:
+    get:
+      tags: [ Meetings ]
+      security:
+        - bearerAuth: [ USER, COORDINATOR, ADMIN ]
+      summary: Find a meeting by ID
+      description: |
+        Retrieves the full details of a specific meeting by its unique identifier.
+        This includes all associated data such as attendance records, strikes, and participation points.
+      operationId: findMeeting
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer, format: int64 }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeetingResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [ Meetings ]
+      security:
+        - bearerAuth: [ COORDINATOR, ADMIN ]
+      summary: Update a meeting by its ID
+      description: |
+        Updates an existing meeting by replacing the entire resource with the provided data.
+
+        **Important:** This method performs a full replacement. The request body should contain the complete meeting object. Any fields that are omitted from the request will be considered null or reset to their default values, effectively deleting them.
+
+        The recommended workflow is to first retrieve the meeting using `GET /meetings/{id}`, modify the data as needed, and then send the entire, updated object back in the body of this PUT request.
+
+      operationId: updateMeeting
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer, format: int64 }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeetingUpdate'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeetingResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [ Meetings ]
+      security:
+        - bearerAuth: [ ADMIN ]
+      summary: Delete a meeting by its ID
+      description: |
+        Permanently deletes a meeting and all of its associated data.
+
+        **Warning:** This operation is irreversible. When a meeting is deleted, all of its related attendance records, strikes, and participation points are also permanently removed from the system (cascading delete).
+
+        A successful deletion will return a 204 No Content response.
+
+      operationId: deleteMeeting
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer, format: int64 }
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
   /youths:
     get:
       tags: [Youths]
       security:
-        - bearerAuth: [COORDINATOR, ADMIN]   
-      summary: List Youth with optional filter for name and/or surname
+        - bearerAuth: [COORDINATOR, ADMIN]
+      summary: List youths
+      description: |
+        Returns all registered youths if no filter is provided.
+  
+        The name parameter performs a partial match. Any youth whose name or surname contains the provided string will be included in the results.
+
       operationId: findYouths
       parameters:
         - name: name
@@ -456,7 +732,11 @@ paths:
       tags: [Youths]
       security:
         - bearerAuth: [COORDINATOR, ADMIN]
-      summary: Create new Youth
+      summary: Create a new youth
+      description: |
+        Registers a new youth in the system based on the provided data.
+        All fields in the request body are required for a successful creation.
+        Upon success, it returns a 201 Created status and the URL of the new resource in the Location header.
       operationId: createYouth
       requestBody:
         required: true
@@ -469,7 +749,7 @@ paths:
           description: Created
           headers:
             Location:
-              description: URL for location of created resource
+              description: The URL of the newly created resource
               schema:
                 type: string
                 format: uri
@@ -480,38 +760,13 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
 
-  /youths/summary:
-    get:
-      tags: [Youths]
-      security:
-        - bearerAuth: [USER, COORDINATOR, ADMIN]
-      summary: Summarized list for Youths containing id, name and surname.
-      operationId: findYouthsSummarized
-      parameters:
-        - name: name
-          in: query
-          schema: { type: string }
-          required: false
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/YouthSummary'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-
   /youths/{id}:
     get:
       tags: [Youths]
       security:
         - bearerAuth: [COORDINATOR, ADMIN]
-      summary: Search a Youth by its ID
+      summary: Find a youth by id
+      description: Retrieves the full details of a specific youth by their unique identifier.
       operationId: findYouthById
       parameters:
         - name: id
@@ -535,7 +790,11 @@ paths:
       tags: [Youths]
       security:
         - bearerAuth: [COORDINATOR, ADMIN]
-      summary: Partially update a Youth by its ID.
+      summary: Partially update a youth by ID
+      description: |
+        Updates one or more fields of an existing youth.
+        Only the fields provided in the request body will be updated. All other fields will remain unchanged.
+        Upon successful update, the endpoint returns the complete and updated youth object.
       operationId: updateYouth
       parameters:
         - name: id
@@ -565,7 +824,7 @@ paths:
       tags: [Youths]
       security:
         - bearerAuth: [ADMIN]
-      summary: Delete a Youth by its ID.
+      summary: Delete a youth by its ID.
       operationId: deleteYouthById
       parameters:
         - name: id
@@ -582,189 +841,23 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 
-  /meetings:
+  /youths/summary:
     get:
-      tags: [Meetings]
+      tags: [ Youths ]
       security:
-        - bearerAuth: [USER, COORDINATOR, ADMIN]
-      summary: List meetings, optionally filtering by date and/or theme.
+        - bearerAuth: [ USER, COORDINATOR, ADMIN ]
+      summary: Get a summarized list of youths
       description: |
-        Returns a list of meetings according to the specified filters.
+        Returns a lightweight list of youths, containing only their ID, name, and surname.
+        This endpoint is optimized for performance and is ideal for populating UI elements like dropdowns or search-as-you-type fields.
+        The optional 'name' parameter performs a partial match on the youth's name or surname.
 
-        If no filters are provided, all meetings are returned.
-
-        For date filtering, you have two options:
-          - Use the `date` parameter to find meetings on a specific day.
-          - Use `initialDate` and `finalDate` to find meetings within a date range.
-
-        Note: The single date filter and the date range filter are mutually exclusive and cannot be used at the same time.
-
-      operationId: getMeetings
-      parameters:
-        - name: theme
-          in: query
-          schema: { type: string }
-          required: false
-        - name: initialDate
-          in: query
-          schema: { type: string, format: date }
-          required: false
-        - name: finalDate
-          in: query
-          schema: { type: string, format: date }
-          required: false
-        - name: date
-          in: query
-          schema: { type: string, format: date }
-          required: false
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/MeetingResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-    post:
-      tags: [Meetings]
-      security:
-        - bearerAuth: [COORDINATOR, ADMIN]
-      summary: Create a new meeting
-      operationId: createMeeting
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MeetingCreate'
-      responses:
-        '201':
-          description: Created
-          headers:
-            Location:
-              schema:
-                type: string
-                format: uri
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeetingResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-
-  /meetings/{id}:
-    get:
-      tags: [Meetings]
-      security:
-        - bearerAuth: [USER, COORDINATOR, ADMIN]
-      summary: Search meeting by its ID
-      operationId: findMeeting
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema: { type: integer, format: int64 }
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeetingResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-    put:
-      tags: [Meetings]
-      security:
-        - bearerAuth: [COORDINATOR, ADMIN]
-      summary: Update a meeting by its ID
-      operationId: updateMeeting
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema: { type: integer, format: int64 }
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MeetingUpdate'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeetingResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-    delete:
-      tags: [Meetings]
-      security:
-        - bearerAuth: [ADMIN]
-      summary: Delete a meeting by its ID
-      operationId: deleteMeeting
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema: { type: integer, format: int64 }
-      responses:
-        '204':
-          description: No Content
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-
-  /attendances:
-    get:
-      tags: [Attendances]
-      security:
-        - bearerAuth: [USER, COORDINATOR, ADMIN]
-      summary: List all Attendances. Optionally can filter by Youth name or date.
-      operationId: findAttendances
+      operationId: findYouthsSummarized
       parameters:
         - name: name
           in: query
-          required: false
-          description: "Substring to search. Will be compared against both name and surname."
           schema: { type: string }
-        - name: date
-          in: query
           required: false
-          description: "Specific date filter."
-          schema: { type: string, format: date }
-        - name: initialDate
-          in: query
-          required: false
-          description: "Start date for range filter."
-          schema: { type: string, format: date }
-        - name: finalDate
-          in: query
-          required: false
-          description: "End date for range filter."
-          schema: { type: string, format: date }
       responses:
         '200':
           description: OK
@@ -773,9 +866,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/AttendanceResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
+                  $ref: '#/components/schemas/YouthSummary'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':

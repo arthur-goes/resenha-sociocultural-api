@@ -95,8 +95,8 @@ public class AttendanceServiceTest {
 
         Sort capturedSort = sortCaptor.getValue();
 
-        assertThat(capturedSort.getOrderFor("youth.first_name")).isNotNull();
-        assertThat(capturedSort.getOrderFor("youth.first_name").getDirection()).isEqualTo(Sort.Direction.ASC);
+        assertThat(capturedSort.getOrderFor("youth.firstName")).isNotNull();
+        assertThat(capturedSort.getOrderFor("youth.firstName").getDirection()).isEqualTo(Sort.Direction.ASC);
 
         assertThat(capturedSort.getOrderFor("youth.surname")).isNotNull();
         assertThat(capturedSort.getOrderFor("youth.surname").getDirection()).isEqualTo(Sort.Direction.ASC);

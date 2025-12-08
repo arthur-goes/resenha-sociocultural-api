@@ -1,12 +1,10 @@
 package br.com.resenhasociocultural.apiresenha.features.meeting;
 
-import br.com.resenhasociocultura.apiresenha.api.controller.MeetingsApi;
+import br.com.resenhasociocultural.apiresenha.api.controller.MeetingsApi;
 import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingCreate;
 import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingFilter;
 import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingResponse;
 import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingUpdate;
-import jakarta.annotation.security.RolesAllowed;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -49,7 +47,7 @@ public class MeetingController implements MeetingsApi {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('COORDINATOR', 'ADMIN')")
-    public ResponseEntity<MeetingResponse> createMeeting(@Valid @RequestBody MeetingCreate meetingDto){
+    public ResponseEntity<MeetingResponse> createMeeting(@RequestBody MeetingCreate meetingDto){
         Meeting meeting = meetingService.create(meetingDto);
         URI location = ServletUriComponentsBuilder
             .fromCurrentRequest()
@@ -62,7 +60,7 @@ public class MeetingController implements MeetingsApi {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('COORDINATOR', 'ADMIN')")
-    public ResponseEntity<MeetingResponse> updateMeeting(@PathVariable(name = "id") Long id, @Valid @RequestBody MeetingUpdate dto){
+    public ResponseEntity<MeetingResponse> updateMeeting(@PathVariable(name = "id") Long id, @RequestBody MeetingUpdate dto){
         Meeting meeting = meetingService.update(id, dto);
         MeetingResponse meetingResponse = meetingMapper.toResponseDto(meeting);
         return ResponseEntity.ok(meetingResponse);

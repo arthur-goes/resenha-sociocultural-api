@@ -1,13 +1,17 @@
 spring:
   datasource:
     url: ${POSTGRESQL_URL_DEV:}
-    username: ${POSTGRESQL_USERNAME_DEV:postgres}
-    password: ${POSTGRESQL_PASSWORD_DEV:postgres}
+    username: ${POSTGRESQL_USERNAME:admin}
+    password: ${POSTGRESQL_PASSWORD:admin}
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
     defer-datasource-initialization: true
+
+app:
+  database:
+    seed-on-startup: true
 
 logging:
   level:

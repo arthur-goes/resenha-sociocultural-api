@@ -1,9 +1,7 @@
 package br.com.resenhasociocultural.apiresenha.features.youth;
 
-import br.com.resenhasociocultura.apiresenha.api.controller.YouthsApi;
+import br.com.resenhasociocultural.apiresenha.api.controller.YouthsApi;
 import br.com.resenhasociocultural.apiresenha.features.youth.dto.*;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -44,7 +42,6 @@ public class YouthController implements YouthsApi {
     @PreAuthorize("hasAnyRole('COORDINATOR', 'ADMIN')")
     public ResponseEntity<YouthResponse> findYouthById(
         @PathVariable("id")
-        @Positive
         Long id
     ){
         Youth response = youthService.findById(id);
@@ -55,7 +52,7 @@ public class YouthController implements YouthsApi {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('COORDINATOR', 'ADMIN')")
-    public ResponseEntity<Void> createYouth(@RequestBody @Valid YouthCreate youthCreate){
+    public ResponseEntity<Void> createYouth(@RequestBody YouthCreate youthCreate){
         Youth youthToSave = youthMapper.toEntity(youthCreate);
         Youth savedYouth = youthService.save(youthToSave);
 

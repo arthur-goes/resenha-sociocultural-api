@@ -16,12 +16,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
@@ -40,14 +39,15 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
 import java.time.Duration;
-import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebSecurity
 @Slf4j
 public class AuthorizationServerConfiguration {
+
     @Bean
     @Order(1)
     public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -93,19 +93,38 @@ public class AuthorizationServerConfiguration {
     }
 
     @Bean
-    @Profile("!prod")
+    @Profile({"dev", "test"})
     public RegisteredClientRepository registeredClientRepository(PasswordEncoder encoder){
-        var registeredClient = RegisteredClient
-            .withId("client-1")
-            .clientId("client-id-1")
-            .clientSecret(encoder.encode("client-secret"))
+
+        var postmanClient = RegisteredClient
+            .withId(UUID.randomUUID().toString())
+            .clientId("postman")
+            .clientSecret(encoder.encode("postman"))
             .redirectUri("http://localhost:8080/clients/authorized")
-            .scope("postman")
+            .scope("api")
             .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
             .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
             .tokenSettings(tokenSettings())
             .build();
-        return new InMemoryRegisteredClientRepository(registeredClient);
+
+        var swaggerClient = RegisteredClient
+            .withId(UUID.randomUUID().toString())
+            .clientId("swagger-ui")
+            .redirectUri("http://localhost:8080/swagger-ui/oauth2-redirect.html")
+            .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
+            .scope("api")
+            .tokenSettings(tokenSettings())
+            .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+            .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+            .clientSettings(
+                ClientSettings.builder()
+                    .requireProofKey(true)
+                    .requireAuthorizationConsent(false)
+                    .build()
+            )
+            .build();
+
+        return new InMemoryRegisteredClientRepository(postmanClient, swaggerClient);
     }
 
     @Bean

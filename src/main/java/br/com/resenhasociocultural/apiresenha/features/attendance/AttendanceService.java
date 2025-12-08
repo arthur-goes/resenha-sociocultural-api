@@ -21,7 +21,7 @@ public class AttendanceService {
         Specification<Attendance> specs = attendanceSpecs.buildSpecificationsFromFilters(filters);
 
         Sort sortByYouthName = Sort.by(
-            Sort.Order.asc("youth.first_name"),
+            Sort.Order.asc("youth.firstName"),
             Sort.Order.asc("youth.surname")
         );
 
