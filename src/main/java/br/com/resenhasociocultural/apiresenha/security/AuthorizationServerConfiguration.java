@@ -93,7 +93,7 @@ public class AuthorizationServerConfiguration {
     }
 
     @Bean
-    @Profile({"dev", "test"})
+    @Profile({"dev", "test", "staging"})
     public RegisteredClientRepository registeredClientRepository(PasswordEncoder encoder){
 
         var postmanClient = RegisteredClient
