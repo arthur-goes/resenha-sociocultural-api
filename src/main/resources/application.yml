@@ -1,8 +1,6 @@
 spring:
   application:
     name: resenha-sociocultural-api
-  profiles:
-    active: dev
   jwt:
     rsa-private-key:
       json: ${RSA_PRIVATE_KEY_JSON:}
