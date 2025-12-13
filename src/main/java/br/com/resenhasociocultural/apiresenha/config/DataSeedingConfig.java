@@ -28,7 +28,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 
 @Configuration
-@Profile("dev")
+@Profile({"dev", "staging"})
 @AllArgsConstructor
 @Slf4j
 public class DataSeedingConfig {
@@ -43,8 +43,8 @@ public class DataSeedingConfig {
     private MeetingRepository meetingRepository;
 
 
-//    @Value("${app.database.seed-on-startup:false}")
-//    private boolean seedExampleData;
+    @Value("${app.database.seed-on-startup:false}")
+    private boolean seedExampleData;
 
     @Bean
     @Order(1)
@@ -78,12 +78,12 @@ public class DataSeedingConfig {
 
             if (youthTabelIsNotEmpty && meetingTableIsNotEmpty){ return; }
 
-//            if (seedExampleData) {
+            if (seedExampleData) {
                 try (var connection = dataSource.getConnection()) {
                     var resource = resourceLoader.getResource("classpath:dev-example-data.sql");
                     ScriptUtils.executeSqlScript(connection, resource);
                 }
-//            }
+            }
         };
     }
 
