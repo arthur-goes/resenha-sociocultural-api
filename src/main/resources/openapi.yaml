@@ -1,20 +1,22 @@
 openapi: 3.0.3
 info:
   title: API Resenha Sociocultural
-  description: API of management for social project Resenha Sociocultural.
+  description: |
+    ### Management API for the Resenha Sociocultural social project.
+
   version: 1.0.0
 servers:
   - url: http://localhost:8080
     description: Development Server
 tags:
   - name: Youths
-    description: "Operations related to managing youths."
+    description: Operations related to managing youths.
 
   - name: Meetings
-    description: "Operations for creating, finding, and managing meetings."
+    description: Operations for creating, finding, and managing meetings.
 
   - name: Attendances
-    description: "Operations for querying attendance records."
+    description: Operations for querying attendance records.
 
 security:
   - bearerAuth: []
@@ -23,13 +25,19 @@ components:
   securitySchemes:
     bearerAuth:
         type: oauth2
-        description: "Authentication via JWT. The token must contain the roles required for the operation."
+        description: | 
+          ##### ⚠️ AUTHORIZATION INSTRUCTIONS
+
+          - **Leave client_id, client_secret and selected scopes as is; just click 'Authorize' on bottom of the page**
+          
+          - **On the next page, login with 'admin' for both username and password**
+
         flows:
           authorizationCode:
             authorizationUrl: http://localhost:8080/oauth2/authorize
             tokenUrl: http://localhost:8080/oauth2/token
             scopes:
-              api: "Grants general access to the API. Authorization for specific endpoints is determined by user roles."
+              api: Grants general access to the API. Authorization for specific endpoints is determined by user roles.
 
   responses:
     Unauthorized:

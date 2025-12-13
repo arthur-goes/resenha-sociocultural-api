@@ -4,4 +4,18 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
+
+openapi-config:
+  server-url: https://resenha-sociocultural-api.onrender.com
+  auth-url: https://resenha-sociocultural-api.onrender.com/oauth2/authorize
+  token-url: https://resenha-sociocultural-api.onrender.com/oauth2/token
+  server-description: Staging Server
+  doc-description: |
+    ### Management API for the Resenha Sociocultural social project.
+    
+    **Note:** For convenience, the database is pre-loaded with sample data. This data is automatically **reset** if the server is inactive for 15 minutes."
+
+app:
+  database:
+    seed-on-startup: true

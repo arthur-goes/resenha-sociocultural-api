@@ -7,7 +7,7 @@ import br.com.resenhasociocultural.apiresenha.features.role.RoleRepository;
 import br.com.resenhasociocultural.apiresenha.features.userprofile.UserProfile;
 import br.com.resenhasociocultural.apiresenha.features.userprofile.UserProfileRepository;
 import br.com.resenhasociocultural.apiresenha.features.youth.YouthRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -16,35 +16,31 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StreamUtils;
 
 import javax.sql.DataSource;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.HashSet;
 
 @Configuration
-@Profile("dev")
-@AllArgsConstructor
+@Profile({"dev", "staging"})
+@RequiredArgsConstructor
 @Slf4j
 public class DataSeedingConfig {
 
-    private UserProfileRepository userProfileRepository;
-    private RoleRepository roleRepository;
+    private final UserProfileRepository userProfileRepository;
+    private final RoleRepository roleRepository;
 
-    private ResourceLoader resourceLoader;
-    private DataSource dataSource;
+    private final ResourceLoader resourceLoader;
+    private final DataSource dataSource;
 
-    private YouthRepository youthRepository;
-    private MeetingRepository meetingRepository;
+    private final YouthRepository youthRepository;
+    private final MeetingRepository meetingRepository;
 
 
-//    @Value("${app.database.seed-on-startup:false}")
-//    private boolean seedExampleData;
+    @Value("${app.database.seed-on-startup:false}")
+    boolean seedExampleData;
 
     @Bean
     @Order(1)
@@ -78,12 +74,12 @@ public class DataSeedingConfig {
 
             if (youthTabelIsNotEmpty && meetingTableIsNotEmpty){ return; }
 
-//            if (seedExampleData) {
+            if (seedExampleData) {
                 try (var connection = dataSource.getConnection()) {
                     var resource = resourceLoader.getResource("classpath:dev-example-data.sql");
                     ScriptUtils.executeSqlScript(connection, resource);
                 }
-//            }
+            }
         };
     }
 

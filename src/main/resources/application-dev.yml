@@ -9,6 +9,12 @@ spring:
       ddl-auto: update
     defer-datasource-initialization: true
 
+openapi-config:
+  server-url: http://localhost:8080
+  auth-url: http://localhost:8080/oauth2/authorize
+  token-url: http://localhost:8080/oauth2/token
+  server-description: Development Server
+
 app:
   database:
     seed-on-startup: true

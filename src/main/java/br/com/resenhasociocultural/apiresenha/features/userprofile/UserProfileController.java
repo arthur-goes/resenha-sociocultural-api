@@ -3,6 +3,7 @@ package br.com.resenhasociocultural.apiresenha.features.userprofile;
 import br.com.resenhasociocultural.apiresenha.features.userprofile.dto.UserProfileCreate;
 import br.com.resenhasociocultural.apiresenha.features.userprofile.dto.UserProfileResponse;
 import br.com.resenhasociocultural.apiresenha.features.userprofile.dto.UserProfileUpdate;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 @AllArgsConstructor
+@Hidden
 public class UserProfileController {
 
     private UserProfileService userProfileService;
