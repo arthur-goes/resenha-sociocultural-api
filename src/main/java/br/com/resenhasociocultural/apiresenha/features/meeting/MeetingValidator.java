@@ -8,6 +8,7 @@ import br.com.resenhasociocultural.apiresenha.features.meeting.dto.EntryValidati
 import br.com.resenhasociocultural.apiresenha.features.meeting.dto.MeetingFilter;
 import br.com.resenhasociocultural.apiresenha.features.participationpoint.ParticipationPoint;
 import br.com.resenhasociocultural.apiresenha.features.strike.Strike;
+import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
 import br.com.resenhasociocultural.apiresenha.features.youth.YouthEntry;
 import br.com.resenhasociocultural.apiresenha.features.youth.YouthService;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -64,23 +66,31 @@ public class MeetingValidator {
 
     }
 
-    public void validateYouthEntries(Meeting meeting) {
+    public void validateYouthEntries(Meeting meeting){
         List<EntryValidation> entriesToValidate = new ArrayList<>();
 
-        addEntriesToBeValidated(entriesToValidate, meeting.getAttendances());
-        addEntriesToBeValidated(entriesToValidate, meeting.getStrikes());
-        addEntriesToBeValidated(entriesToValidate, meeting.getParticipationPoints());
-
-        if (entriesToValidate.isEmpty()) {
-            return;
-        }
+        addEntriesToValidate(entriesToValidate, meeting.getAttendances());
+        addEntriesToValidate(entriesToValidate, meeting.getStrikes());
+        addEntriesToValidate(entriesToValidate, meeting.getParticipationPoints());
 
         Set<Long> idsToValidate = entriesToValidate.stream()
             .map(EntryValidation::youthId)
             .collect(Collectors.toSet());
 
-        Set<Long> foundIds = youthService.findValidYouthIdsIn(idsToValidate);
-        List<EntryValidation> invalidEntries = entriesToValidate.stream()
+        validateYouthEntriesIds(entriesToValidate, idsToValidate);
+        validateYouthNameAndSurnameInEntries(entriesToValidate, idsToValidate, meeting);
+
+    }
+
+
+    public void validateYouthEntriesIds(List<EntryValidation> entries, Set<Long> ids) {
+
+        if (entries.isEmpty()) {
+            return;
+        }
+
+        Set<Long> foundIds = youthService.findValidYouthIdsIn(ids);
+        List<EntryValidation> invalidEntries = entries.stream()
             .filter(entryToValidate -> !foundIds.contains(entryToValidate.youthId()))
             .toList();
 
@@ -100,7 +110,36 @@ public class MeetingValidator {
         throw new MalformedMeetingException(errorMessage.toString());
     }
 
-    private void addEntriesToBeValidated(List<EntryValidation> entriesToValidate, Set<? extends YouthEntry> entries) {
+    public void validateYouthNameAndSurnameInEntries(List<EntryValidation> entries, Set<Long> ids, Meeting meeting){
+        List<Youth> foundYouths = youthService.findYouthsByIds(ids);
+        AtomicBoolean isYouthValid = new AtomicBoolean(false);
+
+        foundYouths.forEach((youth) -> {
+            var youthEntryToVerify = entries.stream().filter(entry -> entry.youthId().equals(youth.getId())).toList();
+
+            var unmatchedYouthId = youthEntryToVerify.stream().filter(entry -> !entry.youthId()
+                .equals(youthEntryToVerify.get(0).youthId()))
+                .toList()
+                .size();
+
+            youthEntryToVerify.forEach(entry -> {
+                boolean fullNameIsValid;
+                boolean youthIsActiveOnMeetingDate = true;
+
+                fullNameIsValid = entry.fullName().equals(youth.getFullName());
+
+                if (entry.deactivationDate() != null) {
+                    youthIsActiveOnMeetingDate = entry.deactivationDate().isAfter(meeting.getDate());
+                }
+
+                if (fullNameIsValid && youthIsActiveOnMeetingDate){
+                    isYouthValid.set(true);
+                }
+            });
+        });
+    }
+
+    private void addEntriesToValidate(List<EntryValidation> entriesToValidate, Set<? extends YouthEntry> entries) {
         if (entries == null || entries.isEmpty()) {
             return;
         }
@@ -120,6 +159,7 @@ public class MeetingValidator {
             EntryValidation validationDto = new EntryValidation(
                 entry.getYouth().getId(),
                 entry.getYouth().getFullName(),
+                entry.getYouth().getDeactivationDate(),
                 originDescription
             );
             entriesToValidate.add(validationDto);
