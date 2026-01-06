@@ -36,7 +36,7 @@ public class MeetingService {
     public Meeting create(MeetingCreate dto) {
         Meeting meeting = meetingMapper.toEntity(dto);
 
-        validator.validateYouthEntries(meeting);
+        validator.validateYouthEntriesIds(meeting);
         addYouthProxies(meeting);
 
         return meetingRepository.save(meeting);
@@ -68,7 +68,7 @@ public class MeetingService {
     public Meeting update(Long id, MeetingUpdate dto){
         Meeting meeting = meetingMapper.toEntity(dto);
         meeting.setId(id);
-        validator.validateYouthEntries(meeting);
+        validator.validateYouthEntriesIds(meeting);
         addYouthProxies(meeting);
         return meetingRepository.save(meeting);
     }

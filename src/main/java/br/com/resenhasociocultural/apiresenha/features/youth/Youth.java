@@ -52,6 +52,9 @@ public class Youth {
     @CreatedDate
     private LocalDate creationDate;
 
+    @Column(nullable = true)
+    private LocalDate deactivationDate;
+
     @Column(nullable = false)
     private boolean active;
 

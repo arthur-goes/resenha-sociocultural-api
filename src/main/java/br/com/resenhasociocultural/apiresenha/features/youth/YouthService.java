@@ -60,4 +60,8 @@ public class YouthService {
     public Youth getYouthReference(Long id){
         return youthRepository.getReferenceById(id);
     }
+
+    public List<Youth> findYouthsByIds(Set<Long> ids){
+        return youthRepository.findAllById(ids);
+    }
 }
