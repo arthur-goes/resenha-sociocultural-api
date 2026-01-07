@@ -11,6 +11,7 @@ import br.com.resenhasociocultural.apiresenha.features.strike.Strike;
 import br.com.resenhasociocultural.apiresenha.features.youth.Youth;
 import br.com.resenhasociocultural.apiresenha.features.youth.YouthEntry;
 import br.com.resenhasociocultural.apiresenha.features.youth.YouthService;
+import com.sun.jdi.connect.Connector;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @AllArgsConstructor
 @Component
@@ -112,18 +114,33 @@ public class MeetingValidator {
 
     public void validateYouthNameAndSurnameInEntries(List<EntryValidation> entries, Set<Long> ids, Meeting meeting){
         List<Youth> foundYouths = youthService.findYouthsByIds(ids);
-        ArrayList<EntryValidation> invalidEntries = new ArrayList<>();
+        List<EntryValidation> invalidEntries = new ArrayList<>();
+        List<Youth> invalidEntryRelatedFoundYouths = new ArrayList<>();
 
         for (EntryValidation entry: entries) {
-            var foundYouth = foundYouths.stream().filter(youth -> youth.getId().equals(entry.youthId())).toList();
-            boolean nameIsValid = entry.fullName().equals(foundYouth.get(0).getFullName());
+            var foundYouth = foundYouths.stream().filter(youth -> youth.getId().equals(entry.youthId())).findFirst().get();
+            boolean nameIsValid = entry.fullName().equals(foundYouth.getFullName());
 
             if (!nameIsValid){
                 invalidEntries.add(entry);
+                invalidEntryRelatedFoundYouths.add(foundYouth);
             }
         }
 
+        if (!invalidEntries.isEmpty()) {
+            StringBuilder errorMessage = new StringBuilder("An error occurred, when validating youth names in entries.");
+            for (int i = 0; i < invalidEntries.size(); i++){
+                errorMessage.append(
+                    String.format("\n- O nome \"%s\" para o jovem de id %d vinculado a %s, não corresponde ao nome \"%s\" salvo no banco de dados",
+                        invalidEntries.get(i).fullName(),
+                        invalidEntries.get(i).youthId(),
+                        invalidEntries.get(i).originEntry(),
+                        invalidEntryRelatedFoundYouths.get(i).getFullName()
+                    )
+                );
+            }
 
+        }
     }
 
     private void addEntriesToValidate(List<EntryValidation> entriesToValidate, Set<? extends YouthEntry> entries) {
